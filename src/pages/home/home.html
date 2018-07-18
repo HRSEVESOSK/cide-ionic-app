@@ -1,14 +1,23 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      CIDE App
     </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="openEstabPage()">
+        ESTAB
+      </button>
+      <button ion-button icon-only (click)="logout()">
+        <ion-icon name="exit"></ion-icon>
+      </button>
+
+
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content padding-top="10">
+<ion-title>Welcome to CIDE App</ion-title>
+  <ion-label>Your username is: {{loggedUser}}</ion-label>
+  <ion-label>Your roles is: {{loggedRoles}}</ion-label>
 </ion-content>
