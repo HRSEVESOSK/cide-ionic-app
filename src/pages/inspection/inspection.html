@@ -1,0 +1,39 @@
+<!--
+  Generated template for the InspectionPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title *ngIf="modalType === 'getCi'">Coordinated inspections for {{modalTitle}}</ion-title>
+    <ion-title *ngIf="modalType === 'addCi'">Add Coordinated inspection for {{modalTitle}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding *ngIf="modalType === 'getCi'">
+  <ion-list inset>
+    <ion-item *ngFor="let e of coordinated">
+      <h2>{{e.id}}</h2>
+      <p>Date: {{e.inspection_date}}, Coordinator: {{e.inspection_coordinator}}</p>
+      <ion-buttons end>
+        <button *ngIf="e.ci_count > 0" ion-button (click)="openCIModal(e.id,e.establishment_name)">
+          <ion-icon name="list">  ({{e.ci_count}})</ion-icon>
+        </button>
+        <button *ngIf="e.ci_count  == 0" ion-button (click)="createCIModal(e.id,e.establishment_name)">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-content padding *ngIf="modalType === 'addCi'">
+  <h2>CI Data Insertion / Update Form</h2>
+</ion-content>

@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Establishments
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar [(ngModel)]="terms"></ion-searchbar>
+  <button ion-button type="button" (click)="sort()">Sort</button>
+  <ion-list inset>
+    <ion-item *ngFor="let e of establishments | search : terms | sort: {property: column, order: order}">
+      <h2>{{e.establishment_name}}</h2>
+      <p>Address: {{e.establishment_address}}, OIB: {{e.oib}}</p>
+      <ion-buttons end>
+        <button *ngIf="e.ci_count > 0" ion-button (click)="openCIModal(e.id,e.establishment_name)">
+          <ion-icon name="list">  ({{e.ci_count}})</ion-icon>
+        </button>
+        <button *ngIf="e.ci_count  == 0" ion-button (click)="createCIModal(e.id,e.establishment_name)">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+</ion-content>
