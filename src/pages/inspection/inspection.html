@@ -7,33 +7,132 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title *ngIf="modalType === 'getCi'">Coordinated inspections for {{modalTitle}}</ion-title>
-    <ion-title *ngIf="modalType === 'addCi'">Add Coordinated inspection for {{modalTitle}}</ion-title>
+    <ion-title id="{{estabId}}" *ngIf="modalType === 'getCi'">Coordinated inspections for {{modalTitle}}</ion-title>
+    <ion-title  *ngIf="modalType === 'addCi'">Insert coordinated inspection for {{modalTitle}}</ion-title>
+    <ion-title *ngIf="modalType === 'addSi'">Insert specific inspection for {{modalTitle}}</ion-title>
     <ion-buttons end>
-      <button ion-button (click)="closeModal()">Close</button>
+      <button *ngIf="modalType === 'getCi'" (click)="createCIModal(estabId)" ion-button large>
+        <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
+      </button>
+      <button (click)="closeModal()" ion-button large>
+        <ion-icon name="close-circle"  style="font-size: 50px"></ion-icon>
+      </button>
     </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
-
+<!-- MODAL LISTING COORDINATED INSOECTIONS -->
 <ion-content padding *ngIf="modalType === 'getCi'">
-  <ion-list inset>
-    <ion-item *ngFor="let e of coordinated">
-      <h2>{{e.id}}</h2>
-      <p>Date: {{e.inspection_date}}, Coordinator: {{e.inspection_coordinator}}</p>
-      <ion-buttons end>
-        <button *ngIf="e.ci_count > 0" ion-button (click)="openCIModal(e.id,e.establishment_name)">
-          <ion-icon name="list">  ({{e.ci_count}})</ion-icon>
-        </button>
-        <button *ngIf="e.ci_count  == 0" ion-button (click)="createCIModal(e.id,e.establishment_name)">
+  <ion-grid>
+    <ion-row style="background-color: antiquewhite">
+      <ion-col>ID</ion-col>
+      <ion-col>Date</ion-col>
+      <ion-col>Inspector</ion-col>
+      <ion-col>Tools</ion-col>
+    </ion-row>
+    <ion-row *ngFor="let e of coordinated" justify-content-center align-items-center>
+      <ion-col>{{e.id}}</ion-col>
+      <ion-col>{{e.inspection_date}}</ion-col>
+      <ion-col>{{e.inspection_coordinator}}</ion-col>
+      <ion-col>
+        <button ion-button (click)="createSIModal(e.id)">
           <ion-icon name="add"></ion-icon>
         </button>
-      </ion-buttons>
-    </ion-item>
-  </ion-list>
+        <button ion-button (click)="deleteCoordinatedInspection(e.id)" color="danger">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
 
+<!-- MODAL FORM TO CREATE NEW CI -->
 <ion-content padding *ngIf="modalType === 'addCi'">
-  <h2>CI Data Insertion / Update Form</h2>
+  <form (ngSubmit)="insertCoordinatedInspection()">
+    <ion-grid>
+      <ion-row style="background-color: antiquewhite">
+        <ion-col>ID</ion-col>
+        <ion-col>Date</ion-col>
+        <ion-col>Coordinator</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-input type="text" [(ngModel)]="insertCIdata.id" name="id" value="{{estabId}}" disabled placeholder="{{estabId}}"></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input type="date" [(ngModel)]="insertCIdata.inspection_date" name="inspection_date" displayFormat="DD-MM-YYYY"></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input type="text" [(ngModel)]="insertCIdata.coordinator" name="inspection_coordinator" disabled placeholder="{{loggedUname}}"></ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <button ion-button type="submit">
+      <ion-icon name="checkmark-circle"></ion-icon>
+    </button>
+    <!--
+    <ion-item>
+      <ion-label>Establishment id</ion-label>
+      <ion-input type="text" [(ngModel)]="insertCIdata.id" name="id" value="{{estabId}}" disabled placeholder="{{estabId}}"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Inspection date</ion-label>
+      <ion-input type="date" [(ngModel)]="insertCIdata.inspection_date" name="inspection_date" displayFormat="DD-MM-YYYY"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Inspection coordinator</ion-label>
+      <ion-input type="text" [(ngModel)]="insertCIdata.coordinator" name="inspection_coordinator" disabled placeholder=" {{loggedUname}}"></ion-input>
+    </ion-item>
+    <button ion-button type="submit">
+      <ion-icon name="share" style="font-size: 50px"></ion-icon>
+    </button>
+    -->
+  </form>
 </ion-content>
+
+<!-- MODAL FORM TO ADD NEW SI -->
+<ion-content padding *ngIf="modalType === 'addSi'">
+  <form (ngSubmit)="updateCoordinatedInspection()">
+    <ion-grid>
+      <ion-row style="background-color: antiquewhite">
+      <ion-col>Type</ion-col>
+      <ion-col>Date</ion-col>
+      <ion-col>Organization</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-select name="si_type"  [(ngModel)]="selected_si_type" [selectOptions]="updateCidata.options" (ionChange)="getOrganisationForSIType(updateCidata.si_type)">
+            <ion-option *ngFor="let ci of updateCidata.si_type" value="{{ci.code}}">{{ci.name}}</ion-option>
+          </ion-select>
+        </ion-col>
+        <ion-col>
+          <ion-input type="date" name="si_date" [ngModel]="updateCidata.inspection_date"></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input type="text" name="si_inspector" [ngModel]="si_inspector" onclick=""></ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-buttons right>
+      <button ion-button type="submit">
+        <ion-icon name="checkmark-circle" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </form>
+</ion-content>
+
+<!--
+<ion-footer *ngIf="modalType === 'getCi'">
+  <ion-toolbar>
+    <ion-buttons end>
+    <button *ngIf="modalType === 'getCi'" (click)="createCIModal(estabId)" ion-button large>
+      <ion-icon name="add-circle"></ion-icon>
+    </button>
+      <button *ngIf="modalType === 'getCi'" (click)="closeModal()" ion-button large>
+        <ion-icon name="close-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
+-->

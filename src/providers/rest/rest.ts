@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {p} from "@angular/core/src/render3";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 
 
@@ -14,19 +15,21 @@ import {p} from "@angular/core/src/render3";
 export class RestProvider {
   uname: any;
   upass: any;
-
+  authUrl: any;
+  apiUrl: any;
 
   constructor(public http: HttpClient) {
-    console.log('Hello RestProvider Provider');
-  }
-  apiUrl = 'http://localhost:5001/api'
-  authUrl = 'http://192.168.1.226/bifisic/services/httpbasicauth/auth'
+    this.apiUrl = 'http://192.168.1.66:8080/api';
+    this.authUrl = 'http://192.168.1.226/bifisic/services/httpbasicauth/auth';
 
-  login(u,p){
+  }
+
+
+  login(u, p) {
     return new Promise((resolve, reject) => {
-      this.http.get(this.authUrl + '?user=' + u + '&password=' + p).subscribe(data=> {
+      this.http.get(this.authUrl + '?user=' + u + '&password=' + p).subscribe(data => {
         resolve(data)
-      },error1 => {
+      }, error1 => {
         console.log(error1)
         reject(error1)
       })
@@ -34,10 +37,9 @@ export class RestProvider {
   }
 
 
-
-  getEstablishment(u,p){
+  getEstablishment(u, p) {
     return new Promise(resolve => {
-      this.http.get(this.apiUrl+'/establishment',{headers:new HttpHeaders().set('Authorization', 'Basic ' + btoa(u+':'+p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/establishment', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         console.log(error1)
@@ -45,14 +47,58 @@ export class RestProvider {
     })
   }
 
-  getCiForEstablishment(u,p,estabId){
+  getCiForEstablishment(u, p, estabId) {
     return new Promise(resolve => {
-      this.http.get(this.apiUrl+'/inspection/' + estabId,{headers:new HttpHeaders().set('Authorization', 'Basic ' + btoa(u+':'+p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/inspection/' + estabId, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         console.log(error1)
       })
     })
   }
+
+  getInspectionSpecificType(u, p) {
+    return new Promise(resolve => {
+      this.http.get(this.apiUrl + '/inspection/specific/type', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        console.log(error1)
+      })
+    })
+  }
+
+  insertCiForEstablishment(u, p, data) {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.apiUrl + '/inspection/insert', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        console.log("ERROR IN INSERTING CI", error1);
+        reject(error1)
+      })
+    })
+  }
+
+  updateCiForEstablishment(u, p, data) {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.apiUrl + '/inspection/update', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        console.log("ERROR IN INSERTING CI", error1);
+        reject(error1)
+      })
+    })
+  }
+
+  deleteCiById(u,p,data){
+    return new Promise((resolve, reject) => {
+      this.http.post(this.apiUrl + '/inspection/delete', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        console.log("ERROR IN DELETING CI", error1);
+        reject(error1)
+      })
+    })
+}
+
 
 }

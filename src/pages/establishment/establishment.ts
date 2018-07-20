@@ -64,6 +64,7 @@ export class EstablishmentPage {
 
   createCIModal(id,name){
     var data: { title: any; id: any; type: any } = {"title":name,"id":id, "type": "addCi"};
+    console.log("CREATE CI DATA: ", data);
     //this.navCtrl.push(EstablishmentPage)
     let modalPage = this.modalCtrl.create(InspectionPage, data);
     modalPage.present();
