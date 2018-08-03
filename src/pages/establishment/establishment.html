@@ -11,8 +11,9 @@
   <!--
   <button ion-button type="button" (click)="sort()">Sort</button>
   -->
-  <ion-grid>
+  <ion-grid text-center>
     <ion-row style="background-color: antiquewhite">
+      <ion-col>ID</ion-col>
       <ion-col>OIB</ion-col>
       <ion-col>Name</ion-col>
       <ion-col>Municipality</ion-col>
@@ -20,14 +21,15 @@
       <ion-col>Tools</ion-col>
     </ion-row>
     <ion-row *ngFor="let e of establishments | search : terms | sort: {property: column, order: order}">
+      <ion-col>{{e.id}}</ion-col>
       <ion-col>{{e.oib}}</ion-col>
       <ion-col>{{e.establishment_name}}</ion-col>
       <ion-col>{{e.establishment_municipality}}</ion-col>
       <ion-col>{{e.establishment_address}}</ion-col>
       <ion-col>
-        <ion-buttons end>
+        <ion-buttons>
           <button *ngIf="e.ci_count > 0" ion-button (click)="openCIModal(e.id,e.establishment_name)">
-            <ion-icon name="list">  ({{e.ci_count}})</ion-icon>
+            <ion-icon name="list"> ({{e.ci_count}})</ion-icon>
           </button>
           <button *ngIf="e.ci_count  == 0" ion-button (click)="createCIModal(e.id,e.establishment_name)">
             <ion-icon name="add"></ion-icon>

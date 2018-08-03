@@ -19,7 +19,7 @@ export class RestProvider {
   apiUrl: any;
 
   constructor(public http: HttpClient) {
-    this.apiUrl = 'http://192.168.1.66:8080/api';
+    this.apiUrl = 'http://192.168.1.77:8080/api';
     this.authUrl = 'http://192.168.1.226/bifisic/services/httpbasicauth/auth';
 
   }
@@ -30,19 +30,33 @@ export class RestProvider {
       this.http.get(this.authUrl + '?user=' + u + '&password=' + p).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log(error1)
-        reject(error1)
+        console.log(error1);
+        reject(error1);
       })
     })
   }
 
 
   getEstablishment(u, p) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.http.get(this.apiUrl + '/establishment', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log(error1)
+        console.log(error1);
+        reject(error1);
+
+      })
+    })
+  }
+
+  getSpecificForCoordinated(u, p, ciId) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.apiUrl + '/inspection/specific/' + ciId, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        console.log(error1);
+        reject(error1);
+
       })
     })
   }
@@ -58,17 +72,43 @@ export class RestProvider {
   }
 
   getInspectionSpecificType(u, p) {
-    return new Promise(resolve => {
+    return new Promise((resolve,reject) => {
       this.http.get(this.apiUrl + '/inspection/specific/type', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log(error1)
+        console.log("ERROR IN GETTING SI TYPES FROM API", error1);
+        reject(error1)
       })
     })
   }
 
+  getInspectionSpecificCriterior(u, p) {
+    return new Promise((resolve,reject) => {
+      this.http.get(this.apiUrl + '/inspection/specific/criterior', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        console.log("ERROR IN GETTING SI TYPES FROM API", error1);
+        reject(error1)
+      })
+    })
+  }
+
+  getInspectionSpecificCriteriorScore(u, p) {
+    return new Promise((resolve,reject) => {
+      this.http.get(this.apiUrl + '/inspection/specific/criterior/score', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        console.log("ERROR IN GETTING SI TYPES FROM API", error1);
+        reject(error1)
+      })
+    })
+  }
+
+
+
   insertCiForEstablishment(u, p, data) {
     return new Promise((resolve, reject) => {
+      console.log(data);
       this.http.post(this.apiUrl + '/inspection/insert', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
@@ -83,7 +123,7 @@ export class RestProvider {
       this.http.post(this.apiUrl + '/inspection/update', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("ERROR IN INSERTING CI", error1);
+        console.log("ERROR IN UPDATING CI", error1);
         reject(error1)
       })
     })
@@ -99,6 +139,58 @@ export class RestProvider {
       })
     })
 }
+
+  deleteSiById(u,p,data){
+    return new Promise((resolve, reject) => {
+      this.http.post(this.apiUrl + '/inspection/specific/delete', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        console.log("ERROR IN DELETING CI", error1);
+        reject(error1)
+      })
+    })
+  }
+
+    uploadReportForCi(u, p, file:Blob, id) {
+      let formData = new FormData();
+      formData.append('file', file, 'Report_' + id  + new Date().toJSON().split('T')[0]+ '.pdf');
+      let httpOptions = {
+        headers: new HttpHeaders({
+          'enctype': 'multipart/form-data; boundary=----WebKitFormBoundaryuL67FWkv1CA',
+          'Authorization':'Basic ' + btoa(u + ':' + p)})
+      };
+    return new Promise((resolve, reject) => {
+      console.log(file);
+      this.http.post(this.apiUrl + '/inspection/specific/upload', formData, httpOptions).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        console.log("ERROR IN INSERTING UPLOADING REPORT FOR CI", error1);
+        reject(error1)
+      })
+    })
+  }
+  /*
+  postFile(token:string, file:Blob){
+
+    let url = WebService.API_POST_FILE + "?token="+token;
+    let httpOptions = {
+      headers: new HttpHeaders({
+        'enctype': 'multipart/form-data; boundary=----WebKitFormBoundaryuL67FWkv1CA'
+      })
+    };
+
+    let formData = new FormData();
+    formData.append('file', file, 'test.jpg');
+
+    console.log("post photo to URL at "+url);
+    return this.http
+      .post<SimpleResponse>(
+        url,
+        formData,
+        httpOptions
+      );
+  }
+  */
 
 
 }

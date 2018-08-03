@@ -14,6 +14,8 @@ import {EstablishmentPage} from "../pages/establishment/establishment";
 import {SearchPipe} from "../pipes/search/search";
 import {SortPipe} from "../pipes/sort/sort";
 import {InspectionPage} from "../pages/inspection/inspection";
+import {Transfer} from "@ionic-native/transfer";
+import {File} from '@ionic-native/file';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import {InspectionPage} from "../pages/inspection/inspection";
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RestProvider,
-    AuthenticateProvider
+    AuthenticateProvider,
+    Transfer,
+    File
   ]
 })
 export class AppModule {}

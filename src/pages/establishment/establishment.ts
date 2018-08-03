@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ModalController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ModalController, AlertController} from 'ionic-angular';
 import {RestProvider} from "../../providers/rest/rest";
 import {InspectionPage} from "../inspection/inspection";
+import {HomePage} from "../home/home";
 
 /**
  * Generated class for the EstablishmentPage page.
@@ -23,14 +24,15 @@ export class EstablishmentPage {
   descending: boolean = false;
   order: number;
   column: string = 'establishment_name';
-  loader: any
+  loader: any;
 
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public restProvider: RestProvider,
               public loadingCtrl: LoadingController,
-              public modalCtrl: ModalController) {
+              public modalCtrl: ModalController,
+              public alertCtrl: AlertController) {
     this.loaderCreate();
   }
 
@@ -40,11 +42,28 @@ export class EstablishmentPage {
         this.establishments = data;
         this.loader.dismiss();
       })
+      .catch(reason => {
+        console.log("GET ESTABLISHMENT LIST FAILED", reason);
+        this.loader.dismiss();
+        this.presentAlert(reason);
+        this.navCtrl.push(HomePage)
+      })
+  }
+
+  presentAlert(reason) {
+    const alert = this.alertCtrl.create({
+      title: reason.name,
+      subTitle: reason.message,
+      buttons: ['Dismiss']
+    });
+    alert.present();
   }
 
   loaderCreate() {
     this.loader = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: '',
+      spinner: 'dots',
+      cssClass: 'transparent'
     });
     this.loader.present();
   }
@@ -57,8 +76,9 @@ export class EstablishmentPage {
 
   openCIModal(id,name){
     var data: { title: any; id: any; type: any } = {"title":name,"id":id, "type": "getCi"};
+    console.log("CI FOR ESTAB DATA", data);
     //this.navCtrl.push(EstablishmentPage)
-    let modalPage = this.modalCtrl.create(InspectionPage, data);
+    let modalPage = this.modalCtrl.create(InspectionPage, data, {cssClass: "modal-fullscreen"});
     modalPage.present();
   }
 
