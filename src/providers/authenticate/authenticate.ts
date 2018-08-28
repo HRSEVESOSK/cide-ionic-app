@@ -10,8 +10,8 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class AuthenticateProvider {
-  authUrl = 'http://192.168.1.226/bifisic/services/httpbasicauth/auth';
-
+  //authUrl = 'http://192.168.1.226/bifisic/services/httpbasicauth/auth';
+  authUrl = 'http://pproo.azo.hr/bifisic/services/httpbasicauth/auth'
   constructor(public http: HttpClient) {
     console.log('Hello AuthenticateProvider Provider');
   }

@@ -15,16 +15,13 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 export class RestProvider {
   uname: any;
   upass: any;
-  authUrl: any;
   apiUrl: any;
 
   constructor(public http: HttpClient) {
-    this.apiUrl = 'http://192.168.1.77:8080/api';
-    this.authUrl = 'http://192.168.1.226/bifisic/services/httpbasicauth/auth';
-
+    this.apiUrl = 'http://localhost:5001/api';
   }
 
-
+ /*
   login(u, p) {
     return new Promise((resolve, reject) => {
       this.http.get(this.authUrl + '?user=' + u + '&password=' + p).subscribe(data => {
@@ -35,6 +32,7 @@ export class RestProvider {
       })
     })
   }
+  */
 
 
   getEstablishment(u, p) {
@@ -121,6 +119,17 @@ export class RestProvider {
   updateCiForEstablishment(u, p, data) {
     return new Promise((resolve, reject) => {
       this.http.post(this.apiUrl + '/inspection/update', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        console.log("ERROR IN UPDATING CI", error1);
+        reject(error1)
+      })
+    })
+  }
+
+  updateCiCriteriaScore(u, p, data) {
+    return new Promise((resolve, reject) => {
+      this.http.post(this.apiUrl + '/specific/criterior/insert', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         console.log("ERROR IN UPDATING CI", error1);

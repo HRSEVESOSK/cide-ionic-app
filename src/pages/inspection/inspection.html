@@ -204,28 +204,27 @@
     MODAL WINDOW DISPLAYING FORM TO CREATE NEW SCORING FOR A SPECIFIC INSPECTION
 -->
 <ion-content padding *ngIf="modalType === 'addSiScore'">
-  <form (ngSubmit)="updateSpecificInspectionScore()" id="addSiScore">
+  <form #scoreForm="ngForm" (ngSubmit)="updateSpecificInspectionScore(si_id)" id="addSiScore">
     <ion-grid text-center>
       <ion-row style="background-color: antiquewhite">
         <ion-col>Criteria</ion-col>
         <ion-col>Score</ion-col>
         <ion-col>Note</ion-col>
       </ion-row>
-      <ion-label *ngFor="let e of si_criteria" text-center [(ngModel)]="si_criteria_score.group" name="si_criteria_score_group" ngDefaultControl><b>{{e.value}}</b>
-        <ion-row *ngFor="let f of e.criteria">
-          <ion-col text-wrap text-left [(ngModel)]="si_criteria_score.criteria" name="criteria" id="criteria_{{f.id}}" ngDefaultControl>{{f.value}}</ion-col>
+      <ion-label *ngFor="let e of si_criteria; let i=index" text-center [(ngModel)]="si_criteria_group_id[e.id]" [name]="'group_'+e.id" ngDefaultControl><b>{{e.value}}</b>
+        <ion-row *ngFor="let f of e.criteria; let j=index">
+          <ion-col text-wrap text-left [(ngModel)]="si_criteria[i]" [name]="'si_criteria_id_'+f.id" id="{{e.id}}_{{f.id}}" ngDefaultControl>{{f.value}}</ion-col>
           <ion-col text-left>
-            <ion-select required  id="select_{{f.id}}" name="score"  [(ngModel)]="si_criteria_score.score" ngDefaultControl>
-              <ion-option id="option_{{s.id}}" *ngFor="let s of si_criteria_score_list" value="{{s.id}}">{{s.value}}</ion-option>
+            <ion-select required  id="{{f.id}}" [(ngModel)]="si_criteria[i].criteria[j].score" [name]="'score'+f.id">
+              <ion-option required *ngFor="let s of si_criteria_score_list" [value]="s.id">{{s.value}}</ion-option>
             </ion-select>
           </ion-col>
           <ion-col text-center>
-            <ion-textarea [(ngModel)]="si_criteria_score.note" name="note" id="textarea_{{f.id}}" text-justify="" placeholder="Pis sem ak treba" ngDefaultControl></ion-textarea>
+            <ion-textarea [(ngModel)]="si_criteria[i].criteria[j].note" [name]="'note_'+f.id" id="textarea_{{f.id}}" text-justify="" placeholder="Pis sem ak treba" ngDefaultControl></ion-textarea>
           </ion-col>
         </ion-row>
       </ion-label>
     </ion-grid>
-
   </form>
 </ion-content>
 

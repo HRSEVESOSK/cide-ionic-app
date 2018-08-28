@@ -5,6 +5,7 @@ import {EstablishmentPage} from "../establishment/establishment";
 import {literalArr} from "@angular/compiler/src/output/output_ast";
 import { Transfer, FileUploadOptions, TransferObject } from '@ionic-native/transfer';
 import { File } from '@ionic-native/file';
+import {Form} from "ionic-angular/umd";
 
 
 /**
@@ -36,7 +37,6 @@ export class InspectionPage {
   deleteSIData = {"id":''};
   ciHashedId: any;
   updateCidataForm = {};
-  selectOptions: any;
   selected_si_type: any;
   si_inspector: any;
   si_id: any;
@@ -44,11 +44,9 @@ export class InspectionPage {
   si_inspection_date: any;
   si_criteria: any;
   si_criteria_score_list: any;
-  si_criteria_score: any = {'group':'','criteria':'','score':'', "note":''};
-  si_score_data:any = [];
+  si_criteria_group_id: any = [];
   si_issue_last_update: any;
   si_issue_deadline_warning: any;
-  si_report: any;
   date_now = new Date().toJSON().split('T')[0];
   inspection_date: any;
   constructor(public navCtrl: NavController,
@@ -116,7 +114,6 @@ export class InspectionPage {
 
   }
 
-
   presentToast(message) {
     let toast = this.toastCtrl.create({
       message: message + this.ciHashedId,
@@ -149,7 +146,7 @@ export class InspectionPage {
         var modalData: { cid: any, type: string, si_types: any, title: any } =
           {"cid":id, "type": "addSi", si_types: data, "title": id};
         console.log("DATA SENT TO SI INSERT: ", modalData);
-        let modalPage = this.modalCtrl.create(InspectionPage, modalData);
+        let modalPage = this.modalCtrl.create(InspectionPage, modalData, {cssClass:"modal-fullscreen"});
         modalPage.present();
       })
       .catch(reason => {
@@ -194,8 +191,6 @@ export class InspectionPage {
       */
   }
 
-
-
   openSIModal(id){
     console.log("SI modal data: ", id);
     this.coordId = id;
@@ -217,7 +212,7 @@ export class InspectionPage {
     var data: { title: any; id: any; type: any } = {"title":name,"id":id, "type": "addCi"};
     console.log("CREATE CI DATA: ", data);
     //this.navCtrl.push(EstablishmentPage)
-    let modalPage = this.modalCtrl.create(InspectionPage, data);
+    let modalPage = this.modalCtrl.create(InspectionPage, data, {cssClass: "modal-fullscreen"});
     modalPage.present();
   }
 
@@ -304,9 +299,38 @@ export class InspectionPage {
         console.error();
       })
   }
-  updateSpecificInspectionScore(){
-    console.log(this.si_criteria_score);
+  updateSpecificInspectionScore(id){
+    let criteriaScoreData = [];
+    console.log("Insert / Update Criteria Score for: ", id);
+    //console.log("Insert / Update Data: ", this.si_criteria_score);
+    console.log("Insert / Update Data: ", this.si_criteria);
+    for(let group of this.si_criteria) {
+      if ("criteria" in group){
+        for(let criterior of group.criteria){
+          if("score" in criterior){
+            let values = {};
+            values['id_specific_inspection'] = id;
+            values['id_criterior'] = criterior.id;
+            values['id_score'] = criterior.score;
+            if ("note" in criterior){
+              values['comments'] = criterior.note;
+            }
+            criteriaScoreData.push(values);
+          }
+        }
+      }
+    }
+    console.log("POST DATA: ", criteriaScoreData)
 
+
+    //this.restProvider.updateCiCriteriaScore(this.loggedUname, this.loggedPass, criteriaScoreData)
+
+
+
+  }
+
+  customTrackBy(index: number, obj: any): any {
+    return index;
   }
   deleteCoordinatedInspection(id){
     console.log("Function deleteCoordinatedInspection was called with parameter id=", id);
