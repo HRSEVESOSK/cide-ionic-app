@@ -31,7 +31,7 @@
           <button *ngIf="e.ci_count > 0" ion-button (click)="openCIModal(e.id,e.establishment_name)">
             <ion-icon name="list"> ({{e.ci_count}})</ion-icon>
           </button>
-          <button *ngIf="e.ci_count  == 0" ion-button (click)="createCIModal(e.id,e.establishment_name)">
+          <button *ngIf="e.ci_count  == 0 && loggedRole != 'ROLE_CIDE_SMS'" ion-button (click)="createCIModal(e.id,e.establishment_name)">
             <ion-icon name="add"></ion-icon>
           </button>
         </ion-buttons>

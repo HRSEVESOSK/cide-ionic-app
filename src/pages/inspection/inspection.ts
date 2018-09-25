@@ -1,5 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController, ModalController, AlertController, Events} from 'ionic-angular';
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  ViewController,
+  ToastController,
+  ModalController,
+  AlertController,
+  Events,
+  LoadingController
+} from 'ionic-angular';
 import {RestProvider} from "../../providers/rest/rest";
 import {EstablishmentPage} from "../establishment/establishment";
 import {literalArr} from "@angular/compiler/src/output/output_ast";
@@ -21,14 +31,17 @@ import {Form} from "ionic-angular/umd";
   templateUrl: 'inspection.html',
 })
 export class InspectionPage {
+  loader: any;
   modalTitle:any;
   estabId:any;
   coordId: any;
   coordinated:any;
   specific: any;
   criteria: any;
+  isEnabled: boolean = false;
   loggedUname : string = localStorage.getItem('app.userInfo.name');
   loggedPass: string = localStorage.getItem('app.userInfo.pass');
+  loggedRole: string = localStorage.getItem('app.userInfo.role');
   modalType: any;
   dateNow: any;
   ciTypes: any;
@@ -43,6 +56,8 @@ export class InspectionPage {
   si_inspector_role: any;
   si_inspection_date: any;
   si_criteria: any;
+  si_issues: any = [];
+  private maxQuantity: number = 5;
   si_criteria_score_list: any;
   si_criteria_group_id: any = [];
   si_issue_last_update: any;
@@ -57,7 +72,8 @@ export class InspectionPage {
               public modalCtrl: ModalController,
               private transfer: Transfer,
               private file: File,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController,
+              public loadingCtrl: LoadingController,) {
     this.modalTitle = this.navParams.get('title');
     this.estabId = this.navParams.get('id');
     this.si_id = this.navParams.get('sid');
@@ -71,8 +87,9 @@ export class InspectionPage {
     }
 
     if (this.modalType === 'addSiIssue') {
-      this.si_issue_last_update = new Date().toJSON().split('T')[0];
-      this.si_issue_deadline_warning = new Date().toJSON().split('T')[0];
+      console.log("GETTING ISSUES FOR: ", this.si_id);
+      this.getIssuesForCI(this.si_id);
+
 
     }
 
@@ -117,7 +134,7 @@ export class InspectionPage {
   presentToast(message) {
     let toast = this.toastCtrl.create({
       message: message + this.ciHashedId,
-      duration: 1500,
+      duration: 1000,
       position: 'center'
     });
 
@@ -131,11 +148,31 @@ export class InspectionPage {
     toast.present();
   }
 
+  presentErrorMessage(text){
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'center'
+    });
+    toast.onDidDismiss(() => {
+        this.closeModal();
+      });
+    toast.present();
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad InspectionPage');
 
   }
 
+  loaderCreate() {
+    this.loader = this.loadingCtrl.create({
+      content: '',
+      spinner: 'dots',
+      cssClass: 'transparent'
+    });
+    this.loader.present();
+  }
   public closeModal(){
     this.viewCtrl.dismiss();
   }
@@ -155,6 +192,7 @@ export class InspectionPage {
   }
 
   openSIScoreModal(id){
+    this.loaderCreate();
     console.log("ID of SI: ", id);
     this.si_id = id;
     this.restProvider.getInspectionSpecificCriterior(this.loggedUname,this.loggedPass)
@@ -164,10 +202,12 @@ export class InspectionPage {
         var modalData: { sid: any, type: string, si_criteria: any, title: any } =
           {"sid":id, "type": "addSiScore", "si_criteria": data, "title": "Criteria for: " + id};
         let modalPage = this.modalCtrl.create(InspectionPage, modalData, {cssClass: "modal-fullscreen"});
+        this.loader.dismiss();
         modalPage.present();
       })
       .catch(reason => {
         console.log("GET SI TYPES LIST ERROR", reason);
+        this.loader.dismiss();
       })
   }
 
@@ -271,6 +311,50 @@ export class InspectionPage {
 
   }
 
+
+  addrow(id){
+    this.si_issues.push({ last_update: new Date().toJSON().split('T')[0],'id_specific_inspection':id  });
+  }
+  delrow(id){
+    if ((this.si_issues).length > 1){
+      this.si_issues.pop();
+    }
+
+  }
+  warningChanged(value){
+    console.log("Changed to value: ", value);
+    this.isEnabled = value;
+  }
+
+  getIssuesForCI(id){
+    this.loaderCreate();
+    this.restProvider.getInspectionSpecificIssues(this.loggedUname,this.loggedPass,id)
+      .then(data => {
+        this.loader.dismiss();
+        console.log("CI ISSUE DATA", data);
+        if ('message' in data){
+          console.log("CI: ", id + " NEMA ISSUES.");
+          this.si_issues.push({'last_update' : new Date().toJSON().split('T')[0],'id_specific_inspection':id});
+        }
+        else{
+          console.log("Data returned for SI Issues: ", data);
+          this.si_issues = [];
+          this.si_issues = data;
+          /*
+          for (let k in data){
+            console.log("IDECKO: ", data[k].id);
+            this.si_issues.push({'id': data[k].id,'issue_description':data[k].issue_description});
+          }
+          */
+        }
+
+      })
+      .catch(reason => {
+        this.loader.dismiss();
+        console.log("GET CI ISSUES ERROR", reason);
+      })
+  }
+
   insertCoordinatedInspection(){
     console.log(this.insertCIdata);
     this.restProvider.insertCiForEstablishment(this.loggedUname,this.loggedPass, this.insertCIdata)
@@ -299,7 +383,28 @@ export class InspectionPage {
         console.error();
       })
   }
+
+
+  updateSpecificInspectionIssue(id){
+    console.log("Insert / Update Issues for: ", id);
+    console.log("Insert data: ", this.si_issues);
+    console.log("POST DATA: ", this.si_issues);
+    this.loaderCreate();
+    this.restProvider.updateCiIssues(this.loggedUname,this.loggedPass,this.si_issues)
+      .then(data=>{
+        this.ciHashedId = id;
+        this.loader.dismiss();
+        this.presentToast('inserted: ' + data['inserted'] + ' updated: ' + data['updated'] + ' for insection: ');
+      })
+      .catch(reason => {
+        console.error(reason);
+        this.loader.dismiss();
+      })
+
+  }
+
   updateSpecificInspectionScore(id){
+    this.loaderCreate();
     let criteriaScoreData = [];
     console.log("Insert / Update Criteria Score for: ", id);
     //console.log("Insert / Update Data: ", this.si_criteria_score);
@@ -320,13 +425,41 @@ export class InspectionPage {
         }
       }
     }
+    //HERE WE NEED TO CALL METHOD FROM REST
     console.log("POST DATA: ", criteriaScoreData)
+    this.restProvider.updateCiCriteriaScore(this.loggedUname,this.loggedPass,criteriaScoreData)
+      .then(data=>{
+        this.ciHashedId = id;
+        this.loader.dismiss();
+        this.presentToast('inserted: ' + data['inserted'] + ' updated: ' + data['updated'] + ' for insection: ');
+      })
+      .catch(reason => {
+        console.error(reason);
+        this.loader.dismiss();
+      })
 
 
     //this.restProvider.updateCiCriteriaScore(this.loggedUname, this.loggedPass, criteriaScoreData)
 
 
 
+  }
+
+  insertGroupScore(a,b){
+    console.log("Changing the value for: ", a,b);
+    console.log(this.si_criteria[a]['value']);
+    let currentScore = 0;
+    let selectedScore = parseInt(b.match(/\(([^)]+)\)/)[1]);
+    console.log("SELECTED SCORE NUMBER: ", selectedScore);
+    if ((this.si_criteria[a]['value']).includes("(")) {
+      console.log("IF ARE WE HERE???");
+      currentScore = parseInt((this.si_criteria[a]['value']).match(/\(([^)]+)\)/)[1]);
+      this.si_criteria[a]['value'] = (this.si_criteria[a]['value'].replace((this.si_criteria[a]['value']).match(/\(([^)]+)\)/)[1], currentScore + selectedScore));
+    }
+    else{
+      console.log("ELSE ARE WE HERE???");
+      this.si_criteria[a]['value'] = (this.si_criteria[a]['value'] + "("+currentScore + selectedScore+")");
+    }
   }
 
   customTrackBy(index: number, obj: any): any {
@@ -340,6 +473,9 @@ export class InspectionPage {
         this.ciHashedId = data['deleted'];
         this.presentToast('deleted: ');
       })
+      .catch(reason => {
+      console.log("deleteCoordinatedInspection", reason);
+    })
   }
 
   deleteSpecificInspection(id){
@@ -350,6 +486,10 @@ export class InspectionPage {
         this.ciHashedId = data['deleted'];
         this.presentToast('deleted: ');
       })
+      .catch(reason => {
+      console.log("deleteSpecificInspection", reason);
+      this.presentErrorMessage(reason.status + ": " + reason.statusText);
+    })
   }
 
   getSiForCi(id){

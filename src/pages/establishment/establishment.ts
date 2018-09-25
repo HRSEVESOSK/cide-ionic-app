@@ -21,6 +21,7 @@ export class EstablishmentPage {
   errorMessage: string;
   loggedUname : string = localStorage.getItem('app.userInfo.name');
   loggedPass: string = localStorage.getItem('app.userInfo.pass');
+  loggedRole: string = localStorage.getItem('app.userInfo.role');
   descending: boolean = false;
   order: number;
   column: string = 'establishment_name';

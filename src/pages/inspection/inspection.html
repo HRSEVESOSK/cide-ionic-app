@@ -11,10 +11,10 @@
     <ion-title *ngIf="modalType === 'addSiScore'">Criteria and score for {{si_id}}</ion-title>
     <ion-title *ngIf="modalType === 'addSiIssue'">Open issues for {{si_id}}</ion-title>
     <ion-buttons end>
-      <button *ngIf="modalType === 'getCi'" (click)="createCIModal(estabId)" ion-button large>
+      <button *ngIf="modalType === 'getCi' && loggedRole != 'ROLE_CIDE_SMS'" (click)="createCIModal(estabId)" ion-button large>
         <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'getSi'" (click)="createSIModal(ciHashedId)" ion-button large>
+      <button *ngIf="modalType === 'getSi' && loggedRole != 'ROLE_CIDE_SMS'" (click)="createSIModal(ciHashedId)" ion-button large>
         <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
       </button>
       <button *ngIf="modalType === 'addCi'" ion-button type="submit" form="addCi">
@@ -215,8 +215,8 @@
         <ion-row *ngFor="let f of e.criteria; let j=index">
           <ion-col text-wrap text-left [(ngModel)]="si_criteria[i]" [name]="'si_criteria_id_'+f.id" id="{{e.id}}_{{f.id}}" ngDefaultControl>{{f.value}}</ion-col>
           <ion-col text-left>
-            <ion-select required  id="{{f.id}}" [(ngModel)]="si_criteria[i].criteria[j].score" [name]="'score'+f.id">
-              <ion-option required *ngFor="let s of si_criteria_score_list" [value]="s.id">{{s.value}}</ion-option>
+            <ion-select required  id="{{f.id}}" [(ngModel)]="si_criteria[i].criteria[j].score" [name]="'score'+f.id" >
+              <ion-option required *ngFor="let s of si_criteria_score_list" [value]="s.id" (ionSelect)="insertGroupScore(i,s.value)">{{s.value}}</ion-option>
             </ion-select>
           </ion-col>
           <ion-col text-center>
@@ -233,9 +233,10 @@
 -->
 
 <ion-content padding *ngIf="modalType === 'addSiIssue'">
-  <form (ngSubmit)="updateSpecificInspectionIssue()" id="addSiIssue">
+  <form (ngSubmit)="updateSpecificInspectionIssue(si_id)" id="addSiIssue">
     <ion-grid text-center>
       <ion-row style="background-color: antiquewhite">
+        <ion-col text-center="">ID</ion-col>
         <ion-col text-center="">Issue description</ion-col>
         <ion-col text-center="">Accomplished according to the measures/prescriptions on the inspeciton minutes</ion-col>
         <ion-col text-center="">Deadline</ion-col>
@@ -243,35 +244,45 @@
         <ion-col text-center="">Indictment/misdemeanor warrant</ion-col>
         <ion-col text-center="">Updated</ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row *ngFor="let issue of si_issues; let i=index">
+        <ion-col>
+          <ion-input type="text" disabled [name]="'id'+issue.id" [(ngModel)]="si_issues[i].id"></ion-input>
+        </ion-col>
       <ion-col>
-        <ion-input type="textarea" text-justify maxlength="2000" name="si_issue_des_open_issue" placeholder="Describe the issue here. Max 2000 characters"></ion-input>
+        <ion-input type="textarea" text-justify maxlength="2000" [name]="'issue_description'+issue.id" placeholder="Describe the issue here. Max 2000 characters" [(ngModel)]="si_issues[i].issue_description"></ion-input>
       </ion-col>
       <ion-col>
-        <ion-select name="si_issue_acc_prescriptions">
-          <ion-option>Yes</ion-option>
-          <ion-option>No</ion-option>
+        <ion-select [name]="'acc_prescriptions'+issue.id" [(ngModel)]="si_issues[i].acc_prescriptions">
+          <ion-option value="true">Yes</ion-option>
+          <ion-option value="false">No</ion-option>
         </ion-select>
       </ion-col>
       <ion-col>
-        <ion-input type="date" name="si_issue_deadline_warning" [ngModel]="si_issue_deadline_warning"></ion-input>
+        <ion-input type="date" [name]="'deadline_warning'+issue.id" [(ngModel)]="si_issues[i].deadline_warning"></ion-input>
       </ion-col>
       <ion-col>
-        <ion-select name="si_issue_acc_warning">
-          <ion-option>Yes</ion-option>
-          <ion-option>No</ion-option>
+        <ion-select [name]="'acc_warning'+issue.id"  [(ngModel)]="si_issues[i].acc_warning" (ngModelChange)="warningChanged(si_issues[i].acc_warning)">
+          <ion-option value="true">Yes</ion-option>
+          <ion-option value="false">No</ion-option>
         </ion-select>
       </ion-col>
       <ion-col>
-        <ion-input type="textarea" maxlength="2000" name="si_issue_des_indictment"></ion-input>
+        <ion-input type="textarea" maxlength="2000" [name]="'des_indictment'+issue.id" [(ngModel)]="si_issues[i].des_indictment" disabled="{{isEnabled}}"></ion-input>
       </ion-col>
         <ion-col>
-          <ion-input type="date" name="si_issue_last_update" [ngModel]="si_issue_last_update"></ion-input>
+          <ion-input type="date" [name]="'last_update'+issue.id" [ngModel]="si_issues[i].last_update" ></ion-input>
         </ion-col>
       </ion-row>
     </ion-grid>
-
   </form>
+  <ion-buttons end>
+    <button ion-button color="dark" [disabled]="si_issues.length == 1" (click)="delrow(si_id)">
+      <ion-icon name="remove-circle" style="font-size: large"></ion-icon>
+    </button>
+    <button ion-button color="dark" [disabled]="si_issues.length === maxQuantity" (click)="addrow(si_id)">
+      <ion-icon name="add-circle" style="font-size: large"></ion-icon>
+    </button>
+  </ion-buttons>
 </ion-content>
 
 <!--
