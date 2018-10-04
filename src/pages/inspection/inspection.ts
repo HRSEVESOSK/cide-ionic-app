@@ -326,6 +326,15 @@ export class InspectionPage {
     this.isEnabled = value;
   }
 
+  wasValued(name,value){
+    console.log("ngControl name: ", name);
+    console.log("value: ", value);
+    console.log("id: ", (name.split("_"))[2])
+    if(name.startsWith('acc_prescriptions_') && value != ''){
+
+    }
+  }
+
   getIssuesForCI(id){
     this.loaderCreate();
     this.restProvider.getInspectionSpecificIssues(this.loggedUname,this.loggedPass,id)

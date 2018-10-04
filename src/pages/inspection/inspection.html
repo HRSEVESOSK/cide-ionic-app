@@ -246,28 +246,28 @@
       </ion-row>
       <ion-row *ngFor="let issue of si_issues; let i=index">
         <ion-col>
-          <ion-input type="text" disabled [name]="'id'+issue.id" [(ngModel)]="si_issues[i].id"></ion-input>
+          <ion-input type="text" disabled [name]="'id_'+issue.id" [(ngModel)]="si_issues[i].id" ></ion-input>
         </ion-col>
-      <ion-col>
-        <ion-input type="textarea" text-justify maxlength="2000" [name]="'issue_description'+issue.id" placeholder="Describe the issue here. Max 2000 characters" [(ngModel)]="si_issues[i].issue_description"></ion-input>
+      <ion-col style="border: #f53d3d">
+        <ion-input clearInput type="textarea" text-justify maxlength="2000" [name]="'issue_description_'+issue.id" placeholder="Describe the issue here. Max 2000 characters" [(ngModel)]="si_issues[i].issue_description"></ion-input>
       </ion-col>
       <ion-col>
-        <ion-select [name]="'acc_prescriptions'+issue.id" [(ngModel)]="si_issues[i].acc_prescriptions">
+        <ion-select [name]="'acc_prescriptions_'+issue.id" [(ngModel)]="si_issues[i].acc_prescriptions" (ionChange)="wasValued('acc_prescriptions_'+issue.id,si_issues[i].acc_prescriptions)">
           <ion-option value="true">Yes</ion-option>
           <ion-option value="false">No</ion-option>
         </ion-select>
       </ion-col>
       <ion-col>
-        <ion-input type="date" [name]="'deadline_warning'+issue.id" [(ngModel)]="si_issues[i].deadline_warning"></ion-input>
+        <ion-input type="date" [name]="'deadline_warning_'+issue.id" [(ngModel)]="si_issues[i].deadline_warning" (ionChange)="wasValued('deadline_warning_'+issue.id,si_issues[i].deadline_warning)"></ion-input>
       </ion-col>
       <ion-col>
-        <ion-select [name]="'acc_warning'+issue.id"  [(ngModel)]="si_issues[i].acc_warning" (ngModelChange)="warningChanged(si_issues[i].acc_warning)">
+        <ion-select [name]="'acc_warning_'+issue.id"  [(ngModel)]="si_issues[i].acc_warning" (ngModelChange)="warningChanged(si_issues[i].acc_warning)">
           <ion-option value="true">Yes</ion-option>
           <ion-option value="false">No</ion-option>
         </ion-select>
       </ion-col>
       <ion-col>
-        <ion-input type="textarea" maxlength="2000" [name]="'des_indictment'+issue.id" [(ngModel)]="si_issues[i].des_indictment" disabled="{{isEnabled}}"></ion-input>
+        <ion-input type="textarea" maxlength="2000" [name]="'des_indictment_'+issue.id" [(ngModel)]="si_issues[i].des_indictment" disabled="{{isEnabled}}"></ion-input>
       </ion-col>
         <ion-col>
           <ion-input type="date" [name]="'last_update'+issue.id" [ngModel]="si_issues[i].last_update" ></ion-input>
