@@ -1,8 +1,8 @@
-import {Component, ɵEMPTY_ARRAY} from '@angular/core';
+import {Component} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { RestProvider} from "../../providers/rest/rest";
 import {AuthenticateProvider} from "../../providers/authenticate/authenticate";
-import {HomePage} from "../home/home";
+//import {HomePage} from "../home/home";
 
 /**
  * Generated class for the LoginPage page.
@@ -11,12 +11,8 @@ import {HomePage} from "../home/home";
  * Ionic pages and navigation.
  */
 
-@IonicPage({
-  name: 'CIDE Login',
-  segment: 'login'
-})
+@IonicPage()
 @Component({
-  selector: 'page-login',
   templateUrl: 'login.html',
 })
 export class LoginPage {
@@ -39,7 +35,7 @@ export class LoginPage {
           this.rolesArray = data.roles;
           console.log(this.rolesArray)
           if (this.rolesArray){
-            this.navCtrl.setRoot(HomePage)
+            this.navCtrl.setRoot('HomePage')
           }
         })
         .catch(reason => {

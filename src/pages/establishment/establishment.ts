@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ModalController, AlertController} from 'ionic-angular';
 import {RestProvider} from "../../providers/rest/rest";
-import {InspectionPage} from "../inspection/inspection";
-import {HomePage} from "../home/home";
+//import {InspectionPage} from "../inspection/inspection";
+//import {HomePage} from "../home/home";
 
 /**
  * Generated class for the EstablishmentPage page.
@@ -13,7 +13,6 @@ import {HomePage} from "../home/home";
 
 @IonicPage()
 @Component({
-  selector: 'page-establishment',
   templateUrl: 'establishment.html',
 })
 export class EstablishmentPage {
@@ -47,7 +46,7 @@ export class EstablishmentPage {
         console.log("GET ESTABLISHMENT LIST FAILED", reason);
         this.loader.dismiss();
         this.presentAlert(reason);
-        this.navCtrl.push(HomePage)
+        this.navCtrl.push('HomePage')
       })
   }
 
@@ -79,7 +78,7 @@ export class EstablishmentPage {
     var data: { title: any; id: any; type: any } = {"title":name,"id":id, "type": "getCi"};
     console.log("CI FOR ESTAB DATA", data);
     //this.navCtrl.push(EstablishmentPage)
-    let modalPage = this.modalCtrl.create(InspectionPage, data, {cssClass: "modal-fullscreen"});
+    let modalPage = this.modalCtrl.create('InspectionPage', data, {cssClass: "modal-fullscreen"});
     modalPage.present();
   }
 
@@ -87,7 +86,7 @@ export class EstablishmentPage {
     var data: { title: any; id: any; type: any } = {"title":name,"id":id, "type": "addCi"};
     console.log("CREATE CI DATA: ", data);
     //this.navCtrl.push(EstablishmentPage)
-    let modalPage = this.modalCtrl.create(InspectionPage, data, {cssClass:"modal-fullscreen"});
+    let modalPage = this.modalCtrl.create('InspectionPage', data, {cssClass:"modal-fullscreen"});
     modalPage.present();
   }
 

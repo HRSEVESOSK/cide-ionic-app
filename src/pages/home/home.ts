@@ -1,25 +1,23 @@
 import { Component } from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
-import { RestProvider} from "../../providers/rest/rest";
-import {LoginPage} from "../login/login";
 import {SplashScreen} from "@ionic-native/splash-screen";
-import {StateAst} from "@angular/animations/browser/src/dsl/animation_ast";
 import {StatusBar} from "@ionic-native/status-bar";
 import {Platform} from "ionic-angular";
 import {AuthenticateProvider} from "../../providers/authenticate/authenticate";
 import {RequireAuthenticationPage} from "../login/require-authentication";
-import {EstablishmentPage} from "../establishment/establishment";
+//import {EstablishmentPage} from "../establishment/establishment";
+import {IonicPage} from "ionic-angular/umd";
 
-
+@IonicPage()
 @Component({
-  selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage extends RequireAuthenticationPage{
+  /*
   private rootPage;
   private homePage;
   private estabPage;
-  private inspecPage;
+  */
   loggedUser: any;
   loggedRoles: any;
   constructor(public navCtrl: NavController,
@@ -31,10 +29,11 @@ export class HomePage extends RequireAuthenticationPage{
     super(navCtrl, navParams, authenticationProvider)
     this.loggedRoles =localStorage.getItem('app.userInfo.role');
     this.loggedUser = localStorage.getItem('app.userInfo.name');
+    /*
     this.rootPage = HomePage;
-
     this.homePage = HomePage;
-    this.estabPage = EstablishmentPage;
+    this.estabPage = 'EstablishmentPage';
+    */
     /*
     platform.ready().then(() => {
       statusBar.styleDefault();
@@ -42,10 +41,9 @@ export class HomePage extends RequireAuthenticationPage{
     });
     */
   }
-
   //OPENING PAGES FROM MENU
   openEstabPage(){
-    this.navCtrl.push(EstablishmentPage)
+    this.navCtrl.push('EstablishmentPage')
   }
 
 

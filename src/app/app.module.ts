@@ -6,40 +6,37 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { HttpClientModule} from '@angular/common/http'
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
 import { RestProvider } from '../providers/rest/rest';
-import {LoginPage} from "../pages/login/login";
 import { AuthenticateProvider } from '../providers/authenticate/authenticate';
-import {EstablishmentPage} from "../pages/establishment/establishment";
-import {SearchPipe} from "../pipes/search/search";
-import {SortPipe} from "../pipes/sort/sort";
-import {InspectionPage} from "../pages/inspection/inspection";
 import {Transfer} from "@ionic-native/transfer";
 import {File} from '@ionic-native/file';
 
 @NgModule({
-  declarations: [
-    MyApp,
-    HomePage,
+  declarations: [MyApp]
+  /*
+    [
+  MyApp,
+    HomePage
     LoginPage,
     EstablishmentPage,
     SearchPipe,
-    SortPipe,
+    SortPipe
     InspectionPage
-  ],
+  ]*/,
   imports: [
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    HomePage,
-    LoginPage,
+  entryComponents: [MyApp]
+    /*
+    [
+    //HomePage,
+    //LoginPage,
     EstablishmentPage,
     InspectionPage
-  ],
+  ]*/,
   providers: [
     StatusBar,
     SplashScreen,

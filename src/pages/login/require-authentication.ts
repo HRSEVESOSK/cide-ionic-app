@@ -1,22 +1,12 @@
 import { OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-
 import { AuthenticateProvider } from '../../providers/authenticate/authenticate';
-import { LoginPage} from "./login";
+//import { LoginPage} from "./login";
 
 /**
  * Superclass that must be extended by pages with login required.
  */
 export class RequireAuthenticationPage implements OnInit {
-
-
-  /**
-   * Constructor.
-   *
-   * @param navCtrl Navigation controller.
-   * @param navParams Navigation params.
-   * @param authenticateProvider Authenticate provider.
-   */
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public authenticateProvider: AuthenticateProvider) {
@@ -28,7 +18,7 @@ export class RequireAuthenticationPage implements OnInit {
    */
   public logout(): any {
     this.authenticateProvider.clearAuthenticatedUser();
-    this.navCtrl.setRoot(LoginPage);
+    this.navCtrl.setRoot('LoginPage');
   }
 
   /**
@@ -42,8 +32,8 @@ export class RequireAuthenticationPage implements OnInit {
       console.log(this.authenticateProvider.getAuthenticatedUser());
     } else {
       // If the current page isn't AuthenticatePage, redirects to AuthenticatePage.
-      if (this.navCtrl.getActive().component.name != LoginPage.name) {
-        this.navCtrl.setRoot(LoginPage);
+      if (this.navCtrl.getActive().component != 'LoginPage') {
+        this.navCtrl.setRoot('LoginPage');
       }
     }
   }

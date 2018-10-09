@@ -27,7 +27,6 @@ import {Form} from "ionic-angular/umd";
 
 @IonicPage()
 @Component({
-  selector: 'page-inspection',
   templateUrl: 'inspection.html',
 })
 export class InspectionPage {

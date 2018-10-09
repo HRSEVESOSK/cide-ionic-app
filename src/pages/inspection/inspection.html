@@ -57,10 +57,10 @@
           <button *ngIf="e.si_count > 0" ion-button (click)="openSIModal(e.id)">
             <ion-icon name="list">  ({{e.si_count}})</ion-icon>
           </button>
-          <button *ngIf="e.si_count  == 0" ion-button (click)="createSIModal(e.id)">
+          <button *ngIf="e.si_count  == 0 && loggedRole != 'ROLE_CIDE_SMS'" ion-button (click)="createSIModal(e.id)">
             <ion-icon name="add"></ion-icon>
           </button>
-          <button *ngIf="e.si_count  == 0" ion-button (click)="deleteCoordinatedInspection(e.id)" color="danger">
+          <button *ngIf="e.si_count  == 0 && loggedRole != 'ROLE_CIDE_SMS'" ion-button (click)="deleteCoordinatedInspection(e.id)" color="danger">
             <ion-icon name="trash"></ion-icon>
           </button>
         </ion-buttons>
@@ -106,10 +106,10 @@
           <button *ngIf="e.si_count > 0" ion-button (click)="openSIModal(e.id)">
             <ion-icon name="list">  ({{e.si_count}})</ion-icon>
           </button>
-          <button *ngIf="e.si_count  == 0" ion-button (click)="createSIModal(e.id)">
+          <button *ngIf="e.si_count  == 0 && loggedRole != 'ROLE_CIDE_SMS'" ion-button (click)="createSIModal(e.id)">
             <ion-icon name="add"></ion-icon>
           </button>
-          <button ion-button (click)="deleteSpecificInspection(e.id)" color="danger">
+          <button ion-button (click)="deleteSpecificInspection(e.id) && loggedRole != 'ROLE_CIDE_SMS'" color="danger">
             <ion-icon name="trash"></ion-icon>
           </button>
           <button ion-button (click)="openSIScoreModal(e.id)">
