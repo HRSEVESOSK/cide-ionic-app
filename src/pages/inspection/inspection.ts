@@ -72,13 +72,12 @@ export class InspectionPage {
     if (this.modalType === 'addSiIssue') {
       console.log("GETTING ISSUES FOR: ", this.si_id);
       this.getIssuesForCI(this.si_id);
-
-
     }
 
     if (this.modalType === 'getSi') {
       this.getSiForCi(this.ciHashedId);
     }
+
     if (this.modalType === 'addCi') {
       console.log(this.navParams);
       this.dateNow = new Date().toJSON().split('T')[0];
@@ -135,12 +134,13 @@ export class InspectionPage {
         console.log('Dismissed toast');
         this.closeModal();
         this.navCtrl.push('EstablishmentPage');
+        this.navCtrl.pop;
       });
     }
     toast.present();
   }
 
-  presentErrorMessage(text) {
+ presentErrorMessage(text) {
     let toast = this.toastCtrl.create({
       message: text,
       duration: 3000,
@@ -176,7 +176,7 @@ export class InspectionPage {
         var modalData: { cid: any, type: string, si_types: any, title: any } =
           {"cid": id, "type": "addSi", si_types: data, "title": id};
         console.log("DATA SENT TO SI INSERT: ", modalData);
-        let modalPage = this.modalCtrl.create(InspectionPage, modalData, {cssClass: "modal-fullscreen"});
+        let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
         modalPage.present();
       })
       .catch(reason => {
@@ -194,7 +194,7 @@ export class InspectionPage {
         console.log(data);
         var modalData: { sid: any, type: string, si_criteria: any, title: any } =
           {"sid": id, "type": "addSiScore", "si_criteria": data, "title": "Criteria for: " + id};
-        let modalPage = this.modalCtrl.create(InspectionPage, modalData, {cssClass: "modal-fullscreen"});
+        let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
         this.loader.dismiss();
         modalPage.present();
       })
@@ -212,7 +212,7 @@ export class InspectionPage {
       title: "Open issues for: " + id,
       type: "addSiIssue"
     };
-    let modalPage = this.modalCtrl.create(InspectionPage, modalData, {cssClass: "modal-fullscreen"});
+    let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
     modalPage.present();
     /*
     this.restProvider.getInspectionSpecificType(this.loggedUname,this.loggedPass)
@@ -238,7 +238,7 @@ export class InspectionPage {
       "type": "getSi"
     };
     //this.navCtrl.push(EstablishmentPage)
-    let modalPage = this.modalCtrl.create(InspectionPage, data, {cssClass: "modal-fullscreen"});
+    let modalPage = this.modalCtrl.create('InspectionPage', data, {cssClass: "modal-fullscreen"});
     modalPage.present();
   }
 
@@ -250,15 +250,14 @@ export class InspectionPage {
       title: "Upload report for: " + id,
       type: "uploadSiReport"
     };
-    let modalPage = this.modalCtrl.create(InspectionPage, modalData, {cssClass: "modal-fullscreen"});
+    let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
     modalPage.present();
   }
 
   createCIModal(id, name) {
     var data: { title: any; id: any; type: any } = {"title": name, "id": id, "type": "addCi"};
     console.log("CREATE CI DATA: ", data);
-    //this.navCtrl.push(EstablishmentPage)
-    let modalPage = this.modalCtrl.create(InspectionPage, data, {cssClass: "modal-fullscreen"});
+    let modalPage = this.modalCtrl.create('InspectionPage', data, {cssClass: "modal-fullscreen"});
     modalPage.present();
   }
 
@@ -510,29 +509,35 @@ export class InspectionPage {
   }
 
   deleteCoordinatedInspection(id) {
+    this.loaderCreate();
     console.log("Function deleteCoordinatedInspection was called with parameter id=", id);
     this.deleteCIData.id = id;
     this.restProvider.deleteCiById(this.loggedUname, this.loggedPass, this.deleteCIData)
       .then(data => {
         this.ciHashedId = data['deleted'];
+        this.loader.dismiss();
         this.presentToast('deleted: ');
       })
       .catch(reason => {
         console.log("deleteCoordinatedInspection", reason);
+        this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
       })
   }
 
   deleteSpecificInspection(id) {
+    this.loaderCreate();
     console.log("Function deleteSpecificInspection was called with parameter id=", id);
     this.deleteSIData.id = id;
     this.restProvider.deleteSiById(this.loggedUname, this.loggedPass, this.deleteSIData)
       .then(data => {
         this.ciHashedId = data['deleted'];
+        this.loader.dismiss();
         this.presentToast('deleted: ');
       })
       .catch(reason => {
         console.log("deleteSpecificInspection", reason);
+        this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
       })
   }
@@ -607,7 +612,9 @@ export class InspectionPage {
     this.restProvider.uploadReportForCi(this.loggedUname, this.loggedPass,  $event.target.files[0],id)
       .then(data=>{
         console.log("Report has been sucesfully uploaded for CI: ", data);
+        this.ciHashedId = data['updated'];
         this.loader.dismiss();
+        this.presentToast('uploaded: ');
       })
       .catch(reason => {
         console.log("ERROR IN UPLOADING REPORT FOR CI", reason);
