@@ -1,8 +1,16 @@
 {
-  "name": "ionic3-angular43-rest",
-  "app_id": "",
-  "type": "ionic-angular",
+  "name": "CIDE App",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "type": "ionic-angular",
+  "proxies": [
+{
+"path": "/cide-auth",
+"proxyUrl": "http://pproo.azo.hr/bifisic/services/httpbasicauth/auth"
+},{
+      "path": "/cide-api",
+      "proxyUrl": "http://localhost:5001/api"
+    }
+]
 }

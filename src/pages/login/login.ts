@@ -19,7 +19,7 @@ export class LoginPage {
   private username: string;
   private password: string;
   rolesArray: any;
-  private error: string;
+  error: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,

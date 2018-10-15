@@ -90,7 +90,7 @@
       <ion-col>{{e.spec_inspection_inspector}}</ion-col>
       <ion-col *ngIf="e.spec_inspection_report == null">
 
-        <ion-input type="file" size="50" accept="application/pdf" (change)="changeListener($event,e.id)"></ion-input>
+        <ion-input type="file" size="50" accept="application/pdf" (change)="uploadCiReport($event,e.id)"><ion-icon name="download"></ion-icon></ion-input>
 
         <!--
         <button ion-button (click)="uploadSiReportModal(e.id)">
@@ -99,7 +99,7 @@
         -->
       </ion-col>
       <ion-col *ngIf="e.spec_inspection_report != null">
-        <button ion-button (click)="uploadReport(e.id)"><ion-icon name="download"></ion-icon></button>
+        <button ion-button (click)="openCiReportDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
       </ion-col>
       <ion-col>
         <ion-buttons>
@@ -109,7 +109,7 @@
           <button *ngIf="e.si_count  == 0 && loggedRole != 'ROLE_CIDE_SMS'" ion-button (click)="createSIModal(e.id)">
             <ion-icon name="add"></ion-icon>
           </button>
-          <button ion-button (click)="deleteSpecificInspection(e.id) && loggedRole != 'ROLE_CIDE_SMS'" color="danger">
+          <button ion-button (click)="deleteSpecificInspection(e.id)" *ngIf="loggedRole != 'ROLE_CIDE_SMS'" color="danger">
             <ion-icon name="trash"></ion-icon>
           </button>
           <button ion-button (click)="openSIScoreModal(e.id)">

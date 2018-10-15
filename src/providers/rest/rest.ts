@@ -1,16 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {p} from "@angular/core/src/render3";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 
-
-
-/*
-  Generated class for the RestProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class RestProvider {
   uname: any;
@@ -18,24 +8,13 @@ export class RestProvider {
   apiUrl: any;
 
   constructor(public http: HttpClient) {
-    this.apiUrl = 'http://localhost:5001/api';
+    //this.apiUrl = 'http://localhost:5001/api';
+    //this.apiUrl = 'http://193.37.152.219:5001/api';
+    this.apiUrl = '/cide-api';
+
   }
 
- /*
-  login(u, p) {
-    return new Promise((resolve, reject) => {
-      this.http.get(this.authUrl + '?user=' + u + '&password=' + p).subscribe(data => {
-        resolve(data)
-      }, error1 => {
-        console.log(error1);
-        reject(error1);
-      })
-    })
-  }
-  */
-
-
-  getEstablishment(u, p) {
+ getEstablishment(u, p) {
     return new Promise((resolve, reject) => {
       this.http.get(this.apiUrl + '/establishment', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
@@ -182,9 +161,22 @@ export class RestProvider {
     })
   }
 
+    downloadReportForCi(u,p,id){
+      return new Promise((resolve,reject) =>{
+        this.http.get(this.apiUrl + '/inspection/specific/download/' + id,{headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(reportFile => {
+          resolve(reportFile)
+        }, error1 => {
+          console.log("ERROR IN DOWNLOADING THE REPORT", error1);
+          reject(error1)
+        })
+      })
+    }
+
     uploadReportForCi(u, p, file:Blob, id) {
       let formData = new FormData();
-      formData.append('file', file, 'Report_' + id  + new Date().toJSON().split('T')[0]+ '.pdf');
+      //formData.append('file', file, 'Report_' + id  + '_' + new Date().toJSON().split('T')[0]+ '.pdf');
+      formData.append('file', file);
+      formData.append('id',id);
       let httpOptions = {
         headers: new HttpHeaders({
           'enctype': 'multipart/form-data; boundary=----WebKitFormBoundaryuL67FWkv1CA',
