@@ -1,15 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ModalController, AlertController} from 'ionic-angular';
 import {RestProvider} from "../../providers/rest/rest";
-//import {InspectionPage} from "../inspection/inspection";
-//import {HomePage} from "../home/home";
-
-/**
- * Generated class for the EstablishmentPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -77,7 +68,6 @@ export class EstablishmentPage {
   openCIModal(id,name){
     var data: { title: any; id: any; type: any } = {"title":name,"id":id, "type": "getCi"};
     console.log("CI FOR ESTAB DATA", data);
-    //this.navCtrl.push(EstablishmentPage)
     let modalPage = this.modalCtrl.create('InspectionPage', data, {cssClass: "modal-fullscreen"});
     modalPage.present();
   }
@@ -85,7 +75,6 @@ export class EstablishmentPage {
   createCIModal(id,name){
     var data: { title: any; id: any; type: any } = {"title":name,"id":id, "type": "addCi"};
     console.log("CREATE CI DATA: ", data);
-    //this.navCtrl.push(EstablishmentPage)
     let modalPage = this.modalCtrl.create('InspectionPage', data, {cssClass:"modal-fullscreen"});
     modalPage.present();
   }

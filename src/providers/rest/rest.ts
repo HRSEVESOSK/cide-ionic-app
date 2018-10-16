@@ -13,7 +13,6 @@ export class RestProvider {
     this.apiUrl = '/cide-api';
 
   }
-
  getEstablishment(u, p) {
     return new Promise((resolve, reject) => {
       this.http.get(this.apiUrl + '/establishment', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
@@ -25,7 +24,6 @@ export class RestProvider {
       })
     })
   }
-
   getSpecificForCoordinated(u, p, ciId) {
     return new Promise((resolve, reject) => {
       this.http.get(this.apiUrl + '/inspection/specific/' + ciId, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {

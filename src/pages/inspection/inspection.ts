@@ -206,6 +206,7 @@ export class InspectionPage {
 
   openSIIssueModal(id) {
     console.log("Opening Open Issue Modal For: ", id);
+    this.navCtrl.pop;
     this.si_id = id;
     var modalData: { sid: any, title: any, type: any } = {
       "sid": id,

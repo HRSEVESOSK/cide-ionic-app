@@ -16,6 +16,11 @@
 // automatically applied to the <body> element in the app.
 
 
+body{
+  user-select: text;
+  -webkit-user-select: text;
+}
+
 .modal-fullscreen {
   .modal-wrapper {
     position: absolute;
@@ -36,3 +41,4 @@
 ion-select{
   max-width: 98% !important;
 }
+
