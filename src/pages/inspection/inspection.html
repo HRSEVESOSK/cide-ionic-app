@@ -5,7 +5,7 @@
 
   <ion-navbar>
     <ion-buttons left>
-      <button ion-button large (click)="viewCtrl.dismiss()">
+      <button ion-button (click)="viewCtrl.dismiss()">
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
@@ -16,10 +16,10 @@
     <ion-title *ngIf="modalType === 'addSiScore'">Criteria and score for {{si_id}}</ion-title>
     <ion-title *ngIf="modalType === 'addSiIssue'">Open issues for {{si_id}}</ion-title>
     <ion-buttons end>
-      <button *ngIf="modalType === 'getCi' && loggedRole != 'ROLE_CIDE_SMS'" (click)="createCIModal(estabId)" ion-button large>
+      <button *ngIf="modalType === 'getCi' && loggedRole != 'ROLE_CIDE_SMS'" (click)="createCIModal(estabId)" ion-button >
         <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'getSi' && loggedRole != 'ROLE_CIDE_SMS'" (click)="createSIModal(ciHashedId)" ion-button large>
+      <button *ngIf="modalType === 'getSi' && loggedRole != 'ROLE_CIDE_SMS'" (click)="createSIModal(ciHashedId)" ion-button >
         <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
       </button>
       <button *ngIf="modalType === 'addCi'" ion-button type="submit" form="addCi">
@@ -34,7 +34,7 @@
       <button *ngIf="modalType === 'addSiIssue'" ion-button type="submit" form="addSiIssue">
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button (click)="closeModal()" ion-button large>
+      <button (click)="closeModal()" ion-button >
         <ion-icon name="close-circle"  style="font-size: 50px"></ion-icon>
       </button>
     </ion-buttons>
@@ -95,7 +95,7 @@
       <ion-col>{{e.spec_inspection_inspector}}</ion-col>
       <ion-col *ngIf="e.spec_inspection_report == null">
 
-        <ion-input type="file" size="50" accept="application/pdf" (change)="uploadCiReport($event,e.id)"><ion-icon name="download"></ion-icon></ion-input>
+        <ion-input type="file" (change)="uploadCiReport($event,e.id)"><ion-icon name="download"></ion-icon></ion-input>
 
         <!--
         <button ion-button (click)="uploadSiReportModal(e.id)">
@@ -157,7 +157,7 @@
           <ion-input type="text" [(ngModel)]="insertCIdata.id" name="id" value="{{estabId}}" disabled placeholder="{{estabId}}"></ion-input>
         </ion-col>
         <ion-col>
-          <ion-input required type="date" [(ngModel)]="inspection_date" name="inspection_date" displayFormat="DD-MM-YYYY"></ion-input>
+          <ion-input required type="date" [(ngModel)]="inspection_date" name="inspection_date"></ion-input>
         </ion-col>
         <ion-col>
           <ion-input required type="text" [(ngModel)]="insertCIdata.coordinator" name="inspection_coordinator" disabled placeholder="{{loggedUname}}"></ion-input>
@@ -188,7 +188,7 @@
         </ion-col>
         -->
         <ion-col>
-          <ion-select name="si_type"  [(ngModel)]="selected_si_type" [selectOptions]="updateCidataForm.options" (ionChange)="getOrganisationForSIType(updateCidataForm.si_type)">
+          <ion-select class="selector" interface="popover" placeholder="Type" [name]="si_type"  [(ngModel)]="selected_si_type" [selectOptions]="updateCidataForm.options" (ionChange)="getOrganisationForSIType(updateCidataForm.si_type)">
             <ion-option *ngFor="let ci of updateCidataForm.si_type" value="{{ci.code}}">{{ci.name}}</ion-option>
           </ion-select>
         </ion-col>
@@ -220,7 +220,7 @@
         <ion-row *ngFor="let f of e.criteria; let j=index">
           <ion-col text-wrap text-left [(ngModel)]="si_criteria[i]" [name]="'si_criteria_id_'+f.id" id="{{e.id}}_{{f.id}}" ngDefaultControl>{{f.value}}</ion-col>
           <ion-col text-left>
-            <ion-select required  id="{{f.id}}" [(ngModel)]="si_criteria[i].criteria[j].score" [name]="'score'+f.id" >
+            <ion-select class="selector" interface="popover" placeholder="Score"  id="{{f.id}}" [(ngModel)]="si_criteria[i].criteria[j].score" [name]="'score'+f.id" >
               <ion-option required *ngFor="let s of si_criteria_score_list" [value]="s.id" (ionSelect)="insertGroupScore(i,s.value)">{{s.value}}</ion-option>
             </ion-select>
           </ion-col>
@@ -257,7 +257,7 @@
         <ion-input clearInput type="textarea" text-justify maxlength="2000" [name]="'issue_description_'+issue.id" placeholder="Describe the issue here. Max 2000 characters" [(ngModel)]="si_issues[i].issue_description"></ion-input>
       </ion-col>
       <ion-col>
-        <ion-select [name]="'acc_prescriptions_'+issue.id" [(ngModel)]="si_issues[i].acc_prescriptions" (ionChange)="wasValued('acc_prescriptions_'+issue.id,si_issues[i].acc_prescriptions)">
+        <ion-select class="selector" interface="popover" placeholder="Prescriptions" [name]="'acc_prescriptions_'+issue.id" [(ngModel)]="si_issues[i].acc_prescriptions" (ionChange)="wasValued('acc_prescriptions_'+issue.id,si_issues[i].acc_prescriptions)">
           <ion-option value="true">Yes</ion-option>
           <ion-option value="false">No</ion-option>
         </ion-select>
@@ -266,7 +266,7 @@
         <ion-input type="date" [name]="'deadline_warning_'+issue.id" [(ngModel)]="si_issues[i].deadline_warning" (ionChange)="wasValued('deadline_warning_'+issue.id,si_issues[i].deadline_warning)"></ion-input>
       </ion-col>
       <ion-col>
-        <ion-select [name]="'acc_warning_'+issue.id"  [(ngModel)]="si_issues[i].acc_warning" (ngModelChange)="warningChanged(si_issues[i].acc_warning)">
+        <ion-select class="selector" interface="popover" placeholder="Accomplished" [name]="'acc_warning_'+issue.id"  [(ngModel)]="si_issues[i].acc_warning" (ngModelChange)="warningChanged(si_issues[i].acc_warning)">
           <ion-option value="true">Yes</ion-option>
           <ion-option value="false">No</ion-option>
         </ion-select>
