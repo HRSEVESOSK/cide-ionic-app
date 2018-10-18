@@ -4,6 +4,11 @@
 <ion-header>
 
   <ion-navbar>
+    <ion-buttons left>
+      <button ion-button large (click)="viewCtrl.dismiss()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title *ngIf="modalType === 'getCi'">Coordinated inspections for {{modalTitle}}</ion-title>
     <ion-title *ngIf="modalType === 'getSi'">Specific inspections for {{modalTitle}}</ion-title>
     <ion-title *ngIf="modalType === 'addCi'">Insert coordinated inspection for {{estabId}}</ion-title>

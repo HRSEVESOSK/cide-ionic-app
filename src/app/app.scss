@@ -32,6 +32,16 @@ body{
   }
 }
 
+.modal-back-button{
+  .back-button{
+    display: block!important
+  }
+}
+
+ion-navbar.show-back-button .back-button {
+  display: inline-block;
+}
+
 .ios .modal-fullscreen {
   .modal-wrapper {
     top: 26px;

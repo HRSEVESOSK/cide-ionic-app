@@ -1,5 +1,10 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button ion-button large (click)="navCtrl.push('HomePage')">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>
       Establishments
     </ion-title>
