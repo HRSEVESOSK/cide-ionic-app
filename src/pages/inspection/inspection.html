@@ -157,7 +157,8 @@
           <ion-input type="text" [(ngModel)]="insertCIdata.id" name="id" value="{{estabId}}" disabled placeholder="{{estabId}}"></ion-input>
         </ion-col>
         <ion-col>
-          <ion-input required type="date" [(ngModel)]="inspection_date" name="inspection_date"></ion-input>
+          <!--<ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="inspection_date" name="inspection_date"></ion-datetime>-->
+          <input class="datum" type="date" [(ngModel)]="inspection_date" name="inspection_date"/>
         </ion-col>
         <ion-col>
           <ion-input required type="text" [(ngModel)]="insertCIdata.coordinator" name="inspection_coordinator" disabled placeholder="{{loggedUname}}"></ion-input>
@@ -188,12 +189,13 @@
         </ion-col>
         -->
         <ion-col>
-          <ion-select class="selector" interface="popover" placeholder="Type" [name]="si_type"  [(ngModel)]="selected_si_type" [selectOptions]="updateCidataForm.options" (ionChange)="getOrganisationForSIType(updateCidataForm.si_type)">
+          <ion-select class="selector" interface="popover" placeholder="Type" name="si_type"  [(ngModel)]="selected_si_type" [selectOptions]="updateCidataForm.options" (ionChange)="getOrganisationForSIType(updateCidataForm.si_type)">
             <ion-option *ngFor="let ci of updateCidataForm.si_type" value="{{ci.code}}">{{ci.name}}</ion-option>
           </ion-select>
         </ion-col>
         <ion-col>
-          <ion-input type="date" name="si_date" [(ngModel)]="si_inspection_date"></ion-input>
+          <!--<ion-input type="date" name="si_date" [(ngModel)]="si_inspection_date"></ion-input>-->
+          <input class="datum" type="date" name="si_date" [(ngModel)]="si_inspection_date"/>
         </ion-col>
         <ion-col>
           <ion-input type="text" name="si_inspector" [(ngModel)]="si_inspector" onclick=""></ion-input>
@@ -263,7 +265,8 @@
         </ion-select>
       </ion-col>
       <ion-col>
-        <ion-input type="date" [name]="'deadline_warning_'+issue.id" [(ngModel)]="si_issues[i].deadline_warning" (ionChange)="wasValued('deadline_warning_'+issue.id,si_issues[i].deadline_warning)"></ion-input>
+        <!--<ion-input type="date" [name]="'deadline_warning_'+issue.id" [(ngModel)]="si_issues[i].deadline_warning" (ionChange)="wasValued('deadline_warning_'+issue.id,si_issues[i].deadline_warning)"></ion-input>-->
+        <input class="datum" type="date" [name]="'deadline_warning_'+issue.id" [(ngModel)]="si_issues[i].deadline_warning" (ionChange)="wasValued('deadline_warning_'+issue.id,si_issues[i].deadline_warning)" />
       </ion-col>
       <ion-col>
         <ion-select class="selector" interface="popover" placeholder="Accomplished" [name]="'acc_warning_'+issue.id"  [(ngModel)]="si_issues[i].acc_warning" (ngModelChange)="warningChanged(si_issues[i].acc_warning)">
@@ -275,7 +278,8 @@
         <ion-input type="textarea" maxlength="2000" [name]="'des_indictment_'+issue.id" [(ngModel)]="si_issues[i].des_indictment" disabled="{{isEnabled}}"></ion-input>
       </ion-col>
         <ion-col>
-          <ion-input type="date" [name]="'last_update'+issue.id" [ngModel]="si_issues[i].last_update" ></ion-input>
+          <!--<ion-input type="date" [name]="'last_update'+issue.id" [ngModel]="si_issues[i].last_update" ></ion-input>-->
+          <input class="datum" type="date" [name]="'last_update'+issue.id" [ngModel]="si_issues[i].last_update" />
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -300,7 +300,7 @@ export class InspectionPage {
 
   getSpecificInspectionTypeScore() {
     this.loaderCreate();
-    this.restProvider.getInspectionSpecificCriteriorScore(this.loggedUname, this.loggedPass)
+    this.restProvider.getSICriteriorScoreList(this.loggedUname, this.loggedPass)
       .then(data => {
         console.log("SI SCORE VALUES", data);
         this.si_criteria_score_list = data;

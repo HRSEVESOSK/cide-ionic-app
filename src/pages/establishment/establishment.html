@@ -12,10 +12,10 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar [(ngModel)]="terms"></ion-searchbar>
-  <!--
+  <ion-searchbar [(ngModel)]="terms" placeholder="Search by Name or OIB"></ion-searchbar>
+<!--
   <button ion-button type="button" (click)="sort()">Sort</button>
-  -->
+-->
   <ion-grid text-center>
     <ion-row style="background-color: antiquewhite">
       <ion-col>ID</ion-col>
@@ -25,7 +25,7 @@
       <ion-col>Address</ion-col>
       <ion-col>Tools</ion-col>
     </ion-row>
-    <ion-row *ngFor="let e of establishments | search : terms | sort: {property: column, order: order}">
+    <ion-row *ngFor="let e of establishments | search : terms "> <!-- | sort: {property: column, order: order} -->
       <ion-col>{{e.id}}</ion-col>
       <ion-col>{{e.oib}}</ion-col>
       <ion-col>{{e.establishment_name}}</ion-col>

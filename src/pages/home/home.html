@@ -1,5 +1,10 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button ion-button large (click)="logout()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>
       CIDE App
     </ion-title>
@@ -7,9 +12,11 @@
       <button ion-button (click)="openEstabPage()">
         <ion-icon name="search" style="font-size: 50px"></ion-icon>
       </button>
+      <!--
       <button ion-button icon-only (click)="logout()">
         <ion-icon name="exit" style="font-size: 50px"></ion-icon>
       </button>
+      -->
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -17,6 +24,6 @@
 <ion-content padding-top="10" >
   <ion-title text-center="">Welcome: <b><i>{{loggedUser}}</i></b></ion-title>
   <ion-item text-center="">Roles: <b>{{loggedRoles}}</b></ion-item>
-  <p text-center="">Version: 0.0.1</p>
-  <p text-center="">Date: 18.10.2018</p>
+  <p text-center="">Version: 0.0.2</p>
+  <p text-center="">Release date: 20.10.2018</p>
 </ion-content>

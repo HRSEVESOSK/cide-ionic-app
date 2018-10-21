@@ -46,6 +46,11 @@ export class RestProvider {
     })
   }
 
+
+  getScoreForSI(u,p,siId){
+
+  }
+
   getInspectionSpecificIssues(u,p, siId){
     return new Promise((resolve,reject) => {
       this.http.get(this.apiUrl + '/inspection/specific/issue/' + siId, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
@@ -79,7 +84,8 @@ export class RestProvider {
     })
   }
 
-  getInspectionSpecificCriteriorScore(u, p) {
+
+  getSICriteriorScoreList(u, p) {
     return new Promise((resolve,reject) => {
       this.http.get(this.apiUrl + '/inspection/specific/criterior/score', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
