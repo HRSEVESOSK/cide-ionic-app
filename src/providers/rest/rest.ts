@@ -48,7 +48,14 @@ export class RestProvider {
 
 
   getScoreForSI(u,p,siId){
-
+    return new Promise((resolve,reject) => {
+      this.http.get(this.apiUrl + '/inspection/specific/score/' + siId,{headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data=>{
+        resolve(data)
+      }, error1 => {
+        console.error('Error in getting score values from API for SI', siId);
+        reject(error1);
+      })
+    })
   }
 
   getInspectionSpecificIssues(u,p, siId){

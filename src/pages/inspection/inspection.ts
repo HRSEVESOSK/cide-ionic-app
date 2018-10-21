@@ -188,6 +188,15 @@ export class InspectionPage {
     this.loaderCreate();
     console.log("ID of SI: ", id);
     this.si_id = id;
+    this.restProvider.getScoreForSI(this.loggedUname, this.loggedPass, this.si_id)
+      .then(data => {
+        this.criteria = data;
+        console.log("SCORE DATA FOR SI " + this.si_id + " are ", data)
+      })
+      .catch(reason => {
+        console.error("ERROR in getting score for SI", reason);
+      });
+    
     this.restProvider.getInspectionSpecificCriterior(this.loggedUname, this.loggedPass)
       .then(data => {
         this.si_criteria = data;
