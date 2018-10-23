@@ -3,14 +3,13 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class RestProvider {
-  uname: any;
-  upass: any;
   apiUrl: any;
 
   constructor(public http: HttpClient) {
     //this.apiUrl = 'http://localhost:5001/api';
     //this.apiUrl = 'http://193.37.152.219:5001/api';
-    this.apiUrl = '/cide-api';
+    //this.apiUrl = '/cide-api';
+    this.apiUrl = 'https://apps.klimeto.com/cide/api';
 
   }
  getEstablishment(u, p) {

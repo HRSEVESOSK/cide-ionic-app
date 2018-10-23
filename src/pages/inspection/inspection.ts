@@ -55,7 +55,6 @@ export class InspectionPage {
               private toastCtrl: ToastController,
               public modalCtrl: ModalController,
               private file: File,
-              public alertCtrl: AlertController,
               public loadingCtrl: LoadingController,) {
     this.modalTitle = this.navParams.get('title');
     this.estabId = this.navParams.get('id');
@@ -112,16 +111,6 @@ export class InspectionPage {
     }
 
   }
-
-  catchToast(message) {
-    let toast = this.toastCtrl.create({
-      message: message + ' on ' + this.ciHashedId + ' for ' + this.loggedRole,
-      duration: 2000,
-      position: 'center'
-    });
-    toast.present();
-  }
-
   presentToast(message) {
     let toast = this.toastCtrl.create({
       message: message + this.ciHashedId,
@@ -134,7 +123,7 @@ export class InspectionPage {
         console.log('Dismissed toast');
         this.closeModal();
         this.navCtrl.push('EstablishmentPage');
-        this.navCtrl.pop;
+        this.navCtrl.popAll();
       });
     }
     toast.present();
@@ -150,11 +139,6 @@ export class InspectionPage {
       this.closeModal();
     });
     toast.present();
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad InspectionPage');
-
   }
 
   loaderCreate() {
@@ -173,7 +157,7 @@ export class InspectionPage {
   createSIModal(id) {
     this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass)
       .then(data => {
-        var modalData: { cid: any, type: string, si_types: any, title: any } =
+        let modalData: { cid: any, type: string, si_types: any, title: any } =
           {"cid": id, "type": "addSi", si_types: data, "title": id};
         console.log("DATA SENT TO SI INSERT: ", modalData);
         let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
@@ -197,7 +181,7 @@ export class InspectionPage {
             .then(data => {
               this.si_criteria = data;
               console.log(data);
-              var modalData: { sid: any, type: string, si_criteria: any, title: any } =
+              let modalData: { sid: any, type: string, si_criteria: any, title: any } =
                 {"sid": id, "type": "addSiScore", "si_criteria": data, "title": "Criteria for: " + id};
               console.info("DEFAULT SI_CRITERIA_ARRAY: ", data);
               let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
@@ -228,15 +212,10 @@ export class InspectionPage {
                     let dbcriteria = {};
                     for (let l in si_criteria_db) {
                       if (si_criteria_db[l]['id_criterior'] == data[k]['criteria'][crit]['id']) {
-                        console.log("** MATCHING CRITERIA ID: ", l, si_criteria_db[l]['id_criterior']);
-                        console.log("** MATCHING CRITERIA DB SCORE: ", l, si_criteria_db[l]['id_score']);
-                        console.log("** MATCHING CRITERIA DB NOTE: ", l, si_criteria_db[l]['comments']);
                         dbcriteria['score'] = si_criteria_db[l]['id_score'];
                         dbcriteria['note'] = si_criteria_db[l]['comments'];
                         dbcriteria['id'] = si_criteria_db[l]['id_criterior'];
                         dbcriteria['value'] = data[k]['criteria'][crit]['value'];
-                        //dbgroups['criteria'].push(dbcriteria);
-                        //this.si_criteria.append(data[k]['criteria'][crit]['score'][si_criteria_db[l]['id_score']])
                       }
                     }
                     if (!("score" in dbcriteria)){
@@ -249,7 +228,7 @@ export class InspectionPage {
               }
               this.si_criteria = si_criteria_updated;
               console.log("THIS.SI_CRITERIA: ", this.si_criteria);
-              var modalData: { sid: any, type: string, si_criteria: any, title: any } =
+              let modalData: { sid: any, type: string, si_criteria: any, title: any } =
                 {"sid": id, "type": "addSiScore", "si_criteria": this.si_criteria, "title": "Criteria for: " + id};
               console.info("SI_CRITERIA_ARRAY FROM DATABASE: ", this.si_criteria);
               let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
@@ -267,9 +246,9 @@ export class InspectionPage {
 
   openSIIssueModal(id) {
     console.log("Opening Open Issue Modal For: ", id);
-    this.navCtrl.pop;
+    this.navCtrl.popAll();
     this.si_id = id;
-    var modalData: { sid: any, title: any, type: any } = {
+    let modalData: { sid: any, title: any, type: any } = {
       "sid": id,
       title: "Open issues for: " + id,
       type: "addSiIssue"
@@ -293,7 +272,7 @@ export class InspectionPage {
   openSIModal(id) {
     console.log("SI modal data: ", id);
     this.coordId = id;
-    var data: { cid: any, title: any; id: any; type: any } = {
+    let data: { cid: any, title: any; id: any; type: any } = {
       "cid": id,
       "title": id,
       "id": this.coordId,
@@ -307,7 +286,7 @@ export class InspectionPage {
   uploadSiReportModal(id) {
     console.log("Opening Upload SI Report Modal For: ", id);
     this.si_id = id;
-    var modalData: { sid: any, title: any, type: any } = {
+    let modalData: { sid: any, title: any, type: any } = {
       "sid": id,
       title: "Upload report for: " + id,
       type: "uploadSiReport"
@@ -317,7 +296,7 @@ export class InspectionPage {
   }
 
   createCIModal(id, name) {
-    var data: { title: any; id: any; type: any } = {"title": name, "id": id, "type": "addCi"};
+    let data: { title: any; id: any; type: any } = {"title": name, "id": id, "type": "addCi"};
     console.log("CREATE CI DATA: ", data);
     let modalPage = this.modalCtrl.create('InspectionPage', data, {cssClass: "modal-fullscreen"});
     modalPage.present();
@@ -409,11 +388,7 @@ export class InspectionPage {
   }
 
   wasValued(name, value) {
-    console.log("ngControl name: ", name);
-    console.log("value: ", value);
-    console.log("id: ", (name.split("_"))[2])
     if (name.startsWith('acc_prescriptions_') && value != '') {
-
     }
   }
 
@@ -530,7 +505,6 @@ export class InspectionPage {
       }
     }
     //HERE WE NEED TO CALL METHOD FROM REST
-    console.log("POST DATA: ", criteriaScoreData)
     this.restProvider.updateCiCriteriaScore(this.loggedUname, this.loggedPass, criteriaScoreData)
       .then(data => {
         this.ciHashedId = id;
@@ -565,10 +539,6 @@ export class InspectionPage {
       console.log("ELSE ARE WE HERE???");
       this.si_criteria[a]['value'] = (this.si_criteria[a]['value'] + "(" + currentScore + selectedScore + ")");
     }
-  }
-
-  customTrackBy(index: number, obj: any): any {
-    return index;
   }
 
   deleteCoordinatedInspection(id) {
@@ -651,7 +621,7 @@ export class InspectionPage {
  */
 
   openCiReportDownloadNewTab(id){
-    window.open("/cide-api/inspection/specific/download/" + id, '_system','location=yes')
+    window.open(this.restProvider.apiUrl + "/inspection/specific/download/" + id, '_system','location=yes')
   }
 
   downloadCiReport(id) {
