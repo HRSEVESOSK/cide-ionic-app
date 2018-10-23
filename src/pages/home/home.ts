@@ -26,7 +26,7 @@ export class HomePage extends RequireAuthenticationPage{
               platform: Platform,
               public authenticationProvider: AuthenticateProvider,
               public navParams: NavParams) {
-    super(navCtrl, navParams, authenticationProvider)
+    super(navCtrl, navParams, authenticationProvider);
     this.loggedRoles =localStorage.getItem('app.userInfo.role');
     this.loggedUser = localStorage.getItem('app.userInfo.name');
     /*

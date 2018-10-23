@@ -210,6 +210,10 @@
 <!--
     MODAL WINDOW DISPLAYING FORM TO CREATE NEW SCORING FOR A SPECIFIC INSPECTION
 -->
+<!--
+VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
+(ionSelect)="insertGroupScore(i,s.value)"
+-->
 <ion-content padding *ngIf="modalType === 'addSiScore'">
   <form #scoreForm="ngForm" (ngSubmit)="updateSpecificInspectionScore(si_id)" id="addSiScore">
     <ion-grid text-center>
@@ -222,12 +226,17 @@
         <ion-row *ngFor="let f of e.criteria; let j=index">
           <ion-col text-wrap text-left [(ngModel)]="si_criteria[i]" [name]="'si_criteria_id_'+f.id" id="{{e.id}}_{{f.id}}" ngDefaultControl>{{f.value}}</ion-col>
           <ion-col text-left>
-            <ion-select class="selector" interface="popover" placeholder="Score"  id="{{f.id}}" [(ngModel)]="si_criteria[i].criteria[j].score" [name]="'score'+f.id" >
-              <ion-option required *ngFor="let s of si_criteria_score_list" [value]="s.id" (ionSelect)="insertGroupScore(i,s.value)">{{s.value}}</ion-option>
+            <ion-select class="selector" interface="popover" placeholder="Score"  id="{{f.id}}" [(ngModel)]="si_criteria[i].criteria[j].score" [name]="'score_'+f.id" >
+              <!--
+              <ion-option *ngIf="si_criteria[i].criteria[j].score = ''" *ngFor="let s of si_criteria_score_list" [value]="s.id" >{{s.value}}</ion-option>
+              <ion-option *ngIf="si_criteria[i].criteria[j].score != ''" [value]="si_criteria[i].criteria[j].score" >{{si_criteria[i].criteria[j].score}}</ion-option>
+              -->
+              <ion-option *ngFor="let s of si_criteria_score_list" [value]="s.id" >{{s.value}}</ion-option>
+              <!--<ion-option [value]="si_criteria[i].criteria[j].score" >{{si_criteria[i].criteria[j].score}}</ion-option>-->
             </ion-select>
           </ion-col>
           <ion-col text-center>
-            <ion-textarea [(ngModel)]="si_criteria[i].criteria[j].note" [name]="'note_'+f.id" id="textarea_{{f.id}}" text-justify="" placeholder="Pis sem ak treba" ngDefaultControl></ion-textarea>
+            <ion-textarea [(ngModel)]="si_criteria[i].criteria[j].note" [name]="'note_'+f.id" id="textarea_{{f.id}}" text-justify="" placeholder="Note text (max 500 characters)" ngDefaultControl maxlength="500"></ion-textarea>
           </ion-col>
         </ion-row>
       </ion-label>

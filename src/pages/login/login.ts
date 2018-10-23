@@ -33,7 +33,7 @@ export class LoginPage {
       this.authenticateProvider.authenticateUsingCredentials(this.username,this.password)
         .then(data => {
           this.rolesArray = data.roles;
-          console.log(this.rolesArray)
+          console.log(this.rolesArray);
           if (this.rolesArray){
             this.navCtrl.setRoot('HomePage')
           }

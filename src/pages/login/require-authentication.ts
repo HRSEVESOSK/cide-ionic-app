@@ -9,10 +9,9 @@ import { AuthenticateProvider } from '../../providers/authenticate/authenticate'
 export class RequireAuthenticationPage implements OnInit {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public authenticateProvider: AuthenticateProvider) {
-
-  }
-
+              public authenticateProvider: AuthenticateProvider,
+              ) {
+      }
   /**
    * Logout user.
    */

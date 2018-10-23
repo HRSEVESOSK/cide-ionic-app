@@ -190,28 +190,80 @@ export class InspectionPage {
     this.si_id = id;
     this.restProvider.getScoreForSI(this.loggedUname, this.loggedPass, this.si_id)
       .then(data => {
-        this.criteria = data;
-        console.log("SCORE DATA FOR SI " + this.si_id + " are ", data)
+        console.log("SCORE DATA IS OF TYPE: ", typeof data);
+        if ("message" in data){
+          console.info("SI "+this.si_id+" HAS NO DATA IN DB");
+          this.restProvider.getInspectionSpecificCriterior(this.loggedUname, this.loggedPass)
+            .then(data => {
+              this.si_criteria = data;
+              console.log(data);
+              var modalData: { sid: any, type: string, si_criteria: any, title: any } =
+                {"sid": id, "type": "addSiScore", "si_criteria": data, "title": "Criteria for: " + id};
+              console.info("DEFAULT SI_CRITERIA_ARRAY: ", data);
+              let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
+              this.loader.dismiss();
+              modalPage.present();
+            })
+            .catch(reason => {
+              console.log("GET SI TYPES LIST ERROR", reason);
+              this.loader.dismiss();
+            })
+        }
+        else{
+          let si_criteria_db = data;
+          //console.log("SCORE DATA FROM DB: ", si_criteria_db);
+          let si_criteria_updated = [];
+          this.restProvider.getInspectionSpecificCriterior(this.loggedUname, this.loggedPass)
+            .then(data => {
+              console.log("CRITERIA: ", data);
+              for (let k in data){
+                let dbgroups = {};
+                dbgroups['id'] = data[k]['id'];
+                dbgroups['value'] = data[k]['value'];
+                dbgroups['criteria'] = [];
+                //console.log("**** KEY VALYE CRITERIOR: ", k,data[k]['criteria']);
+                //if (data[k] == 'criteria'){
+                  for (let crit in data[k]['criteria']){
+                    //console.log("*** CRITERIA: ", crit, data[k]['criteria'][crit])
+                    let dbcriteria = {};
+                    for (let l in si_criteria_db) {
+                      if (si_criteria_db[l]['id_criterior'] == data[k]['criteria'][crit]['id']) {
+                        console.log("** MATCHING CRITERIA ID: ", l, si_criteria_db[l]['id_criterior']);
+                        console.log("** MATCHING CRITERIA DB SCORE: ", l, si_criteria_db[l]['id_score']);
+                        console.log("** MATCHING CRITERIA DB NOTE: ", l, si_criteria_db[l]['comments']);
+                        dbcriteria['score'] = si_criteria_db[l]['id_score'];
+                        dbcriteria['note'] = si_criteria_db[l]['comments'];
+                        dbcriteria['id'] = si_criteria_db[l]['id_criterior'];
+                        dbcriteria['value'] = data[k]['criteria'][crit]['value'];
+                        //dbgroups['criteria'].push(dbcriteria);
+                        //this.si_criteria.append(data[k]['criteria'][crit]['score'][si_criteria_db[l]['id_score']])
+                      }
+                    }
+                    if (!("score" in dbcriteria)){
+                        dbcriteria['id'] = data[k]['criteria'][crit]['id'];
+                        dbcriteria['value'] = data[k]['criteria'][crit]['value'];
+                    }
+                    dbgroups['criteria'].push(dbcriteria);
+                  }
+                si_criteria_updated.push(dbgroups);
+              }
+              this.si_criteria = si_criteria_updated;
+              console.log("THIS.SI_CRITERIA: ", this.si_criteria);
+              var modalData: { sid: any, type: string, si_criteria: any, title: any } =
+                {"sid": id, "type": "addSiScore", "si_criteria": this.si_criteria, "title": "Criteria for: " + id};
+              console.info("SI_CRITERIA_ARRAY FROM DATABASE: ", this.si_criteria);
+              let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
+              this.loader.dismiss();
+              modalPage.present();
+            });
+        }
       })
       .catch(reason => {
         console.error("ERROR in getting score for SI", reason);
       });
-    
-    this.restProvider.getInspectionSpecificCriterior(this.loggedUname, this.loggedPass)
-      .then(data => {
-        this.si_criteria = data;
-        console.log(data);
-        var modalData: { sid: any, type: string, si_criteria: any, title: any } =
-          {"sid": id, "type": "addSiScore", "si_criteria": data, "title": "Criteria for: " + id};
-        let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
-        this.loader.dismiss();
-        modalPage.present();
-      })
-      .catch(reason => {
-        console.log("GET SI TYPES LIST ERROR", reason);
-        this.loader.dismiss();
-      })
   }
+
+
 
   openSIIssueModal(id) {
     console.log("Opening Open Issue Modal For: ", id);
@@ -308,16 +360,17 @@ export class InspectionPage {
   }
 
   getSpecificInspectionTypeScore() {
-    this.loaderCreate();
+    //this.loaderCreate();
     this.restProvider.getSICriteriorScoreList(this.loggedUname, this.loggedPass)
       .then(data => {
         console.log("SI SCORE VALUES", data);
         this.si_criteria_score_list = data;
-        this.loader.dismiss();
+        console.info("Criteria list loaded from API: ", this.si_criteria_score_list);
+        //this.loader.dismiss();
       })
       .catch(reason => {
         console.log("GET SI TYPES LIST ERROR", reason);
-        this.loader.dismiss();
+        //this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
         console.error(reason);
       })
@@ -434,7 +487,6 @@ export class InspectionPage {
       })
   }
 
-
   updateSpecificInspectionIssue(id) {
     console.log("Insert / Update Issues for: ", id);
     console.log("Insert data: ", this.si_issues);
@@ -502,6 +554,7 @@ export class InspectionPage {
     console.log(this.si_criteria[a]['value']);
     let currentScore = 0;
     let selectedScore = parseInt(b.match(/\(([^)]+)\)/)[1]);
+    console.info("CURRENT SCORE IS: ", selectedScore);
     console.log("SELECTED SCORE NUMBER: ", selectedScore);
     if ((this.si_criteria[a]['value']).includes("(")) {
       console.log("IF ARE WE HERE???");
