@@ -10,3 +10,5 @@ ionic cordova run android --prod --release
 ionic cordova build android --device
 
 ionic cordova build android --prod --release
+
+Further details on Wiki: https://github.com/HRSEVESOSK/cide-ionic-app/wiki
