@@ -20,6 +20,7 @@
     <ion-row style="background-color: antiquewhite">
       <ion-col>ID</ion-col>
       <ion-col>OIB</ion-col>
+      <ion-col>Operator</ion-col>
       <ion-col>Name</ion-col>
       <ion-col>Municipality</ion-col>
       <ion-col>Address</ion-col>
@@ -28,6 +29,7 @@
     <ion-row *ngFor="let e of establishments | search : terms "> <!-- | sort: {property: column, order: order} -->
       <ion-col>{{e.id}}</ion-col>
       <ion-col>{{e.oib}}</ion-col>
+      <ion-col>{{e.establishment_operator}}</ion-col>
       <ion-col>{{e.establishment_name}}</ion-col>
       <ion-col>{{e.establishment_municipality}}</ion-col>
       <ion-col>{{e.establishment_address}}</ion-col>

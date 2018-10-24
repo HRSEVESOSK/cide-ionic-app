@@ -6,7 +6,6 @@ import {
   ViewController,
   ToastController,
   ModalController,
-  AlertController,
   LoadingController
 } from 'ionic-angular';
 import {RestProvider} from "../../providers/rest/rest";
@@ -123,7 +122,7 @@ export class InspectionPage {
         console.log('Dismissed toast');
         this.closeModal();
         this.navCtrl.push('EstablishmentPage');
-        this.navCtrl.popAll();
+        //this.navCtrl.popAll();
       });
     }
     toast.present();
@@ -246,7 +245,7 @@ export class InspectionPage {
 
   openSIIssueModal(id) {
     console.log("Opening Open Issue Modal For: ", id);
-    this.navCtrl.popAll();
+    //this.navCtrl.popAll();
     this.si_id = id;
     let modalData: { sid: any, title: any, type: any } = {
       "sid": id,
@@ -379,7 +378,12 @@ export class InspectionPage {
     if ((this.si_issues).length > 1) {
       this.si_issues.pop();
     }
+  }
 
+  delRowByNgModel(indexValue){
+    console.log("Index of the si_issues row is: ", indexValue);
+    console.log("si_issues is for index: ", this.si_issues[indexValue]);
+    this.si_issues.splice(indexValue, 1);
   }
 
   warningChanged(value) {
@@ -471,7 +475,7 @@ export class InspectionPage {
       .then(data => {
         this.ciHashedId = id;
         this.loader.dismiss();
-        this.presentToast('inserted: ' + data['inserted'] + ' updated: ' + data['updated'] + ' for inspection: ');
+        this.presentToast('inserted: ' + data['inserted'] + ' updated: ' + data['updated'] + ' deleted: '+ data['deleted'] +' for inspection: ');
       })
       .catch(reason => {
         this.ciHashedId = id;

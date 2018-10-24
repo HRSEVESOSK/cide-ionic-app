@@ -24,7 +24,7 @@ export class AuthenticateProvider {
   private setAuthenticatedUser(user: any, pass: any) {
     if (user != null) {
       localStorage.setItem('app.userInfo', 'true');
-      localStorage.setItem('app.userInfo.role', user.roles[0]);
+      localStorage.setItem('app.userInfo.role', user.roles);
       localStorage.setItem('app.userInfo.name', user.name);
       localStorage.setItem('app.userInfo.pass', pass);
     }
