@@ -28,6 +28,9 @@ export class AuthenticateProvider {
       localStorage.setItem('app.userInfo.name', user.name);
       localStorage.setItem('app.userInfo.pass', pass);
     }
+    else{
+      console.error("Authentication service is not available");
+    }
   }
   /**
    * Get user from local storage.

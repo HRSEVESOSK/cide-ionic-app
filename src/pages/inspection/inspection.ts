@@ -30,12 +30,15 @@ export class InspectionPage {
   modalType: any;
   dateNow: any;
   ciTypes: any;
-  insertCIdata = {"id": '', "inspection_date": "", "inspection_coordinator": ''};
+  ci_types: any;
+  insertCIdata = {"id": '', "inspection_date": "", "inspection_coordinator": '', "type": ""};
   deleteCIData = {"id": ''};
   deleteSIData = {"id": ''};
   ciHashedId: any;
   updateCidataForm = {};
+  ciList = {};
   selected_si_type: any;
+  selected_ci_type: any;
   si_inspector: any;
   si_id: any;
   si_inspector_role: any;
@@ -61,6 +64,7 @@ export class InspectionPage {
     this.modalType = this.navParams.get('type');
     this.ciHashedId = this.navParams.get('cid');
     this.ciTypes = this.navParams.get('si_types');
+    this.ci_types = this.navParams.get('ci_types');
     this.si_criteria = this.navParams.get('si_criteria');
 
     if (this.modalType === 'getCi') {
@@ -83,15 +87,25 @@ export class InspectionPage {
       this.insertCIdata = {
         "id": this.estabId,
         "inspection_date": this.dateNow,
-        "inspection_coordinator": this.loggedUname
+        "inspection_coordinator": this.loggedUname,
+        "type":this.selected_ci_type
       };
+      this.ciList = {
+        "ci_types" : this.ci_types,
+        "options": {
+          title: 'Coordinated inspection types',
+          //subTitle: 'Select one',
+          mode: 'md'
+        }
+      };
+      console.log("LIST ENTRIES SENT TO INSERT CI MODAL: ", this.ciList);
     }
 
     if (this.modalType === 'addSi') {
       this.dateNow = new Date().toJSON().split('T')[0];
       this.si_inspection_date = this.date_now;
       this.si_id = this.ciHashedId;
-      this.getSpecificInspectionType();
+      //this.getSpecificInspectionType('addSi');
       this.updateCidataForm = {
         "si_type": this.ciTypes,
         "options": {
@@ -100,7 +114,7 @@ export class InspectionPage {
           mode: 'md'
         }
       };
-      console.log("DATA SENT TO SI INSERT MODAL: ", this.updateCidataForm);
+      console.log("LIST ENTRIES SENT TO INSERT SI MODAL: ", this.updateCidataForm);
     }
 
 
@@ -154,7 +168,12 @@ export class InspectionPage {
   }
 
   createSIModal(id) {
-    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass)
+    /*this.getSpecificInspectionType('addSi');
+    let modalData: { cid: any, type: string, si_types: any, title: any } = {"cid": id, "type": "addSi", si_types: this.ciTypes, "title": id};
+    let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
+    modalPage.present()*/
+
+    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'SI')
       .then(data => {
         let modalData: { cid: any, type: string, si_types: any, title: any } =
           {"cid": id, "type": "addSi", si_types: data, "title": id};
@@ -295,10 +314,16 @@ export class InspectionPage {
   }
 
   createCIModal(id, name) {
-    let data: { title: any; id: any; type: any } = {"title": name, "id": id, "type": "addCi"};
-    console.log("CREATE CI DATA: ", data);
-    let modalPage = this.modalCtrl.create('InspectionPage', data, {cssClass: "modal-fullscreen"});
-    modalPage.present();
+    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'CI')
+      .then(data => {
+        let modalData: { title: any; id: any; type: any, ci_types: any } = {"title": name, "id": id, "type": "addCi", ci_types : data};
+        console.log("CREATE CI DATA: ", data);
+        let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
+        modalPage.present();
+      })
+      .catch(reason => {
+        console.log("GET SI TYPES LIST ERROR", reason);
+      })
   }
 
   getOrganisationForSIType(list) {
@@ -321,9 +346,21 @@ export class InspectionPage {
   }
 
   // CIDE HTTP REST API CALLS
-  getSpecificInspectionType() {
+  /*
+  getSpecificInspectionType(inspType) {
+    let inspectionType = '';
+    if (inspType == 'addSi'){
+      inspectionType = 'SI'
+    }
+    else if (inspType == 'addCi'){
+      inspectionType = 'CI'
+    }
+    else{
+      inspectionType = 'any'
+    }
+
     this.loaderCreate();
-    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass)
+    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass,inspectionType)
       .then(data => {
         console.log("SI TYPES LIST DATA", data);
         this.ciTypes = data;
@@ -336,6 +373,7 @@ export class InspectionPage {
         console.error(reason);
       })
   }
+  */
 
   getSpecificInspectionTypeScore() {
     //this.loaderCreate();
@@ -428,7 +466,8 @@ export class InspectionPage {
   }
 
   insertCoordinatedInspection() {
-    console.log(this.insertCIdata);
+    this.insertCIdata['inspection_type'] = this.selected_ci_type;
+    console.log("DATA TO BE INSERTERD TO CI TABLE: ", this.insertCIdata);
     this.loaderCreate();
     this.restProvider.insertCiForEstablishment(this.loggedUname, this.loggedPass, this.insertCIdata)
       .then(data => {

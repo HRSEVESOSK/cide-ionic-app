@@ -6,10 +6,11 @@ export class RestProvider {
   apiUrl: any;
 
   constructor(public http: HttpClient) {
-    //this.apiUrl = 'http://localhost:5001/api';
+    this.apiUrl = 'http://localhost:5001/api';
     //this.apiUrl = 'http://193.37.152.219:5001/api';
     //this.apiUrl = '/cide-api';
-    this.apiUrl = 'https://apps.klimeto.com/cide/api';
+    //this.apiUrl = 'https://apps.klimeto.com/cide/api';
+    //this.apiUrl =
 
   }
  getEstablishment(u, p) {
@@ -68,9 +69,9 @@ export class RestProvider {
     })
   }
 
-  getInspectionSpecificType(u, p) {
+  getInspectionSpecificType(u, p,type) {
     return new Promise((resolve,reject) => {
-      this.http.get(this.apiUrl + '/inspection/specific/type', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/inspection/specific/type?type='+type, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         console.log("error in getInspectionSpecificType: ", error1);

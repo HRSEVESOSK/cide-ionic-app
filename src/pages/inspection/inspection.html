@@ -50,12 +50,14 @@
     <ion-row style="background-color: antiquewhite">
       <ion-col>ID</ion-col>
       <ion-col>Date</ion-col>
+      <ion-col>Type</ion-col>
       <ion-col>Coordinator</ion-col>
       <ion-col>Tools</ion-col>
     </ion-row>
     <ion-row *ngFor="let e of coordinated" justify-content-center align-items-center>
       <ion-col>{{e.id}}</ion-col>
       <ion-col>{{e.inspection_date}}</ion-col>
+      <ion-col>{{e.inspection_type}}</ion-col>
       <ion-col>{{e.inspection_coordinator}}</ion-col>
       <ion-col>
         <ion-buttons>
@@ -149,12 +151,18 @@
     <ion-grid text-center>
       <ion-row style="background-color: antiquewhite" >
         <ion-col>ID</ion-col>
+        <ion-col>Type</ion-col>
         <ion-col>Date</ion-col>
         <ion-col>Coordinator</ion-col>
       </ion-row>
       <ion-row justify-content-center align-items-center>
         <ion-col>
           <ion-input type="text" [(ngModel)]="insertCIdata.id" name="id" value="{{estabId}}" disabled placeholder="{{estabId}}"></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-select class="selector" interface="popover" placeholder="Type"  name="selected_ci_type" [(ngModel)]="selected_ci_type" [selectOptions]="ciList.options" >
+            <ion-option *ngFor="let ci of ciList.ci_types; let i = index" value="{{ci.code}}" [selected]="ci.code == 'SMS'">{{ci.name}}</ion-option>
+          </ion-select>
         </ion-col>
         <ion-col>
           <!--<ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="inspection_date" name="inspection_date"></ion-datetime>-->

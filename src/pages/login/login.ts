@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { RestProvider} from "../../providers/rest/rest";
+import {IonicPage, NavController, ToastController} from 'ionic-angular';
 import {AuthenticateProvider} from "../../providers/authenticate/authenticate";
 //import {HomePage} from "../home/home";
 
@@ -22,8 +21,7 @@ export class LoginPage {
   error: string;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public restProvider: RestProvider,
+              private toastCtrl: ToastController,
               public authenticateProvider: AuthenticateProvider) {
 
   }
@@ -41,8 +39,18 @@ export class LoginPage {
         .catch(reason => {
           console.log("WE ARE HERE", reason);
           this.error = reason.error
+          this.presentErrorMessage("BIFISIC austhentication service is currently unavailable with status: " + reason.status + ": " + reason.statusText);
         })
     }
+  }
+
+  presentErrorMessage(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000,
+      position: 'center'
+    });
+    toast.present();
   }
 
 

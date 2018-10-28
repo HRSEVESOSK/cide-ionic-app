@@ -72,11 +72,26 @@ export class EstablishmentPage {
     modalPage.present();
   }
 
+  /*
   createCIModal(id,name){
     var data: { title: any; id: any; type: any } = {"title":name,"id":id, "type": "addCi"};
     console.log("CREATE CI DATA: ", data);
     let modalPage = this.modalCtrl.create('InspectionPage', data, {cssClass:"modal-fullscreen"});
     modalPage.present();
+  }
+  */
+
+  createCIModal2(id, name) {
+    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'CI')
+      .then(data => {
+        let modalData: { title: any; id: any; type: any, ci_types: any } = {"title": name, "id": id, "type": "addCi", ci_types : data};
+        console.log("CREATE CI DATA: ", data);
+        let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
+        modalPage.present();
+      })
+      .catch(reason => {
+        console.log("GET SI TYPES LIST ERROR", reason);
+      })
   }
 
   sort(){
