@@ -663,8 +663,12 @@ export class InspectionPage {
   }
  */
 
-  openCiReportDownloadNewTab(id){
+  openSiReportDownloadNewTab(id){
     window.open(this.restProvider.apiUrl + "/inspection/specific/download/" + id, '_system','location=yes')
+  }
+
+  openCiReportDownloadNewTab(id){
+    window.open(this.restProvider.apiUrl + "/inspection/download/" + id, '_system','location=yes')
   }
 
   downloadCiReport(id) {
@@ -681,11 +685,11 @@ export class InspectionPage {
       })
   }
 
-  uploadCiReport($event,id) : void {
+  uploadReport($event,id,inspectionType) : void {
     this.loaderCreate();
     this.file = $event.target.files[0];
     console.log("REPORT TO BE UPLADED FOR SI "+id+": ", this.file);
-    this.restProvider.uploadReportForCi(this.loggedUname, this.loggedPass,  $event.target.files[0],id)
+    this.restProvider.uploadReport(this.loggedUname, this.loggedPass,  $event.target.files[0],id,inspectionType)
       .then(data=>{
         console.log("Report has been sucesfully uploaded for CI: ", data);
         this.ciHashedId = data['updated'];
@@ -697,6 +701,5 @@ export class InspectionPage {
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
       })
-
   }
 }

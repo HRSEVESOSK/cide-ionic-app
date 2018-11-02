@@ -183,7 +183,15 @@ export class RestProvider {
       })
     }
 
-    uploadReportForCi(u, p, file:Blob, id) {
+    uploadReport(u, p, file:Blob, id,inspectionType) {
+      let uploadURLpath = '';
+      if (inspectionType == 'CI') {
+        uploadURLpath = '/inspection/upload'
+      }
+      if (inspectionType == 'SI') {
+        uploadURLpath = '/inspection/specific/upload'
+      }
+      console.log("URL PATH IS: ", uploadURLpath);
       let formData = new FormData();
       //formData.append('file', file, 'Report_' + id  + '_' + new Date().toJSON().split('T')[0]+ '.pdf');
       formData.append('file', file);
@@ -195,10 +203,10 @@ export class RestProvider {
       };
     return new Promise((resolve, reject) => {
       console.log(file);
-      this.http.post(this.apiUrl + '/inspection/specific/upload', formData, httpOptions).subscribe(data => {
+      this.http.post(this.apiUrl + uploadURLpath, formData, httpOptions).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("ERROR IN INSERTING UPLOADING REPORT FOR CI", error1);
+        console.log("ERROR IN INSERTING UPLOADING REPORT FOR " + inspectionType, error1);
         reject(error1)
       })
     })

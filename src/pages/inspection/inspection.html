@@ -11,15 +11,15 @@
     </ion-buttons>
     <ion-title *ngIf="modalType === 'getCi'">Coordinated inspections for {{modalTitle}}</ion-title>
     <ion-title *ngIf="modalType === 'getSi'">Specific inspections for {{modalTitle}}</ion-title>
-    <ion-title *ngIf="modalType === 'addCi'">Insert coordinated inspection for {{estabId}}</ion-title>
+    <ion-title *ngIf="modalType === 'addCi'">Insert coordinated inspection for {{modalTitle}}</ion-title>
     <ion-title *ngIf="modalType === 'addSi'">Insert specific inspection for {{si_id}}</ion-title>
     <ion-title *ngIf="modalType === 'addSiScore'">Criteria and score for {{si_id}}</ion-title>
     <ion-title *ngIf="modalType === 'addSiIssue'">Open issues for {{si_id}}</ion-title>
     <ion-buttons end>
-      <button *ngIf="modalType === 'getCi' && loggedRole != 'ROLE_CIDE_SMS'" (click)="createCIModal(estabId)" ion-button >
+      <button *ngIf="modalType === 'getCi' && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" (click)="createCIModal(estabId,modalTitle)" ion-button >
         <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'getSi' && loggedRole != 'ROLE_CIDE_SMS'" (click)="createSIModal(ciHashedId)" ion-button >
+      <button *ngIf="modalType === 'getSi' && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" (click)="createSIModal(ciHashedId)" ion-button >
         <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
       </button>
       <button *ngIf="modalType === 'addCi'" ion-button type="submit" form="addCi">
@@ -28,10 +28,10 @@
       <button *ngIf="modalType === 'addSi'" ion-button type="submit" form="addSi">
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'addSiScore' && loggedRole == 'ROLE_CIDE_SMS'" ion-button type="submit" form="addSiScore">
+      <button *ngIf="modalType === 'addSiScore' && (loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN')" ion-button type="submit" form="addSiScore">
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'addSiIssue' && loggedRole == 'ROLE_CIDE_SMS'" ion-button type="submit" form="addSiIssue">
+      <button *ngIf="modalType === 'addSiIssue' && (loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN')" ion-button type="submit" form="addSiIssue">
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
       <button (click)="closeModal()" ion-button >
@@ -52,6 +52,7 @@
       <ion-col>Date</ion-col>
       <ion-col>Type</ion-col>
       <ion-col>Coordinator</ion-col>
+      <ion-col *ngIf="loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN'">Report</ion-col>
       <ion-col>Tools</ion-col>
     </ion-row>
     <ion-row *ngFor="let e of coordinated" justify-content-center align-items-center>
@@ -59,15 +60,21 @@
       <ion-col>{{e.inspection_date}}</ion-col>
       <ion-col>{{e.inspection_type}}</ion-col>
       <ion-col>{{e.inspection_coordinator}}</ion-col>
+      <ion-col *ngIf="e.inspection_report == null && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" >
+        <ion-input type="file" (change)="uploadReport($event,e.id,'CI')"></ion-input>
+      </ion-col>
+      <ion-col *ngIf="e.inspection_report != null && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')">
+        <button ion-button (click)="openCiReportDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
+      </ion-col>
       <ion-col>
         <ion-buttons>
           <button *ngIf="e.si_count > 0" ion-button (click)="openSIModal(e.id)">
-            <ion-icon name="list">  ({{e.si_count}})</ion-icon>
+            <ion-icon name="list">({{e.si_count}})</ion-icon>
           </button>
-          <button *ngIf="e.si_count  == 0 && loggedRole != 'ROLE_CIDE_SMS'" ion-button (click)="createSIModal(e.id)">
+          <button *ngIf="e.si_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="createSIModal(e.id)">
             <ion-icon name="add"></ion-icon>
           </button>
-          <button *ngIf="e.si_count  == 0 && loggedRole != 'ROLE_CIDE_SMS'" ion-button (click)="deleteCoordinatedInspection(e.id)" color="danger">
+          <button *ngIf="e.si_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="deleteCoordinatedInspection(e.id)" color="danger">
             <ion-icon name="trash"></ion-icon>
           </button>
         </ion-buttons>
@@ -97,7 +104,7 @@
       <ion-col>{{e.spec_inspection_organisation}}</ion-col>
       <ion-col *ngIf="e.spec_inspection_report == null">
 
-        <ion-input type="file" (change)="uploadCiReport($event,e.id)"><ion-icon name="download"></ion-icon></ion-input>
+        <input type="file" (change)="uploadReport($event,e.id,'SI')"/>
 
         <!--
         <button ion-button (click)="uploadSiReportModal(e.id)">
@@ -106,17 +113,17 @@
         -->
       </ion-col>
       <ion-col *ngIf="e.spec_inspection_report != null">
-        <button ion-button (click)="openCiReportDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
+        <button ion-button (click)="openSiReportDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
       </ion-col>
       <ion-col>
         <ion-buttons>
           <button *ngIf="e.si_count > 0" ion-button (click)="openSIModal(e.id)">
             <ion-icon name="list">  ({{e.si_count}})</ion-icon>
           </button>
-          <button *ngIf="e.si_count  == 0 && loggedRole != 'ROLE_CIDE_SMS'" ion-button (click)="createSIModal(e.id)">
+          <button *ngIf="e.si_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="createSIModal(e.id)">
             <ion-icon name="add"></ion-icon>
           </button>
-          <button ion-button (click)="deleteSpecificInspection(e.id)" *ngIf="loggedRole != 'ROLE_CIDE_SMS'" color="danger">
+          <button ion-button (click)="deleteSpecificInspection(e.id)" *ngIf="loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN'" color="danger">
             <ion-icon name="trash"></ion-icon>
           </button>
           <button ion-button (click)="openSIScoreModal(e.id)">
@@ -267,7 +274,7 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
         <ion-col text-center="">Warnings accomplished</ion-col>
         <ion-col text-center="">Indictment/misdemeanor warrant</ion-col>
         <ion-col text-center="">Updated</ion-col>
-        <ion-col *ngIf="loggedRole == 'ROLE_CIDE_SMS'" text-center="">Tools</ion-col>
+        <ion-col *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN'" text-center="">Tools</ion-col>
       </ion-row>
       <ion-row *ngFor="let issue of si_issues; let i=index">
         <ion-col>
@@ -299,7 +306,7 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
           <!--<ion-input type="date" [name]="'last_update'+issue.id" [ngModel]="si_issues[i].last_update" ></ion-input>-->
           <input disabled class="datum" type="date" [name]="'last_update'+issue.id" [ngModel]="si_issues[i].last_update" />
         </ion-col>
-        <ion-col *ngIf="loggedRole == 'ROLE_CIDE_SMS'">
+        <ion-col *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN'">
           <ion-buttons>
             <button type="button" ion-button (click)="delRowByNgModel(i)">
               <ion-icon name="trash"></ion-icon>
@@ -316,7 +323,7 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
       <ion-icon name="remove-circle" style="font-size: large"></ion-icon>
     </button>
     -->
-    <button ion-button color="dark" *ngIf="loggedRole == 'ROLE_CIDE_SMS'" [disabled]="si_issues.length === maxQuantity" (click)="addrow(si_id)">
+    <button ion-button color="dark" *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN'" [disabled]="si_issues.length === maxQuantity" (click)="addrow(si_id)">
       <ion-icon name="add-circle" style="font-size: large"></ion-icon>
     </button>
   </ion-buttons>
