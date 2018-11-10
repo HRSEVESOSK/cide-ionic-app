@@ -61,7 +61,7 @@
       <ion-col>{{e.inspection_type}}</ion-col>
       <ion-col>{{e.inspection_coordinator}}</ion-col>
       <ion-col *ngIf="e.inspection_report == null && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" >
-        <ion-input type="file" (change)="uploadReport($event,e.id,'CI')"></ion-input>
+        <input type="file" (change)="uploadReport($event,e.id,'CI')"/>
       </ion-col>
       <ion-col *ngIf="e.inspection_report != null && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')">
         <button ion-button (click)="openCiReportDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
