@@ -27,6 +27,7 @@ export class InspectionPage {
   loggedUname: string = localStorage.getItem('app.userInfo.name');
   loggedPass: string = localStorage.getItem('app.userInfo.pass');
   loggedRole: string = localStorage.getItem('app.userInfo.role');
+  selectedLanguage: string = localStorage.getItem('app.userInfo.lang');
   modalType: any;
   dateNow: any;
   ciTypes: any;
@@ -66,6 +67,7 @@ export class InspectionPage {
     this.ciTypes = this.navParams.get('si_types');
     this.ci_types = this.navParams.get('ci_types');
     this.si_criteria = this.navParams.get('si_criteria');
+    //this.selectedLanguage = localStorage.getItem('app.userInfo.lang');
 
     if (this.modalType === 'getCi') {
       this.getCiForEstablishment(this.estabId);
@@ -173,7 +175,7 @@ export class InspectionPage {
     let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
     modalPage.present()*/
 
-    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'SI')
+    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'SI',this.selectedLanguage)
       .then(data => {
         let modalData: { cid: any, type: string, si_types: any, title: any } =
           {"cid": id, "type": "addSi", si_types: data, "title": id};
@@ -195,7 +197,7 @@ export class InspectionPage {
         console.log("SCORE DATA IS OF TYPE: ", typeof data);
         if ("message" in data){
           console.info("SI "+this.si_id+" HAS NO DATA IN DB");
-          this.restProvider.getInspectionSpecificCriterior(this.loggedUname, this.loggedPass)
+          this.restProvider.getInspectionSpecificCriterior(this.loggedUname, this.loggedPass,this.selectedLanguage)
             .then(data => {
               this.si_criteria = data;
               console.log(data);
@@ -215,7 +217,7 @@ export class InspectionPage {
           let si_criteria_db = data;
           //console.log("SCORE DATA FROM DB: ", si_criteria_db);
           let si_criteria_updated = [];
-          this.restProvider.getInspectionSpecificCriterior(this.loggedUname, this.loggedPass)
+          this.restProvider.getInspectionSpecificCriterior(this.loggedUname, this.loggedPass,this.selectedLanguage)
             .then(data => {
               console.log("CRITERIA: ", data);
               for (let k in data){
@@ -314,7 +316,7 @@ export class InspectionPage {
   }
 
   createCIModal(id, name) {
-    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'CI')
+    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'CI',this.selectedLanguage)
       .then(data => {
         let modalData: { title: any; id: any; type: any, ci_types: any } = {"title": name, "id": id, "type": "addCi", ci_types : data};
         console.log("CREATE CI DATA: ", data);
@@ -377,7 +379,7 @@ export class InspectionPage {
 
   getSpecificInspectionTypeScore() {
     //this.loaderCreate();
-    this.restProvider.getSICriteriorScoreList(this.loggedUname, this.loggedPass)
+    this.restProvider.getSICriteriorScoreList(this.loggedUname, this.loggedPass,this.selectedLanguage)
       .then(data => {
         console.log("SI SCORE VALUES", data);
         this.si_criteria_score_list = data;
@@ -622,7 +624,7 @@ export class InspectionPage {
     console.log(id);
     this.loaderCreate();
     this.ciHashedId = id;
-    this.restProvider.getSpecificForCoordinated(this.loggedUname, this.loggedPass, id)
+    this.restProvider.getSpecificForCoordinated(this.loggedUname, this.loggedPass, id,this.selectedLanguage)
       .then(data => {
         console.info("Data returned for CIID: " + id + " are ", data);
         this.specific = data;

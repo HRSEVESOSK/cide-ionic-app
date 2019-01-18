@@ -12,6 +12,7 @@ export class EstablishmentPage {
   loggedUname : string = localStorage.getItem('app.userInfo.name');
   loggedPass: string = localStorage.getItem('app.userInfo.pass');
   loggedRole: string = localStorage.getItem('app.userInfo.role');
+  selectedLanguage: string = localStorage.getItem('app.userInfo.lang');
   descending: boolean = false;
   order: number;
   column: string = 'establishment_name';
@@ -82,7 +83,7 @@ export class EstablishmentPage {
   */
 
   createCIModal2(id, name) {
-    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'CI')
+    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'CI',this.selectedLanguage)
       .then(data => {
         let modalData: { title: any; id: any; type: any, ci_types: any } = {"title": name, "id": id, "type": "addCi", ci_types : data};
         console.log("CREATE CI DATA: ", data);

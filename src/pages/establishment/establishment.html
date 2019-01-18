@@ -6,13 +6,13 @@
       </button>
     </ion-buttons>
     <ion-title>
-      Establishments
+      {{"9"|translate}}
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-searchbar [(ngModel)]="terms" placeholder="Search by Name or OIB"></ion-searchbar>
+  <ion-searchbar [(ngModel)]="terms" placeholder='{{"55"|translate}}'></ion-searchbar>
 <!--
   <button ion-button type="button" (click)="sort()">Sort</button>
 -->
@@ -21,10 +21,10 @@
       <ion-col>ID</ion-col>
       <ion-col>OIB</ion-col>
       <ion-col>Operator</ion-col>
-      <ion-col>Name</ion-col>
-      <ion-col>Municipality</ion-col>
-      <ion-col>Address</ion-col>
-      <ion-col>Tools</ion-col>
+      <ion-col>{{"10"|translate}}</ion-col>
+      <ion-col>{{"11"|translate}}</ion-col>
+      <ion-col>{{"12"|translate}}</ion-col>
+      <ion-col>{{"13"|translate}}</ion-col>
     </ion-row>
     <ion-row *ngFor="let e of establishments | search : terms "> <!-- | sort: {property: column, order: order} -->
       <ion-col>{{e.id}}</ion-col>

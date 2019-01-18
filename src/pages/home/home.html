@@ -5,9 +5,7 @@
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>
-      CIDE App
-    </ion-title>
+    <ion-title>{{"51"|translate}}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="openEstabPage()">
         <ion-icon name="search" style="font-size: 50px"></ion-icon>
@@ -21,9 +19,60 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding-top="10" >
-  <ion-title text-center="">Welcome: <b><i>{{loggedUser}}</i></b></ion-title>
-  <ion-item text-center="">Roles: <b>{{loggedRoles}}</b></ion-item>
-  <p text-center="">Version: 0.1.0</p>
-  <p text-center="">Release date: 03.11.2018</p>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-title text-center="">{{"5"|translate}}: <b><i>{{loggedUser}}</i></b></ion-title>
+        <ion-item text-center="">{{"6"|translate}}: <b>{{loggedRoles}}</b></ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-item>
+            <h2 text-capitalize>{{"41"|translate}}</h2>
+          </ion-item>
+          <ion-card-content>
+            {{"42"|translate}}
+          </ion-card-content>
+        </ion-card>
+        <ion-card>
+          <ion-item>
+            <h2 text-capitalize>{{"43"|translate}}</h2>
+          </ion-item>
+          <ion-card-content>
+            <ul>
+              <li>{{"44"|translate}}</li>
+              <li>{{"45"|translate}}</li>
+            </ul>
+          </ion-card-content>
+        </ion-card>
+        <ion-card>
+          <ion-card-content>{{"46"|translate}}</ion-card-content>
+        </ion-card>
+        <ion-card>
+          <ion-item>
+            <h2 text-capitalize>{{"47"|translate}}</h2>
+          </ion-item>
+          <ion-card-content>
+            <a href="https://github.com/HRSEVESOSK/cide-ionic-app/wiki/User-manual" target="_blank">
+              <button ion-button><ion-icon name="help-buoy" style="font-size: 50px"></ion-icon></button>
+            </a>
+            <a href="https://github.com/HRSEVESOSK/cide-ionic-app/" target="_blank">
+              <button ion-button><ion-icon name="logo-github" style="font-size: 50px"></ion-icon></button>
+            </a>
+            <a href="https://github.com/HRSEVESOSK/cide-ionic-app/wiki" target="_blank">
+              <button ion-button><ion-icon name="albums" style="font-size: 50px"></ion-icon></button>
+            </a>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+<ion-footer>
+  <p text-center="">{{"48"|translate}}: 0.1.1</p>
+  <p text-center="">{{"49"|translate}}: 16.01.2019</p>
+</ion-footer>

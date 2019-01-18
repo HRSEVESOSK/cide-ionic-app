@@ -6,11 +6,11 @@ export class RestProvider {
   apiUrl: any;
 
   constructor(public http: HttpClient) {
-    this.apiUrl = 'http://localhost:5001/api';
-    //this.apiUrl = 'http://193.37.152.219:5001/api';
+    //this.apiUrl = 'http://localhost:5001/api';
+    //this.apiUrl = 'http://192.168.1.226/cide-api/api';
     //this.apiUrl = '/cide-api';
     //this.apiUrl = 'https://apps.klimeto.com/cide/api';
-    //this.apiUrl =
+    this.apiUrl = 'http://pproo.azo.hr/cide-api/api';
 
   }
  getEstablishment(u, p) {
@@ -24,9 +24,9 @@ export class RestProvider {
       })
     })
   }
-  getSpecificForCoordinated(u, p, ciId) {
+  getSpecificForCoordinated(u, p, ciId,lang) {
     return new Promise((resolve, reject) => {
-      this.http.get(this.apiUrl + '/inspection/specific/' + ciId, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/inspection/specific/' + ciId + "?lang="+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         console.log(error1);
@@ -69,9 +69,9 @@ export class RestProvider {
     })
   }
 
-  getInspectionSpecificType(u, p,type) {
+  getInspectionSpecificType(u, p,type,lang) {
     return new Promise((resolve,reject) => {
-      this.http.get(this.apiUrl + '/inspection/specific/type?type='+type, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/inspection/specific/type?type='+type+'&lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         console.log("error in getInspectionSpecificType: ", error1);
@@ -80,9 +80,9 @@ export class RestProvider {
     })
   }
 
-  getInspectionSpecificCriterior(u, p) {
+  getInspectionSpecificCriterior(u, p,lang) {
     return new Promise((resolve,reject) => {
-      this.http.get(this.apiUrl + '/inspection/specific/criterior', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/inspection/specific/criterior?lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         console.log("ERROR IN GETTING SI TYPES FROM API", error1);
@@ -92,9 +92,9 @@ export class RestProvider {
   }
 
 
-  getSICriteriorScoreList(u, p) {
+  getSICriteriorScoreList(u, p,lang) {
     return new Promise((resolve,reject) => {
-      this.http.get(this.apiUrl + '/inspection/specific/criterior/score', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/inspection/specific/criterior/score?lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         console.log("ERROR IN GETTING SI TYPES FROM API", error1);

@@ -9,12 +9,12 @@
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title *ngIf="modalType === 'getCi'">Coordinated inspections for {{modalTitle}}</ion-title>
-    <ion-title *ngIf="modalType === 'getSi'">Specific inspections for {{modalTitle}}</ion-title>
-    <ion-title *ngIf="modalType === 'addCi'">Insert coordinated inspection for {{modalTitle}}</ion-title>
-    <ion-title *ngIf="modalType === 'addSi'">Insert specific inspection for {{si_id}}</ion-title>
-    <ion-title *ngIf="modalType === 'addSiScore'">Criteria and score for {{si_id}}</ion-title>
-    <ion-title *ngIf="modalType === 'addSiIssue'">Open issues for {{si_id}}</ion-title>
+    <ion-title *ngIf="modalType === 'getCi'">{{"14"|translate}} {{modalTitle}}</ion-title>
+    <ion-title *ngIf="modalType === 'getSi'">{{"18"|translate}} {{"53"|translate}} {{modalTitle}}</ion-title>
+    <ion-title *ngIf="modalType === 'addCi'">{{"52"|translate}} {{"14"|translate}} {{"53"|translate}} {{modalTitle}}</ion-title>
+    <ion-title *ngIf="modalType === 'addSi'">{{"52"|translate}} {{"18"|translate}} {{"53"|translate}} {{si_id}}</ion-title>
+    <ion-title *ngIf="modalType === 'addSiScore'">{{"25"|translate}} {{si_id}}</ion-title>
+    <ion-title *ngIf="modalType === 'addSiIssue'"> {{"29"|translate}}  {{"53"|translate}} {{si_id}}</ion-title>
     <ion-buttons end>
       <button *ngIf="modalType === 'getCi' && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" (click)="createCIModal(estabId,modalTitle)" ion-button >
         <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
@@ -49,11 +49,11 @@
   <ion-grid text-center>
     <ion-row style="background-color: antiquewhite">
       <ion-col>ID</ion-col>
-      <ion-col>Date</ion-col>
-      <ion-col>Type</ion-col>
-      <ion-col>Coordinator</ion-col>
-      <ion-col *ngIf="loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN'">Report</ion-col>
-      <ion-col>Tools</ion-col>
+      <ion-col>{{"15"|translate}}</ion-col>
+      <ion-col>{{"19"|translate}}</ion-col>
+      <ion-col>{{"16"|translate}}</ion-col>
+      <ion-col *ngIf="loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN'">{{"22"|translate}}</ion-col>
+      <ion-col>{{"23"|translate}}</ion-col>
     </ion-row>
     <ion-row *ngFor="let e of coordinated" justify-content-center align-items-center>
       <ion-col>{{e.id}}</ion-col>
@@ -90,12 +90,12 @@
   <ion-grid text-center>
     <ion-row style="background-color: antiquewhite">
       <ion-col>ID</ion-col>
-      <ion-col>Type</ion-col>
-      <ion-col>Date</ion-col>
-      <ion-col>Organisation</ion-col>
-      <ion-col>Report</ion-col>
-      <ion-col>Tools</ion-col>
-      <ion-col>Modified</ion-col>
+      <ion-col>{{"19"|translate}}</ion-col>
+      <ion-col>{{"15"|translate}}</ion-col>
+      <ion-col>{{"54"|translate}}</ion-col>
+      <ion-col>{{"22"|translate}}</ion-col>
+      <ion-col>{{"23"|translate}}</ion-col>
+      <ion-col>{{"24"|translate}}</ion-col>
     </ion-row>
     <ion-row *ngFor="let e of specific" justify-content-center align-items-center>
       <ion-col>{{e.id}}</ion-col>
@@ -158,9 +158,9 @@
     <ion-grid text-center>
       <ion-row style="background-color: antiquewhite" >
         <ion-col>ID</ion-col>
-        <ion-col>Type</ion-col>
-        <ion-col>Date</ion-col>
-        <ion-col>Coordinator</ion-col>
+        <ion-col>{{"19"|translate}}</ion-col>
+        <ion-col>{{"15"|translate}}</ion-col>
+        <ion-col>{{"16"|translate}}</ion-col>
       </ion-row>
       <ion-row justify-content-center align-items-center>
         <ion-col>
@@ -193,9 +193,9 @@
         <!--
         <ion-col>ID</ion-col>
         -->
-        <ion-col text-center="">Type</ion-col>
-        <ion-col text-center="">Date</ion-col>
-        <ion-col text-center="">Organization</ion-col>
+        <ion-col text-center="">{{"19"|translate}}</ion-col>
+        <ion-col text-center="">{{"15"|translate}}</ion-col>
+        <ion-col text-center="">{{"54"|translate}}</ion-col>
       </ion-row>
       <ion-row>
         <!--
@@ -233,9 +233,9 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
   <form #scoreForm="ngForm" (ngSubmit)="updateSpecificInspectionScore(si_id)" id="addSiScore">
     <ion-grid text-center>
       <ion-row style="background-color: antiquewhite">
-        <ion-col>Criteria</ion-col>
-        <ion-col>Score</ion-col>
-        <ion-col>Note</ion-col>
+        <ion-col>{{"26"|translate}}</ion-col>
+        <ion-col>{{"27"|translate}}</ion-col>
+        <ion-col>{{"28"|translate}}</ion-col>
       </ion-row>
       <ion-label *ngFor="let e of si_criteria; let i=index" text-center [(ngModel)]="si_criteria_group_id[e.id]" [name]="'group_'+e.id" ngDefaultControl><b>{{e.value}}</b>
         <ion-row *ngFor="let f of e.criteria; let j=index">
@@ -251,7 +251,7 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
             </ion-select>
           </ion-col>
           <ion-col text-center>
-            <ion-textarea [(ngModel)]="si_criteria[i].criteria[j].note" [name]="'note_'+f.id" id="textarea_{{f.id}}" text-justify="" placeholder="Note text (max 500 characters)" ngDefaultControl maxlength="500"></ion-textarea>
+            <ion-textarea [(ngModel)]="si_criteria[i].criteria[j].note" [name]="'note_'+f.id" id="textarea_{{f.id}}" text-justify="" placeholder='{{"28"|translate}} ({{"56"|translate}})' ngDefaultControl maxlength="500"></ion-textarea>
           </ion-col>
         </ion-row>
       </ion-label>
@@ -268,13 +268,13 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
     <ion-grid text-center>
       <ion-row style="background-color: antiquewhite">
         <ion-col text-center="">ID</ion-col>
-        <ion-col text-center="">Issue description</ion-col>
-        <ion-col text-center="">Accomplished according to the measures/prescriptions on the inspeciton minutes</ion-col>
-        <ion-col text-center="">Deadline</ion-col>
-        <ion-col text-center="">Warnings accomplished</ion-col>
-        <ion-col text-center="">Indictment/misdemeanor warrant</ion-col>
-        <ion-col text-center="">Updated</ion-col>
-        <ion-col *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN'" text-center="">Tools</ion-col>
+        <ion-col text-center="">{{"30"|translate}}</ion-col>
+        <ion-col text-center="">{{"31"|translate}}</ion-col>
+        <ion-col text-center="">{{"32"|translate}}</ion-col>
+        <ion-col text-center="">{{"33"|translate}}</ion-col>
+        <ion-col text-center="">{{"34"|translate}}</ion-col>
+        <ion-col text-center="">{{"35"|translate}}</ion-col>
+        <ion-col *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN'" text-center="">{{"24"|translate}}</ion-col>
       </ion-row>
       <ion-row *ngFor="let issue of si_issues; let i=index">
         <ion-col>
@@ -285,8 +285,8 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
       </ion-col>
       <ion-col>
         <ion-select class="selector" interface="popover" placeholder="Prescriptions" [name]="'acc_prescriptions_'+issue.id" [(ngModel)]="si_issues[i].acc_prescriptions" (ionChange)="wasValued('acc_prescriptions_'+issue.id,si_issues[i].acc_prescriptions)">
-          <ion-option value="true">Yes</ion-option>
-          <ion-option value="false">No</ion-option>
+          <ion-option value="true">{{"38"|translate}}</ion-option>
+          <ion-option value="false">{{"39"|translate}}</ion-option>
         </ion-select>
       </ion-col>
       <ion-col>
@@ -295,8 +295,8 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
       </ion-col>
       <ion-col>
         <ion-select class="selector" interface="popover" placeholder="Accomplished" [name]="'acc_warning_'+issue.id"  [(ngModel)]="si_issues[i].acc_warning" (ngModelChange)="warningChanged(si_issues[i].acc_warning)">
-          <ion-option value="true">Yes</ion-option>
-          <ion-option value="false">No</ion-option>
+          <ion-option value="true">{{"38"|translate}}</ion-option>
+          <ion-option value="false">{{"39"|translate}}</ion-option>
         </ion-select>
       </ion-col>
       <ion-col>

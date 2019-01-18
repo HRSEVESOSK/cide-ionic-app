@@ -7,8 +7,19 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>CIDE Login</ion-title>
+    <ion-title>{{"2"|translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="changeLanguage()">
+        <ion-icon name="switch" style="font-size: 50px"></ion-icon>
+      </button>
+      <!--
+      <button ion-button icon-only (click)="logout()">
+        <ion-icon name="exit" style="font-size: 50px"></ion-icon>
+      </button>
+      -->
+    </ion-buttons>
   </ion-navbar>
+
 
 </ion-header>
 
@@ -18,11 +29,11 @@
       <ion-col>
         <ion-list inset>
           <ion-item>
-            <ion-input placeholder="username" name="username" id="loginField"
+            <ion-input placeholder='{{"3"|translate}}' name="username" id="loginField"
                        type="text" required [(ngModel)]="username" #email></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input placeholder="password" name="password" id="passwordField"
+            <ion-input placeholder='{{"4"|translate}}' name="password" id="passwordField"
                        type="password" required [(ngModel)]="password"></ion-input>
           </ion-item>
         </ion-list>
@@ -32,7 +43,7 @@
       <ion-col>
         <div *ngIf="error" class="alert alert-danger">{{error}}</div>
         <button ion-button class="submit-btn" full type="submit"
-                [disabled]="!loginForm.form.valid">Login</button>
+                [disabled]="!loginForm.form.valid">{{"50"|translate}}</button>
       </ion-col>
     </ion-row>
   </form>

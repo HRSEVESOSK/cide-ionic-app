@@ -11,8 +11,8 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class AuthenticateProvider {
   //authUrl = 'http://192.168.1.226/bifisic/services/httpbasicauth/auth';
-  //authUrl = 'http://pproo.azo.hr/bifisic/services/httpbasicauth/auth';
-  authUrl = '/cide-auth';
+  authUrl = 'http://pproo.azo.hr/bifisic/services/httpbasicauth/auth';
+  //authUrl = '/cide-auth';
   constructor(public http: HttpClient) {
     console.log('Hello AuthenticateProvider Provider');
   }
@@ -21,12 +21,13 @@ export class AuthenticateProvider {
    *
    * @param user User.
    */
-  private setAuthenticatedUser(user: any, pass: any) {
+  private setAuthenticatedUser(user: any, pass: any, lang: any) {
     if (user != null) {
       localStorage.setItem('app.userInfo', 'true');
       localStorage.setItem('app.userInfo.role', user.roles);
       localStorage.setItem('app.userInfo.name', user.name);
       localStorage.setItem('app.userInfo.pass', pass);
+      localStorage.setItem('app.userInfo.lang',lang);
     }
     else{
       console.error("Authentication service is not available");
@@ -63,17 +64,17 @@ export class AuthenticateProvider {
    * @param password Password.
    */
 
-  public authenticateUsingCredentials(user: string,password: string){
+  public authenticateUsingCredentials(user: string,password: string,language:string){
     if (user === null || password === null){
       return Observable.create('User and password are required')
     }
     else{
       return new Promise((resolve, reject) => {
         this.http.get(this.authUrl + '?user=' + user + '&password=' + password).subscribe(data=> {
-          this.setAuthenticatedUser(data,password)
+          this.setAuthenticatedUser(data,password,language);
           resolve(data)
         },error1 => {
-          console.log(error1)
+          console.log(error1);
           reject(error1)
         })
       })

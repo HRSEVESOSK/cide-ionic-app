@@ -26,7 +26,7 @@ export class SearchPipe implements PipeTransform {
     }
     return items.filter( it => {
       if(this.oib){
-        return it.oib.includes(terms); // only filter country name
+        return it.oib.includes(terms);
       }
       else{
         return it.establishment_name.toLowerCase().includes(terms);
