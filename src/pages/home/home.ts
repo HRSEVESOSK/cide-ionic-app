@@ -5,7 +5,6 @@ import {StatusBar} from "@ionic-native/status-bar";
 import {Platform,IonicPage} from "ionic-angular";
 import {AuthenticateProvider} from "../../providers/authenticate/authenticate";
 import {RequireAuthenticationPage} from "../login/require-authentication";
-import { TranslateService } from '@ngx-translate/core';
 @IonicPage()
 @Component({
   templateUrl: 'home.html'

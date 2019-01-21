@@ -1,7 +1,6 @@
 import { OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { AuthenticateProvider } from '../../providers/authenticate/authenticate';
-import { TranslateService} from "@ngx-translate/core";
 
 //import { LoginPage} from "./login";
 

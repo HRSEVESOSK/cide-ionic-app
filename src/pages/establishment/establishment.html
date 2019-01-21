@@ -18,16 +18,20 @@
 -->
   <ion-grid text-center>
     <ion-row style="background-color: antiquewhite">
+      <!--
       <ion-col>ID</ion-col>
+      -->
       <ion-col>OIB</ion-col>
-      <ion-col>Operator</ion-col>
+      <ion-col>{{"57"|translate}}</ion-col>
       <ion-col>{{"10"|translate}}</ion-col>
       <ion-col>{{"11"|translate}}</ion-col>
       <ion-col>{{"12"|translate}}</ion-col>
       <ion-col>{{"13"|translate}}</ion-col>
     </ion-row>
     <ion-row *ngFor="let e of establishments | search : terms "> <!-- | sort: {property: column, order: order} -->
+      <!--
       <ion-col>{{e.id}}</ion-col>
+      -->
       <ion-col>{{e.oib}}</ion-col>
       <ion-col>{{e.establishment_operator}}</ion-col>
       <ion-col>{{e.establishment_name}}</ion-col>

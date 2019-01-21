@@ -12,7 +12,7 @@
   "11":"Općina",
   "12":"Adresa",
   "13":"Alati",
-  "14":"Koordinirani inspekcijski nadzori",
+  "14":"koordinirani inspekcijski nadzori",
   "15":"Datum",
   "16":"Koordinator",
   "17":"Alati",
@@ -27,7 +27,7 @@
   "26":"Kriteriji",
   "27":"Ocjena",
   "28":"Napomena",
-  "29":"Otvorena pitanja",
+  "29":"Nesukladnosti",
   "30":"Opis nesukladnosti ",
   "31":"Provedeno u skladu s mjerama iz zapisnika",
   "32":"Rok",
@@ -50,11 +50,10 @@
   "49":"Datum objave",
   "50":"Prijava",
   "51":"Aplikacija CIDE",
-  "52":"Ubaciti",
+  "52":"Unijeti",
   "53":"za",
   "54":"Organizacija",
   "55":"Traži po imenu ili OIB-u",
-  "56":"najviše 500 znakova"
-
-
+  "56":"najviše 500 znakova",
+  "57":"Operater"
 }
