@@ -9,12 +9,12 @@
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title *ngIf="modalType === 'getCi'">{{"14"|translate}} {{modalTitle}}</ion-title>
-    <ion-title *ngIf="modalType === 'getSi'">{{"18"|translate}} {{"53"|translate}} {{modalTitle}}</ion-title>
-    <ion-title *ngIf="modalType === 'addCi'">{{"52"|translate}} {{"14"|translate}} {{"53"|translate}} {{modalTitle}}</ion-title>
-    <ion-title *ngIf="modalType === 'addSi'">{{"52"|translate}} {{"18"|translate}} {{"53"|translate}} {{si_id}}</ion-title>
-    <ion-title *ngIf="modalType === 'addSiScore'">{{"25"|translate}} {{si_id}}</ion-title>
-    <ion-title *ngIf="modalType === 'addSiIssue'"> {{"29"|translate}}  {{"53"|translate}} {{si_id}}</ion-title>
+    <ion-title *ngIf="modalType === 'getCi'" class="firstCap">{{"14"|translate}} {{modalTitle}}</ion-title>
+    <ion-title *ngIf="modalType === 'getSi'" class="firstCap">{{"18"|translate}} {{"53"|translate}} {{modalTitle}}</ion-title>
+    <ion-title *ngIf="modalType === 'addCi'" class="firstCap">{{"52"|translate}} {{"14"|translate}} {{"53"|translate}} {{modalTitle}}</ion-title>
+    <ion-title *ngIf="modalType === 'addSi'" class="firstCap">{{"52"|translate}} {{"18"|translate}} {{"53"|translate}} {{si_id}}</ion-title>
+    <ion-title *ngIf="modalType === 'addSiScore'" class="firstCap">{{"25"|translate}} {{si_id}}</ion-title>
+    <ion-title *ngIf="modalType === 'addSiIssue'" class="firstCap"> {{"29"|translate}}  {{"53"|translate}} {{si_id}}</ion-title>
     <ion-buttons end>
       <button *ngIf="modalType === 'getCi' && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" (click)="createCIModal(estabId,modalTitle)" ion-button >
         <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
@@ -167,7 +167,7 @@
           <ion-input type="text" [(ngModel)]="insertCIdata.id" name="id" value="{{estabId}}" disabled placeholder="{{estabId}}"></ion-input>
         </ion-col>
         <ion-col>
-          <ion-select class="selector" interface="popover" placeholder="Type"  name="selected_ci_type" [(ngModel)]="selected_ci_type" [selectOptions]="ciList.options" >
+          <ion-select class="selector" interface="popover" placeholder='{{"19"|translate}}'  name="selected_ci_type" [(ngModel)]="selected_ci_type" [selectOptions]="ciList.options" >
             <ion-option *ngFor="let ci of ciList.ci_types; let i = index" value="{{ci.code}}" [selected]="ci.code == 'SMS'">{{ci.name}}</ion-option>
           </ion-select>
         </ion-col>
@@ -204,7 +204,7 @@
         </ion-col>
         -->
         <ion-col>
-          <ion-select class="selector" interface="popover" placeholder="Type" name="si_type"  [(ngModel)]="selected_si_type" [selectOptions]="updateCidataForm.options" (ionChange)="getOrganisationForSIType(updateCidataForm.si_type)">
+          <ion-select class="selector" interface="popover" placeholder='{{"19"|translate}}' name="si_type"  [(ngModel)]="selected_si_type" [selectOptions]="updateCidataForm.options" (ionChange)="getOrganisationForSIType(updateCidataForm.si_type)">
             <ion-option *ngFor="let ci of updateCidataForm.si_type" value="{{ci.code}}">{{ci.name}}</ion-option>
           </ion-select>
         </ion-col>
@@ -241,7 +241,7 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
         <ion-row *ngFor="let f of e.criteria; let j=index">
           <ion-col text-wrap text-left [(ngModel)]="si_criteria[i]" [name]="'si_criteria_id_'+f.id" id="{{e.id}}_{{f.id}}" ngDefaultControl>{{f.value}}</ion-col>
           <ion-col text-left>
-            <ion-select class="selector" interface="popover" placeholder="Score"  id="{{f.id}}" [(ngModel)]="si_criteria[i].criteria[j].score" [name]="'score_'+f.id" >
+            <ion-select class="selector" interface="popover" placeholder='{{"27"|translate}}'  id="{{f.id}}" [(ngModel)]="si_criteria[i].criteria[j].score" [name]="'score_'+f.id" >
               <!--
               <ion-option *ngIf="si_criteria[i].criteria[j].score = ''" *ngFor="let s of si_criteria_score_list" [value]="s.id" >{{s.value}}</ion-option>
               <ion-option *ngIf="si_criteria[i].criteria[j].score != ''" [value]="si_criteria[i].criteria[j].score" >{{si_criteria[i].criteria[j].score}}</ion-option>
@@ -274,17 +274,17 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
         <ion-col text-center="">{{"33"|translate}}</ion-col>
         <ion-col text-center="">{{"34"|translate}}</ion-col>
         <ion-col text-center="">{{"35"|translate}}</ion-col>
-        <ion-col *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN'" text-center="">{{"24"|translate}}</ion-col>
+        <ion-col *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN'" text-center="">{{"23"|translate}}</ion-col>
       </ion-row>
       <ion-row *ngFor="let issue of si_issues; let i=index">
         <ion-col>
           <ion-input type="text" disabled [name]="'id_'+issue.id" [(ngModel)]="si_issues[i].id" ></ion-input>
         </ion-col>
       <ion-col style="border: #f53d3d">
-        <ion-input clearInput type="textarea" text-justify maxlength="2000" [name]="'issue_description_'+issue.id" placeholder="Describe the issue here. Max 2000 characters" [(ngModel)]="si_issues[i].issue_description"></ion-input>
+        <ion-input clearInput type="textarea" text-justify maxlength="2000" [name]="'issue_description_'+issue.id" placeholder='{{"58"|translate}}' [(ngModel)]="si_issues[i].issue_description"></ion-input>
       </ion-col>
       <ion-col>
-        <ion-select class="selector" interface="popover" placeholder="Prescriptions" [name]="'acc_prescriptions_'+issue.id" [(ngModel)]="si_issues[i].acc_prescriptions" (ionChange)="wasValued('acc_prescriptions_'+issue.id,si_issues[i].acc_prescriptions)">
+        <ion-select class="selector" interface="popover" placeholder='{{"37"|translate}}' [name]="'acc_prescriptions_'+issue.id" [(ngModel)]="si_issues[i].acc_prescriptions" (ionChange)="wasValued('acc_prescriptions_'+issue.id,si_issues[i].acc_prescriptions)">
           <ion-option value="true">{{"38"|translate}}</ion-option>
           <ion-option value="false">{{"39"|translate}}</ion-option>
         </ion-select>
@@ -294,7 +294,7 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
         <input class="datum" type="date" [name]="'deadline_warning_'+issue.id" [(ngModel)]="si_issues[i].deadline_warning" (ionChange)="wasValued('deadline_warning_'+issue.id,si_issues[i].deadline_warning)" />
       </ion-col>
       <ion-col>
-        <ion-select class="selector" interface="popover" placeholder="Accomplished" [name]="'acc_warning_'+issue.id"  [(ngModel)]="si_issues[i].acc_warning" (ngModelChange)="warningChanged(si_issues[i].acc_warning)">
+        <ion-select class="selector" interface="popover" placeholder='{{"40"|translate}}' [name]="'acc_warning_'+issue.id"  [(ngModel)]="si_issues[i].acc_warning" (ngModelChange)="warningChanged(si_issues[i].acc_warning)">
           <ion-option value="true">{{"38"|translate}}</ion-option>
           <ion-option value="false">{{"39"|translate}}</ion-option>
         </ion-select>

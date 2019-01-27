@@ -95,3 +95,9 @@ ion-option .list{
   width: 100%;
 }
 
+.firstCap{
+  ::first-letter{
+    text-transform: capitalize;
+  }
+}
+

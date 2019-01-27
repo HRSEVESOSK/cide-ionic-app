@@ -12,15 +12,15 @@
   "11":"Općina",
   "12":"Adresa",
   "13":"Alati",
-  "14":"koordinirani inspekcijski nadzori",
+  "14":"koordinirani inspekcijski nadzor",
   "15":"Datum",
   "16":"Koordinator",
   "17":"Alati",
-  "18":"Inspekcijski nadzor",
+  "18":"inspekcijski nadzor",
   "19":"Vrsta",
   "20":"Datum",
   "21":"Inspektor",
-  "22":"Izvještaj",
+  "22":"Zapisnik",
   "23":"Alati",
   "24":"Izmijenjeno",
   "25":"Kriteriji i ocjena",
@@ -55,5 +55,6 @@
   "54":"Organizacija",
   "55":"Traži po imenu ili OIB-u",
   "56":"najviše 500 znakova",
-  "57":"Operater"
+  "57":"Operater",
+  "58":"Ovdje opišite nesukladnost. Max 2000 znakova"
 }

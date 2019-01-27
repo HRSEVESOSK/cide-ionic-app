@@ -16,7 +16,7 @@
   "15":"Date",
   "16":"Coordinator",
   "17":"Tools",
-  "18":"Specific inspections",
+  "18":"specific inspection",
   "19":"Type",
   "20":"Date",
   "21":"Inspector",
@@ -55,5 +55,6 @@
   "54":"Organisation",
   "55":"Search by Name or OIB",
   "56":"max 500 characters",
-  "57":"Operator"
+  "57":"Operator",
+  "58":"Describe the issue here. Max 2000 characters"
 }
