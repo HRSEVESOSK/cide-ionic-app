@@ -167,13 +167,13 @@
           <ion-input type="text" [(ngModel)]="insertCIdata.id" name="id" value="{{estabId}}" disabled placeholder="{{estabId}}"></ion-input>
         </ion-col>
         <ion-col>
-          <ion-select class="selector" interface="popover" placeholder='{{"19"|translate}}'  [name]="selected_ci_type" [(ngModel)]="selected_ci_type" [selectOptions]="ciList.options" >
+          <ion-select class="selector" interface="popover" placeholder='{{"19"|translate}}'  name="selected_ci_type" [(ngModel)]="selected_ci_type" [selectOptions]="ciList.options" >
             <ion-option *ngFor="let ci of ciList.ci_types; let i = index" value="{{ci.code}}" [selected]="ci.code == 'SMS'">{{ci.name}}</ion-option>
           </ion-select>
         </ion-col>
         <ion-col text-center="" >
           <!--<ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="inspection_date" name="inspection_date"></ion-datetime>-->
-          <input class="datum" type="date" [(ngModel)]="inspection_date" name="inspection_date" title="inspection_date" text-center=""/>
+          <input class="datum" type="date" [(ngModel)]="inspection_date" name="inspection_date" text-center=""/>
         </ion-col>
         <ion-col>
           <ion-input required type="text" [(ngModel)]="insertCIdata.coordinator" name="inspection_coordinator" disabled placeholder="{{loggedUname}}"></ion-input>
@@ -204,13 +204,13 @@
         </ion-col>
         -->
         <ion-col>
-          <ion-select class="selector" interface="popover" placeholder='{{"19"|translate}}' [name]="si_type"  [(ngModel)]="selected_si_type" [selectOptions]="updateCidataForm.options" (ionChange)="getOrganisationForSIType(updateCidataForm.si_type)">
+          <ion-select class="selector" interface="popover" placeholder='{{"19"|translate}}' name="si_type"  [(ngModel)]="selected_si_type" [selectOptions]="updateCidataForm.options" (ionChange)="getOrganisationForSIType(updateCidataForm.si_type)">
             <ion-option *ngFor="let ci of updateCidataForm.si_type" value="{{ci.code}}">{{ci.name}}</ion-option>
           </ion-select>
         </ion-col>
         <ion-col text-center="">
           <!--<ion-input type="date" name="si_date" [(ngModel)]="si_inspection_date"></ion-input>-->
-          <input  class="datum" type="date" name="si_date" title="si_date" [(ngModel)]="si_inspection_date"/>
+          <input  class="datum" type="date" name="si_date" [(ngModel)]="si_inspection_date"/>
         </ion-col>
         <ion-col>
           <ion-input type="text" name="si_inspector" [(ngModel)]="si_inspector" onclick=""></ion-input>

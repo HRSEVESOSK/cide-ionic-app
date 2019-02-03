@@ -68,25 +68,4 @@ export class LoginPage {
     localStorage.setItem('app.userInfo.lang',this.lang);
     console.log("Changing language to", this.lang)
   }
-
-
-  /*
-  public login(): void{
-    if (this.username && this.password){
-      this.restProvider.login(this.username,this.password)
-        .then(data => {
-          this.rolesArray = data.roles;
-          console.log(this.rolesArray)
-          if (this.rolesArray){
-            this.navCtrl.setRoot(HomePage)
-          }
-        })
-        .catch(reason => {
-          console.log("WE ARE HERE", reason);
-          this.error = reason.error
-        })
-
-    }
-  }
-  */
 }

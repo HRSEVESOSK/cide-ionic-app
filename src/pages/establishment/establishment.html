@@ -12,10 +12,6 @@
 </ion-header>
 
 
-<ion-content *ngIf="!establishments">
-  <ion-title text-center="" padding-top="20">{{"59"|translate}} {{loggedRole}}</ion-title>
-</ion-content>
-
 <ion-content *ngIf="establishments != null">
   <ion-searchbar [(ngModel)]="terms" placeholder='{{"55"|translate}}'></ion-searchbar>
 <!--
@@ -56,6 +52,9 @@
   </ion-grid>
 </ion-content>
 
+<ion-content *ngIf="!establishments">
+  <ion-title text-center="" padding-top="20">{{"59"|translate}} {{loggedRole}}</ion-title>
+</ion-content>
 
 
 
