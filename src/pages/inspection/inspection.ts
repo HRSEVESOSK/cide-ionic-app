@@ -469,6 +469,7 @@ export class InspectionPage {
 
   insertCoordinatedInspection() {
     this.insertCIdata['inspection_type'] = this.selected_ci_type;
+    this.insertCIdata['inspection_date'] = this.inspection_date;
     console.log("DATA TO BE INSERTERD TO CI TABLE: ", this.insertCIdata);
     this.loaderCreate();
     this.restProvider.insertCiForEstablishment(this.loggedUname, this.loggedPass, this.insertCIdata)
