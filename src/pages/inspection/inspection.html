@@ -28,10 +28,10 @@
       <button *ngIf="modalType === 'addSi'" ion-button type="submit" form="addSi">
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'addSiScore' && (loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN')" ion-button type="submit" form="addSiScore">
+      <button *ngIf="modalType === 'addSiScore' && loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'" ion-button type="submit" form="addSiScore">
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'addSiIssue' && (loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN')" ion-button type="submit" form="addSiIssue">
+      <button *ngIf="modalType === 'addSiIssue' && loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'" ion-button type="submit" form="addSiIssue">
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
       <button (click)="closeModal()" ion-button >
@@ -57,7 +57,7 @@
     </ion-row>
     <ion-row *ngFor="let e of coordinated" justify-content-center align-items-center>
       <ion-col>{{e.id}}</ion-col>
-      <ion-col>{{e.inspection_date}}</ion-col>
+      <ion-col>{{e.inspection_date | date:'dd/MM/yyyy'}}</ion-col>
       <ion-col>{{e.inspection_type}}</ion-col>
       <ion-col>{{e.inspection_coordinator}}</ion-col>
       <ion-col *ngIf="e.inspection_report == null && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" >
@@ -100,7 +100,7 @@
     <ion-row *ngFor="let e of specific" justify-content-center align-items-center>
       <ion-col>{{e.id}}</ion-col>
       <ion-col>{{e.spec_inspection_type}}</ion-col>
-      <ion-col>{{e.spec_inspection_date}}</ion-col>
+      <ion-col>{{e.spec_inspection_date | date:'dd/MM/yyyy'}}</ion-col>
       <ion-col>{{e.spec_inspection_organisation}}</ion-col>
       <ion-col *ngIf="e.spec_inspection_report == null">
 
@@ -123,7 +123,7 @@
           <button *ngIf="e.si_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="createSIModal(e.id)">
             <ion-icon name="add"></ion-icon>
           </button>
-          <button ion-button (click)="deleteSpecificInspection(e.id)" *ngIf="loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN'" color="danger">
+          <button ion-button (click)="deleteSpecificInspection(e.id)" *ngIf="(loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN') && e.issues_count == 0 && e.crit_count == 0 " color="danger">
             <ion-icon name="trash"></ion-icon>
           </button>
           <button ion-button (click)="openSIScoreModal(e.id)">
@@ -134,7 +134,7 @@
           </button>
         </ion-buttons>
       </ion-col>
-      <ion-col disabled>{{e.spec_inspection_updated}}</ion-col>
+      <ion-col disabled>{{e.spec_inspection_updated | date:'dd/MM/yyyy'}}</ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
@@ -167,13 +167,13 @@
           <ion-input type="text" [(ngModel)]="insertCIdata.id" name="id" value="{{estabId}}" disabled placeholder="{{estabId}}"></ion-input>
         </ion-col>
         <ion-col>
-          <ion-select class="selector" interface="popover" placeholder='{{"19"|translate}}'  name="selected_ci_type" [(ngModel)]="selected_ci_type" [selectOptions]="ciList.options" >
+          <ion-select class="selector" interface="popover" placeholder='{{"19"|translate}}'  [name]="selected_ci_type" [(ngModel)]="selected_ci_type" [selectOptions]="ciList.options" >
             <ion-option *ngFor="let ci of ciList.ci_types; let i = index" value="{{ci.code}}" [selected]="ci.code == 'SMS'">{{ci.name}}</ion-option>
           </ion-select>
         </ion-col>
-        <ion-col>
+        <ion-col text-center="" >
           <!--<ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="inspection_date" name="inspection_date"></ion-datetime>-->
-          <input class="datum" type="date" [(ngModel)]="inspection_date" name="inspection_date"/>
+          <input class="datum" type="date" [(ngModel)]="inspection_date" name="inspection_date" title="inspection_date" text-center=""/>
         </ion-col>
         <ion-col>
           <ion-input required type="text" [(ngModel)]="insertCIdata.coordinator" name="inspection_coordinator" disabled placeholder="{{loggedUname}}"></ion-input>
@@ -204,13 +204,13 @@
         </ion-col>
         -->
         <ion-col>
-          <ion-select class="selector" interface="popover" placeholder='{{"19"|translate}}' name="si_type"  [(ngModel)]="selected_si_type" [selectOptions]="updateCidataForm.options" (ionChange)="getOrganisationForSIType(updateCidataForm.si_type)">
+          <ion-select class="selector" interface="popover" placeholder='{{"19"|translate}}' [name]="si_type"  [(ngModel)]="selected_si_type" [selectOptions]="updateCidataForm.options" (ionChange)="getOrganisationForSIType(updateCidataForm.si_type)">
             <ion-option *ngFor="let ci of updateCidataForm.si_type" value="{{ci.code}}">{{ci.name}}</ion-option>
           </ion-select>
         </ion-col>
-        <ion-col>
+        <ion-col text-center="">
           <!--<ion-input type="date" name="si_date" [(ngModel)]="si_inspection_date"></ion-input>-->
-          <input class="datum" type="date" name="si_date" [(ngModel)]="si_inspection_date"/>
+          <input  class="datum" type="date" name="si_date" title="si_date" [(ngModel)]="si_inspection_date"/>
         </ion-col>
         <ion-col>
           <ion-input type="text" name="si_inspector" [(ngModel)]="si_inspector" onclick=""></ion-input>
@@ -274,7 +274,7 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
         <ion-col text-center="">{{"33"|translate}}</ion-col>
         <ion-col text-center="">{{"34"|translate}}</ion-col>
         <ion-col text-center="">{{"35"|translate}}</ion-col>
-        <ion-col *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN'" text-center="">{{"23"|translate}}</ion-col>
+        <ion-col *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'" text-center="">{{"23"|translate}}</ion-col>
       </ion-row>
       <ion-row *ngFor="let issue of si_issues; let i=index">
         <ion-col>
@@ -289,9 +289,9 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
           <ion-option value="false">{{"39"|translate}}</ion-option>
         </ion-select>
       </ion-col>
-      <ion-col>
+      <ion-col text-center="">
         <!--<ion-input type="date" [name]="'deadline_warning_'+issue.id" [(ngModel)]="si_issues[i].deadline_warning" (ionChange)="wasValued('deadline_warning_'+issue.id,si_issues[i].deadline_warning)"></ion-input>-->
-        <input class="datum" type="date" [name]="'deadline_warning_'+issue.id" [(ngModel)]="si_issues[i].deadline_warning" (ionChange)="wasValued('deadline_warning_'+issue.id,si_issues[i].deadline_warning)" />
+        <input  class="datum" type="date" [name]="'deadline_warning_'+issue.id" [(ngModel)]="si_issues[i].deadline_warning" (ionChange)="wasValued('deadline_warning_'+issue.id,si_issues[i].deadline_warning)" />
       </ion-col>
       <ion-col>
         <ion-select class="selector" interface="popover" placeholder='{{"40"|translate}}' [name]="'acc_warning_'+issue.id"  [(ngModel)]="si_issues[i].acc_warning" (ngModelChange)="warningChanged(si_issues[i].acc_warning)">
@@ -302,11 +302,11 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
       <ion-col>
         <ion-input type="textarea" maxlength="2000" [name]="'des_indictment_'+issue.id" [(ngModel)]="si_issues[i].des_indictment" disabled="{{isEnabled}}"></ion-input>
       </ion-col>
-        <ion-col>
+        <ion-col text-center="">
           <!--<ion-input type="date" [name]="'last_update'+issue.id" [ngModel]="si_issues[i].last_update" ></ion-input>-->
-          <input disabled class="datum" type="date" [name]="'last_update'+issue.id" [ngModel]="si_issues[i].last_update" />
+          <input  disabled class="datum" type="date" [name]="'last_update'+issue.id" [ngModel]="si_issues[i].last_update" />
         </ion-col>
-        <ion-col *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN'">
+        <ion-col *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'">
           <ion-buttons>
             <button type="button" ion-button (click)="delRowByNgModel(i)">
               <ion-icon name="trash"></ion-icon>
@@ -323,11 +323,16 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
       <ion-icon name="remove-circle" style="font-size: large"></ion-icon>
     </button>
     -->
-    <button ion-button color="dark" *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' || loggedRole != 'ROLE_CIDE_ADMIN'" [disabled]="si_issues.length === maxQuantity" (click)="addrow(si_id)">
+    <button ion-button color="dark" *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'" [disabled]="si_issues.length === maxQuantity" (click)="addrow(si_id)">
       <ion-icon name="add-circle" style="font-size: large"></ion-icon>
     </button>
   </ion-buttons>
 </ion-content>
+
+<ion-footer>
+  <p text-center="">{{"3"|translate}}: {{loggedUname}}</p>
+  <p text-center="">{{"6"|translate}}: {{loggedRole}}</p>
+</ion-footer>
 
 <!--
 <ion-footer *ngIf="modalType === 'getCi'">

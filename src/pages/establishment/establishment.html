@@ -11,7 +11,12 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+
+<ion-content *ngIf="!establishments">
+  <ion-title text-center="" padding-top="20">{{"59"|translate}} {{loggedRole}}</ion-title>
+</ion-content>
+
+<ion-content *ngIf="establishments != null">
   <ion-searchbar [(ngModel)]="terms" placeholder='{{"55"|translate}}'></ion-searchbar>
 <!--
   <button ion-button type="button" (click)="sort()">Sort</button>
@@ -28,25 +33,33 @@
       <ion-col>{{"12"|translate}}</ion-col>
       <ion-col>{{"13"|translate}}</ion-col>
     </ion-row>
-    <ion-row *ngFor="let e of establishments | search : terms "> <!-- | sort: {property: column, order: order} -->
-      <!--
-      <ion-col>{{e.id}}</ion-col>
-      -->
-      <ion-col>{{e.oib}}</ion-col>
-      <ion-col>{{e.establishment_operator}}</ion-col>
-      <ion-col>{{e.establishment_name}}</ion-col>
-      <ion-col>{{e.establishment_municipality}}</ion-col>
-      <ion-col>{{e.establishment_address}}</ion-col>
-      <ion-col>
-        <ion-buttons>
-          <button *ngIf="e.ci_count > 0" ion-button (click)="openCIModal(e.id,e.establishment_name)">
-            <ion-icon name="list"> ({{e.ci_count}})</ion-icon>
-          </button>
-          <button *ngIf="e.ci_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="createCIModal2(e.id,e.establishment_name)">
-            <ion-icon name="add"></ion-icon>
-          </button>
-        </ion-buttons>
-      </ion-col>
-    </ion-row>
+      <ion-row *ngFor="let e of establishments | search : terms "> <!-- | sort: {property: column, order: order} -->
+        <!--
+        <ion-col>{{e.id}}</ion-col>
+        -->
+        <ion-col>{{e.oib}}</ion-col>
+        <ion-col>{{e.establishment_operator}}</ion-col>
+        <ion-col>{{e.establishment_name}}</ion-col>
+        <ion-col>{{e.establishment_municipality}}</ion-col>
+        <ion-col>{{e.establishment_address}}</ion-col>
+        <ion-col>
+          <ion-buttons>
+            <button *ngIf="e.ci_count > 0" ion-button (click)="openCIModal(e.id,e.establishment_name)">
+              <ion-icon name="list"> ({{e.ci_count}})</ion-icon>
+            </button>
+            <button *ngIf="e.ci_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="createCIModal2(e.id,e.establishment_name)">
+              <ion-icon name="add"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
   </ion-grid>
 </ion-content>
+
+
+
+
+<ion-footer>
+  <p text-center="">{{"3"|translate}}: {{loggedUname}}</p>
+  <p text-center="">{{"6"|translate}}: {{loggedRole}}</p>
+</ion-footer>

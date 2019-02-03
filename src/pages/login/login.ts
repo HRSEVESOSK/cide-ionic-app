@@ -42,7 +42,7 @@ export class LoginPage {
         })
         .catch(reason => {
           console.log("WE ARE HERE", reason);
-          this.error = reason.error
+          this.error = reason.error;
           this.presentErrorMessage("BIFISIC austhentication service is currently unavailable with status: " + reason.status + ": " + reason.statusText);
         })
     }
@@ -89,10 +89,4 @@ export class LoginPage {
     }
   }
   */
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
-
-  }
-
 }
