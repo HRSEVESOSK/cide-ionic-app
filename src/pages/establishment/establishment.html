@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
     <ion-buttons left>
-      <button ion-button large (click)="navCtrl.push('HomePage')">
+      <button title='{{"65"|translate}}' ion-button large (click)="navCtrl.push('HomePage')">
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
@@ -12,7 +12,8 @@
 </ion-header>
 
 
-<ion-content *ngIf="establishments != null">
+<ion-content>
+  <div *ngIf="establishments != null">
   <ion-searchbar [(ngModel)]="terms" placeholder='{{"55"|translate}}'></ion-searchbar>
 <!--
   <button ion-button type="button" (click)="sort()">Sort</button>
@@ -29,7 +30,7 @@
       <ion-col>{{"12"|translate}}</ion-col>
       <ion-col>{{"13"|translate}}</ion-col>
     </ion-row>
-      <ion-row *ngFor="let e of establishments | search : terms "> <!-- | sort: {property: column, order: order} -->
+      <ion-row  *ngFor="let e of establishments | search : terms "> <!-- | sort: {property: column, order: order} -->
         <!--
         <ion-col>{{e.id}}</ion-col>
         -->
@@ -40,22 +41,27 @@
         <ion-col>{{e.establishment_address}}</ion-col>
         <ion-col>
           <ion-buttons>
-            <button *ngIf="e.ci_count > 0" ion-button (click)="openCIModal(e.id,e.establishment_name)">
+            <button title='{{"67"|translate}}' *ngIf="e.ci_count > 0" ion-button (click)="openCIModal(e.id,e.establishment_name)">
               <ion-icon name="list"> ({{e.ci_count}})</ion-icon>
             </button>
-            <button *ngIf="e.ci_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="createCIModal2(e.id,e.establishment_name)">
+            <button title='{{"68"|translate}}' *ngIf="e.ci_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="createCIModal2(e.id,e.establishment_name)">
               <ion-icon name="add"></ion-icon>
             </button>
           </ion-buttons>
         </ion-col>
       </ion-row>
   </ion-grid>
+  </div>
+  <div *ngIf="!establishments">
+    <ion-title text-center="" padding-top="20">{{"59"|translate}} {{loggedRole}}</ion-title>
+  </div>
 </ion-content>
 
+<!--
 <ion-content *ngIf="!establishments">
   <ion-title text-center="" padding-top="20">{{"59"|translate}} {{loggedRole}}</ion-title>
 </ion-content>
-
+-->
 
 
 <ion-footer>

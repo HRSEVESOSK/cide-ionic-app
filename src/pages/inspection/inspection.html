@@ -5,7 +5,7 @@
 
   <ion-navbar>
     <ion-buttons left>
-      <button ion-button (click)="viewCtrl.dismiss()">
+      <button title='{{"65"|translate}}' ion-button (click)="viewCtrl.dismiss()">
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
@@ -16,25 +16,25 @@
     <ion-title *ngIf="modalType === 'addSiScore'" class="firstCap">{{"25"|translate}} {{si_id}}</ion-title>
     <ion-title *ngIf="modalType === 'addSiIssue'" class="firstCap"> {{"29"|translate}}  {{"53"|translate}} {{si_id}}</ion-title>
     <ion-buttons end>
-      <button *ngIf="modalType === 'getCi' && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" (click)="createCIModal(estabId,modalTitle)" ion-button >
+      <button title='{{"67"|translate}}' *ngIf="modalType === 'getCi' && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" (click)="createCIModal(estabId,modalTitle)" ion-button >
         <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'getSi' && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" (click)="createSIModal(ciHashedId)" ion-button >
+      <button title='{{"70"|translate}}' *ngIf="modalType === 'getSi' && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" (click)="createSIModal(ciHashedId)" ion-button >
         <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'addCi'" ion-button type="submit" form="addCi">
+      <button title='{{"68"|translate}}' *ngIf="modalType === 'addCi'" ion-button type="submit" form="addCi">
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'addSi'" ion-button type="submit" form="addSi">
+      <button title='{{"69"|translate}}' *ngIf="modalType === 'addSi'" ion-button type="submit" form="addSi">
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'addSiScore' && loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'" ion-button type="submit" form="addSiScore">
+      <button title='{{"72"|translate}}' *ngIf="modalType === 'addSiScore' && loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'" ion-button type="submit" form="addSiScore">
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button *ngIf="modalType === 'addSiIssue' && loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'" ion-button type="submit" form="addSiIssue">
+      <button title='{{"73"|translate}}' *ngIf="modalType === 'addSiIssue' && loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'" ion-button type="submit" form="addSiIssue">
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button (click)="closeModal()" ion-button >
+      <button title='{{"71"|translate}}' (click)="closeModal()" ion-button >
         <ion-icon name="close-circle"  style="font-size: 50px"></ion-icon>
       </button>
     </ion-buttons>
@@ -68,13 +68,13 @@
       </ion-col>
       <ion-col>
         <ion-buttons>
-          <button *ngIf="e.si_count > 0" ion-button (click)="openSIModal(e.id)">
+          <button title='{{"75"|translate}}' *ngIf="e.si_count > 0" ion-button (click)="openSIModal(e.id)">
             <ion-icon name="list">({{e.si_count}})</ion-icon>
           </button>
-          <button *ngIf="e.si_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="createSIModal(e.id)">
+          <button title='{{"74"|translate}}' *ngIf="e.si_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="createSIModal(e.id)">
             <ion-icon name="add"></ion-icon>
           </button>
-          <button *ngIf="e.si_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="deleteCoordinatedInspection(e.id)" color="danger">
+          <button title='{{"76"|translate}}' *ngIf="e.si_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="deleteCoordinatedInspection(e.id)" color="danger">
             <ion-icon name="trash"></ion-icon>
           </button>
         </ion-buttons>
@@ -113,23 +113,23 @@
         -->
       </ion-col>
       <ion-col *ngIf="e.spec_inspection_report != null">
-        <button ion-button (click)="openSiReportDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
+        <button title='{{"77"|translate}}' ion-button (click)="openSiReportDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
       </ion-col>
       <ion-col>
         <ion-buttons>
-          <button *ngIf="e.si_count > 0" ion-button (click)="openSIModal(e.id)">
+          <button title='{{"75"|translate}}' *ngIf="e.si_count > 0" ion-button (click)="openSIModal(e.id)">
             <ion-icon name="list">  ({{e.si_count}})</ion-icon>
           </button>
-          <button *ngIf="e.si_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="createSIModal(e.id)">
+          <button title='{{"74"|translate}}' *ngIf="e.si_count  == 0 && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" ion-button (click)="createSIModal(e.id)">
             <ion-icon name="add"></ion-icon>
           </button>
-          <button ion-button (click)="deleteSpecificInspection(e.id)" *ngIf="(loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN') && e.issues_count == 0 && e.crit_count == 0 " color="danger">
+          <button title='{{"78"|translate}}' ion-button (click)="deleteSpecificInspection(e.id)" *ngIf="(loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN') && e.issues_count == 0 && e.crit_count == 0 " color="danger">
             <ion-icon name="trash"></ion-icon>
           </button>
-          <button ion-button (click)="openSIScoreModal(e.id)">
+          <button title='{{"72"|translate}}'  ion-button (click)="openSIScoreModal(e.id)">
             <ion-icon name="calculator"></ion-icon>
           </button>
-          <button ion-button (click)="openSIIssueModal(e.id)" color="secondary">
+          <button title='{{"73"|translate}}' ion-button (click)="openSIIssueModal(e.id)" color="secondary">
             <ion-icon name="bug"></ion-icon>
           </button>
         </ion-buttons>
@@ -281,7 +281,10 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
           <ion-input type="text" disabled [name]="'id_'+issue.id" [(ngModel)]="si_issues[i].id" ></ion-input>
         </ion-col>
       <ion-col style="border: #f53d3d">
+        <ion-textarea text-justify maxlength="2000" [name]="'issue_description_'+issue.id" id="textarea_{{issue.id}}" placeholder='{{"58"|translate}}' [(ngModel)]="si_issues[i].issue_description" ngDefaultControl></ion-textarea>
+        <!--
         <ion-input clearInput type="textarea" text-justify maxlength="2000" [name]="'issue_description_'+issue.id" placeholder='{{"58"|translate}}' [(ngModel)]="si_issues[i].issue_description"></ion-input>
+        -->
       </ion-col>
       <ion-col>
         <ion-select class="selector" interface="popover" placeholder='{{"37"|translate}}' [name]="'acc_prescriptions_'+issue.id" [(ngModel)]="si_issues[i].acc_prescriptions" (ionChange)="wasValued('acc_prescriptions_'+issue.id,si_issues[i].acc_prescriptions)">
@@ -300,7 +303,10 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
         </ion-select>
       </ion-col>
       <ion-col>
+        <ion-textarea text-justify maxlength="2000" [name]="'des_indictment_'+issue.id" [(ngModel)]="si_issues[i].des_indictment" disabled="{{isEnabled}}"></ion-textarea>
+        <!--
         <ion-input type="textarea" maxlength="2000" [name]="'des_indictment_'+issue.id" [(ngModel)]="si_issues[i].des_indictment" disabled="{{isEnabled}}"></ion-input>
+        -->
       </ion-col>
         <ion-col text-center="">
           <!--<ion-input type="date" [name]="'last_update'+issue.id" [ngModel]="si_issues[i].last_update" ></ion-input>-->
@@ -308,7 +314,7 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
         </ion-col>
         <ion-col *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'">
           <ion-buttons>
-            <button type="button" ion-button (click)="delRowByNgModel(i)">
+            <button title='{{"79"|translate}}' type="button" ion-button (click)="delRowByNgModel(i)">
               <ion-icon name="trash"></ion-icon>
             </button>
           </ion-buttons>
@@ -323,7 +329,7 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
       <ion-icon name="remove-circle" style="font-size: large"></ion-icon>
     </button>
     -->
-    <button ion-button color="dark" *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'" [disabled]="si_issues.length === maxQuantity" (click)="addrow(si_id)">
+    <button title='{{"80"|translate}}' ion-button color="dark" *ngIf="loggedRole != 'ROLE_CIDE_COORDINATOR' && loggedRole != 'ROLE_CIDE_ADMIN'" [disabled]="si_issues.length === maxQuantity" (click)="addrow(si_id)">
       <ion-icon name="add-circle" style="font-size: large"></ion-icon>
     </button>
   </ion-buttons>
@@ -333,18 +339,3 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
   <p text-center="">{{"3"|translate}}: {{loggedUname}}</p>
   <p text-center="">{{"6"|translate}}: {{loggedRole}}</p>
 </ion-footer>
-
-<!--
-<ion-footer *ngIf="modalType === 'getCi'">
-  <ion-toolbar>
-    <ion-buttons end>
-    <button *ngIf="modalType === 'getCi'" (click)="createCIModal(estabId)" ion-button large>
-      <ion-icon name="add-circle"></ion-icon>
-    </button>
-      <button *ngIf="modalType === 'getCi'" (click)="closeModal()" ion-button large>
-        <ion-icon name="close-circle"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-footer>
--->
