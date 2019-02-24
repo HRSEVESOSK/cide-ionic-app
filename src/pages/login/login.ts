@@ -35,13 +35,13 @@ export class LoginPage {
       this.authenticateProvider.authenticateUsingCredentials(this.username,this.password,this.lang)
         .then(data => {
           this.rolesArray = data.roles;
-          console.log(this.rolesArray);
+          //console.log(this.rolesArray);
           if (this.rolesArray){
             this.navCtrl.setRoot('HomePage')
           }
         })
         .catch(reason => {
-          console.log("WE ARE HERE", reason);
+          //console.log("WE ARE HERE", reason);
           this.error = reason.error;
           this.presentErrorMessage("BIFISIC austhentication service is currently unavailable with status: " + reason.status + ": " + reason.statusText);
         })
@@ -66,6 +66,6 @@ export class LoginPage {
     }
     this.translateService.use(this.lang);
     localStorage.setItem('app.userInfo.lang',this.lang);
-    console.log("Changing language to", this.lang)
+    //console.log("Changing language to", this.lang)
   }
 }

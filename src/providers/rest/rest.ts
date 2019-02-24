@@ -10,7 +10,7 @@ export class RestProvider {
     //this.apiUrl = 'http://192.168.1.226/cide-api/api';
     //this.apiUrl = '/cide-api';
     //this.apiUrl = 'https://apps.klimeto.com/cide/api';
-    this.apiUrl = 'http://pproo.azo.hr/cide-api/api';
+    this.apiUrl = 'https://pproo.azo.hr/cide-api/api';
 
   }
  getEstablishment(u, p) {
@@ -18,7 +18,7 @@ export class RestProvider {
       this.http.get(this.apiUrl + '/establishment', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log(error1);
+        //console.log(error1);
         reject(error1);
 
       })
@@ -29,7 +29,7 @@ export class RestProvider {
       this.http.get(this.apiUrl + '/inspection/specific/' + ciId + "?lang="+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log(error1);
+        //console.log(error1);
         reject(error1);
 
       })
@@ -41,7 +41,7 @@ export class RestProvider {
       this.http.get(this.apiUrl + '/inspection/' + estabId, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log(error1)
+        //console.log(error1)
       })
     })
   }
@@ -52,7 +52,7 @@ export class RestProvider {
       this.http.get(this.apiUrl + '/inspection/specific/score/' + siId,{headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data=>{
         resolve(data)
       }, error1 => {
-        console.error('Error in getting score values from API for SI', siId);
+        //console.error('Error in getting score values from API for SI', siId);
         reject(error1);
       })
     })
@@ -63,7 +63,7 @@ export class RestProvider {
       this.http.get(this.apiUrl + '/inspection/specific/issue/' + siId, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("error in getInspectionSpecificIssues: ", error1);
+        //console.log("error in getInspectionSpecificIssues: ", error1);
         reject(error1)
       })
     })
@@ -74,7 +74,7 @@ export class RestProvider {
       this.http.get(this.apiUrl + '/inspection/specific/type?type='+type+'&lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("error in getInspectionSpecificType: ", error1);
+        //console.log("error in getInspectionSpecificType: ", error1);
         reject(error1)
       })
     })
@@ -85,7 +85,7 @@ export class RestProvider {
       this.http.get(this.apiUrl + '/inspection/specific/criterior?lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("ERROR IN GETTING SI TYPES FROM API", error1);
+        //console.log("ERROR IN GETTING SI TYPES FROM API", error1);
         reject(error1)
       })
     })
@@ -97,7 +97,7 @@ export class RestProvider {
       this.http.get(this.apiUrl + '/inspection/specific/criterior/score?lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("ERROR IN GETTING SI TYPES FROM API", error1);
+        //console.log("ERROR IN GETTING SI TYPES FROM API", error1);
         reject(error1)
       })
     })
@@ -107,11 +107,11 @@ export class RestProvider {
 
   insertCiForEstablishment(u, p, data) {
     return new Promise((resolve, reject) => {
-      console.log(data);
+      //console.log(data);
       this.http.post(this.apiUrl + '/inspection/insert', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("ERROR IN INSERTING CI", error1);
+        //console.log("ERROR IN INSERTING CI", error1);
         reject(error1)
       })
     })
@@ -122,7 +122,7 @@ export class RestProvider {
       this.http.post(this.apiUrl + '/inspection/update', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("ERROR IN UPDATING CI", error1);
+        //console.log("ERROR IN UPDATING CI", error1);
         reject(error1)
       })
     })
@@ -133,7 +133,7 @@ export class RestProvider {
       this.http.post(this.apiUrl + '/inspection/specific/criterior/insert', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("ERROR IN UPDATING CI", error1);
+        //console.log("ERROR IN UPDATING CI", error1);
         reject(error1)
       })
     })
@@ -144,7 +144,7 @@ export class RestProvider {
       this.http.post(this.apiUrl + '/inspection/specific/issue/insert', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("ERROR IN UPDATING CI", error1);
+        //console.log("ERROR IN UPDATING CI", error1);
         reject(error1)
       })
     })
@@ -155,7 +155,7 @@ export class RestProvider {
       this.http.post(this.apiUrl + '/inspection/delete', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("ERROR IN DELETING CI", error1);
+        //console.log("ERROR IN DELETING CI", error1);
         reject(error1)
       })
     })
@@ -166,7 +166,7 @@ export class RestProvider {
       this.http.post(this.apiUrl + '/inspection/specific/delete', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("ERROR IN DELETING CI", error1);
+        //console.log("ERROR IN DELETING CI", error1);
         reject(error1)
       })
     })
@@ -177,7 +177,7 @@ export class RestProvider {
         this.http.get(this.apiUrl + '/inspection/specific/download/' + id,{headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(reportFile => {
           resolve(reportFile)
         }, error1 => {
-          console.log("ERROR IN DOWNLOADING THE REPORT", error1);
+          //console.log("ERROR IN DOWNLOADING THE REPORT", error1);
           reject(error1)
         })
       })
@@ -191,7 +191,7 @@ export class RestProvider {
       if (inspectionType == 'SI') {
         uploadURLpath = '/inspection/specific/upload'
       }
-      console.log("URL PATH IS: ", uploadURLpath);
+      //console.log("URL PATH IS: ", uploadURLpath);
       let formData = new FormData();
       //formData.append('file', file, 'Report_' + id  + '_' + new Date().toJSON().split('T')[0]+ '.pdf');
       formData.append('file', file);
@@ -202,11 +202,11 @@ export class RestProvider {
           'Authorization':'Basic ' + btoa(u + ':' + p)})
       };
     return new Promise((resolve, reject) => {
-      console.log(file);
+      //console.log(file);
       this.http.post(this.apiUrl + uploadURLpath, formData, httpOptions).subscribe(data => {
         resolve(data)
       }, error1 => {
-        console.log("ERROR IN INSERTING UPLOADING REPORT FOR " + inspectionType, error1);
+        //console.log("ERROR IN INSERTING UPLOADING REPORT FOR " + inspectionType, error1);
         reject(error1)
       })
     })
@@ -224,7 +224,7 @@ export class RestProvider {
     let formData = new FormData();
     formData.append('file', file, 'test.jpg');
 
-    console.log("post photo to URL at "+url);
+    //console.log("post photo to URL at "+url);
     return this.http
       .post<SimpleResponse>(
         url,

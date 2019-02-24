@@ -48,12 +48,18 @@ ion-navbar.show-back-button .back-button {
   }
 }
 
+ion-select{
+  max-width: 100% !important;
+  min-width: fit-content !important;
+}
+
 .selector {
   //font-family: SFNSDisplay;
   font-size: 12px;
   line-height: 1.2;
   letter-spacing: 0.1px;
   color: #29235e;
+  word-wrap: break-word;
   width: 100% !important;
   max-width: 100% !important;
   justify-content: center;
@@ -61,6 +67,7 @@ ion-navbar.show-back-button .back-button {
   background-color: #ffffff;
   text-align: center;
 }
+/*
 .option {
   //font-family: SFNSDisplay;
   font-size: 8px;
@@ -85,10 +92,11 @@ ion-option .list{
 }
 .select-popover {
   //font-family: SFNSDisplay !important;
-  font-size: 8px !important;
+  font-size: 28px !important;
   max-width: 100% !important;
-}
 
+}
+*/
 .datum {
   background-color: transparent;
   border: 2px;
@@ -101,3 +109,10 @@ ion-option .list{
   }
 }
 
+.popover-content{
+  min-width: fit-content !important;
+}
+
+.customLoader {
+  background-color: white;
+}

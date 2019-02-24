@@ -12,9 +12,9 @@ import {Observable} from "rxjs/Observable";
 export class AuthenticateProvider {
   //authUrl = '/cide-auth';
   //authUrl = 'http://192.168.1.226/bifisic/services/httpbasicauth/auth';
-  authUrl = 'http://pproo.azo.hr/bifisic/services/httpbasicauth/auth';
+  authUrl = 'https://pproo.azo.hr/bifisic/services/httpbasicauth/auth';
   constructor(public http: HttpClient) {
-    console.log('Hello AuthenticateProvider Provider');
+    //console.log('Hello AuthenticateProvider Provider');
   }
   /**
    * Store user on local storage.
@@ -30,7 +30,7 @@ export class AuthenticateProvider {
       localStorage.setItem('app.userInfo.lang',lang);
     }
     else{
-      console.error("Authentication service is not available");
+      //console.error("Authentication service is not available");
     }
   }
   /**
@@ -74,7 +74,7 @@ export class AuthenticateProvider {
           this.setAuthenticatedUser(data,password,language);
           resolve(data)
         },error1 => {
-          console.log(error1);
+          //console.log(error1);
           reject(error1)
         })
       })

@@ -9,8 +9,8 @@
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title *ngIf="modalType === 'getCi'" class="firstCap">{{"14"|translate}} {{modalTitle}}</ion-title>
-    <ion-title *ngIf="modalType === 'getSi'" class="firstCap">{{"18"|translate}} {{"53"|translate}} {{modalTitle}}</ion-title>
+    <ion-title *ngIf="modalType === 'getCi'" class="firstCap">{{"14"|translate}} {{"53"|translate}} {{"82"|translate}} {{modalTitle}}</ion-title>
+    <ion-title *ngIf="modalType === 'getSi'" class="firstCap">{{"18"|translate}} {{"53"|translate}} {{"14"|translate}} {{modalTitle}}</ion-title>
     <ion-title *ngIf="modalType === 'addCi'" class="firstCap">{{"52"|translate}} {{"14"|translate}} {{"53"|translate}} {{modalTitle}}</ion-title>
     <ion-title *ngIf="modalType === 'addSi'" class="firstCap">{{"52"|translate}} {{"18"|translate}} {{"53"|translate}} {{si_id}}</ion-title>
     <ion-title *ngIf="modalType === 'addSiScore'" class="firstCap">{{"25"|translate}} {{si_id}}</ion-title>
@@ -93,7 +93,7 @@
       <ion-col>{{"19"|translate}}</ion-col>
       <ion-col>{{"15"|translate}}</ion-col>
       <ion-col>{{"54"|translate}}</ion-col>
-      <ion-col>{{"22"|translate}}</ion-col>
+      <ion-col>{{"81"|translate}}</ion-col>
       <ion-col>{{"23"|translate}}</ion-col>
       <ion-col>{{"24"|translate}}</ion-col>
     </ion-row>
@@ -241,12 +241,12 @@ VYPOCER SUMY PRE GRUPU PO VYBERE HODNOTY SCORE
         <ion-row *ngFor="let f of e.criteria; let j=index">
           <ion-col text-wrap text-left [(ngModel)]="si_criteria[i]" [name]="'si_criteria_id_'+f.id" id="{{e.id}}_{{f.id}}" ngDefaultControl>{{f.value}}</ion-col>
           <ion-col text-left>
-            <ion-select class="selector" interface="popover" placeholder='{{"27"|translate}}'  id="{{f.id}}" [(ngModel)]="si_criteria[i].criteria[j].score" [name]="'score_'+f.id" >
-              <!--
+            <ion-select  class="selector" interface="popover" placeholder='{{"27"|translate}}'  id="{{f.id}}" [(ngModel)]="si_criteria[i].criteria[j].score" [name]="'score_'+f.id" >
+              <!-- disabled="{{roleInspector}}"
               <ion-option *ngIf="si_criteria[i].criteria[j].score = ''" *ngFor="let s of si_criteria_score_list" [value]="s.id" >{{s.value}}</ion-option>
               <ion-option *ngIf="si_criteria[i].criteria[j].score != ''" [value]="si_criteria[i].criteria[j].score" >{{si_criteria[i].criteria[j].score}}</ion-option>
               -->
-              <ion-option *ngFor="let s of si_criteria_score_list" [value]="s.id" >{{s.value}}</ion-option>
+              <ion-option *ngFor="let s of si_criteria_score_list" [value]="s.id">{{s.value}}</ion-option>
               <!--<ion-option [value]="si_criteria[i].criteria[j].score" >{{si_criteria[i].criteria[j].score}}</ion-option>-->
             </ion-select>
           </ion-col>

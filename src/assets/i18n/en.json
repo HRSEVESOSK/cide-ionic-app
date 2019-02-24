@@ -20,7 +20,7 @@
   "19":"Type",
   "20":"Date",
   "21":"Inspector",
-  "22":"Report",
+  "22":"Coord. report",
   "23":"Tools",
   "24":"Modified",
   "25":"Criteria and score",
@@ -78,5 +78,7 @@
   "77":"Click to download specific inspection report",
   "78":"Click to delete specific inspection",
   "79":"Click to delete row",
-  "80":"Click to add row"
+  "80":"Click to add row",
+  "81":"Report",
+  "82":"establishment"
 }

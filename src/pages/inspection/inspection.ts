@@ -74,7 +74,7 @@ export class InspectionPage {
     }
 
     if (this.modalType === 'addSiIssue') {
-      console.log("GETTING ISSUES FOR: ", this.si_id);
+      //console.log("GETTING ISSUES FOR: ", this.si_id);
       this.getIssuesForCI(this.si_id);
     }
 
@@ -83,7 +83,7 @@ export class InspectionPage {
     }
 
     if (this.modalType === 'addCi') {
-      console.log(this.navParams);
+      //console.log(this.navParams);
       this.dateNow = new Date().toJSON().split('T')[0];
       this.inspection_date = this.dateNow;
       this.insertCIdata = {
@@ -100,7 +100,7 @@ export class InspectionPage {
           mode: 'md'
         }
       };
-      console.log("LIST ENTRIES SENT TO INSERT CI MODAL: ", this.ciList);
+      //console.log("LIST ENTRIES SENT TO INSERT CI MODAL: ", this.ciList);
     }
 
     if (this.modalType === 'addSi') {
@@ -116,7 +116,7 @@ export class InspectionPage {
           mode: 'md'
         }
       };
-      console.log("LIST ENTRIES SENT TO INSERT SI MODAL: ", this.updateCidataForm);
+      //console.log("LIST ENTRIES SENT TO INSERT SI MODAL: ", this.updateCidataForm);
     }
 
 
@@ -135,7 +135,7 @@ export class InspectionPage {
 
     if (this.ciHashedId != 0) {
       toast.onDidDismiss(() => {
-        console.log('Dismissed toast');
+        //console.log('Dismissed toast');
         this.closeModal();
         this.navCtrl.push('EstablishmentPage');
         //this.navCtrl.popAll();
@@ -179,37 +179,46 @@ export class InspectionPage {
       .then(data => {
         let modalData: { cid: any, type: string, si_types: any, title: any } =
           {"cid": id, "type": "addSi", si_types: data, "title": id};
-        console.log("DATA SENT TO SI INSERT: ", modalData);
+        //console.log("DATA SENT TO SI INSERT: ", modalData);
         let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
         modalPage.present();
       })
       .catch(reason => {
-        console.log("GET SI TYPES LIST ERROR", reason);
+        //console.error("GET SI TYPES LIST ERROR", reason);
       })
   }
 
   openSIScoreModal(id) {
     this.loaderCreate();
-    console.log("ID of SI: ", id);
+    //console.log("ID of SI: ", id);
+    let inspector:boolean;
+    if (this.loggedRole == "ROLE_CIDE_ADMIN" || this.loggedRole == "ROLE_CIDE_COORDINATOR"){
+      inspector = false;
+    }
+    else {
+      inspector = true;
+    }
+    //console.log("LOGGED ROLE: ", this.loggedRole);
     this.si_id = id;
     this.restProvider.getScoreForSI(this.loggedUname, this.loggedPass, this.si_id)
       .then(data => {
-        console.log("SCORE DATA IS OF TYPE: ", typeof data);
+        //console.log("SCORE DATA IS OF TYPE: ", typeof data);
         if ("message" in data){
-          console.info("SI "+this.si_id+" HAS NO DATA IN DB");
+          //console.info("SI "+this.si_id+" HAS NO DATA IN DB");
           this.restProvider.getInspectionSpecificCriterior(this.loggedUname, this.loggedPass,this.selectedLanguage)
             .then(data => {
               this.si_criteria = data;
-              console.log(data);
-              let modalData: { sid: any, type: string, si_criteria: any, title: any } =
-                {"sid": id, "type": "addSiScore", "si_criteria": data, "title": "Criteria for: " + id};
-              console.info("DEFAULT SI_CRITERIA_ARRAY: ", data);
+              //console.log(data);
+              //console.log("Role Inspector;", inspector);
+              let modalData: { sid: any, type: string, si_criteria: any, title: any, roleInspector:boolean } =
+                {"sid": id, "type": "addSiScore", "si_criteria": data, "title": "Criteria for: " + id, roleInspector:inspector};
+              //console.info("DEFAULT SI_CRITERIA_ARRAY: ", data);
               let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
               this.loader.dismiss();
               modalPage.present();
             })
             .catch(reason => {
-              console.log("GET SI TYPES LIST ERROR", reason);
+              //console.error("GET SI TYPES LIST ERROR", reason);
               this.loader.dismiss();
             })
         }
@@ -219,7 +228,7 @@ export class InspectionPage {
           let si_criteria_updated = [];
           this.restProvider.getInspectionSpecificCriterior(this.loggedUname, this.loggedPass,this.selectedLanguage)
             .then(data => {
-              console.log("CRITERIA: ", data);
+              //console.log("CRITERIA: ", data);
               for (let k in data){
                 let dbgroups = {};
                 dbgroups['id'] = data[k]['id'];
@@ -247,25 +256,26 @@ export class InspectionPage {
                 si_criteria_updated.push(dbgroups);
               }
               this.si_criteria = si_criteria_updated;
-              console.log("THIS.SI_CRITERIA: ", this.si_criteria);
-              let modalData: { sid: any, type: string, si_criteria: any, title: any } =
-                {"sid": id, "type": "addSiScore", "si_criteria": this.si_criteria, "title": "Criteria for: " + id};
-              console.info("SI_CRITERIA_ARRAY FROM DATABASE: ", this.si_criteria);
+              //console.log("THIS.SI_CRITERIA: ", this.si_criteria);
+              let modalData: { sid: any, type: string, si_criteria: any, title: any, roleInspector:boolean } =
+                {"sid": id, "type": "addSiScore", "si_criteria": this.si_criteria, "title": "Criteria for: " + id, roleInspector:inspector};
+              //console.info("SI_CRITERIA_ARRAY FROM DATABASE: ", this.si_criteria);
               let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
               this.loader.dismiss();
+              //console.log("Role Inspector", inspector);
               modalPage.present();
             });
         }
       })
       .catch(reason => {
-        console.error("ERROR in getting score for SI", reason);
+        //console.error("ERROR in getting score for SI", reason);
       });
   }
 
 
 
   openSIIssueModal(id) {
-    console.log("Opening Open Issue Modal For: ", id);
+    //console.log("Opening Open Issue Modal For: ", id);
     //this.navCtrl.popAll();
     this.si_id = id;
     let modalData: { sid: any, title: any, type: any } = {
@@ -284,13 +294,13 @@ export class InspectionPage {
         modalPage.present();
       })
       .catch(reason => {
-        console.log("GET SI TYPES LIST ERROR", reason);
+        //console.log("GET SI TYPES LIST ERROR", reason);
       })
       */
   }
 
   openSIModal(id) {
-    console.log("SI modal data: ", id);
+    //console.log("SI modal data: ", id);
     this.coordId = id;
     let data: { cid: any, title: any; id: any; type: any } = {
       "cid": id,
@@ -304,7 +314,7 @@ export class InspectionPage {
   }
 
   uploadSiReportModal(id) {
-    console.log("Opening Upload SI Report Modal For: ", id);
+    //console.log("Opening Upload SI Report Modal For: ", id);
     this.si_id = id;
     let modalData: { sid: any, title: any, type: any } = {
       "sid": id,
@@ -319,30 +329,30 @@ export class InspectionPage {
     this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'CI',this.selectedLanguage)
       .then(data => {
         let modalData: { title: any; id: any; type: any, ci_types: any } = {"title": name, "id": id, "type": "addCi", ci_types : data};
-        console.log("CREATE CI DATA: ", data);
+        //console.log("CREATE CI DATA: ", data);
         let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
         modalPage.present();
       })
       .catch(reason => {
-        console.log("GET SI TYPES LIST ERROR", reason);
+        //console.error("GET SI TYPES LIST ERROR", reason);
       })
   }
 
   getOrganisationForSIType(list) {
-    console.log("SELECTED SI TYPE IS: ", this.selected_si_type);
-    console.log(list);
+    //console.log("SELECTED SI TYPE IS: ", this.selected_si_type);
+    //console.log(list);
     for (let x of list) {
       if (x.code === this.selected_si_type) {
         if ('inspectors' in x) {
           this.si_inspector = x['inspectors'][0]['fullname'];
           this.si_inspector_role = x['inspectors'][0]['id'];
-          console.log(this.si_inspector);
+          //console.log(this.si_inspector);
           break;
         }
         else {
           this.si_inspector = 'No organization for selected SI type';
         }
-        console.log(x['inspectors']);
+        //console.log(x['inspectors']);
       }
     }
   }
@@ -364,15 +374,15 @@ export class InspectionPage {
     this.loaderCreate();
     this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass,inspectionType)
       .then(data => {
-        console.log("SI TYPES LIST DATA", data);
+        //console.log("SI TYPES LIST DATA", data);
         this.ciTypes = data;
         this.loader.dismiss();
       })
       .catch(reason => {
-        console.log("GET SI TYPES LIST ERROR", reason);
+        //console.log("GET SI TYPES LIST ERROR", reason);
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
-        console.error(reason);
+        //console.error(reason);
       })
   }
   */
@@ -381,16 +391,16 @@ export class InspectionPage {
     //this.loaderCreate();
     this.restProvider.getSICriteriorScoreList(this.loggedUname, this.loggedPass,this.selectedLanguage)
       .then(data => {
-        console.log("SI SCORE VALUES", data);
+        //console.log("SI SCORE VALUES", data);
         this.si_criteria_score_list = data;
-        console.info("Criteria list loaded from API: ", this.si_criteria_score_list);
+        //console.info("Criteria list loaded from API: ", this.si_criteria_score_list);
         //this.loader.dismiss();
       })
       .catch(reason => {
-        console.log("GET SI TYPES LIST ERROR", reason);
+        //console.error("GET SI TYPES LIST ERROR", reason);
         //this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
-        console.error(reason);
+        //console.error(reason);
       })
   }
 
@@ -399,14 +409,14 @@ export class InspectionPage {
     this.restProvider.getCiForEstablishment(this.loggedUname, this.loggedPass, id)
       .then(data => {
         this.coordinated = data;
-        console.log("CI ESTAB DATA", data);
+        //console.log("CI ESTAB DATA", data);
         this.loader.dismiss();
       })
       .catch(reason => {
-        console.log("GET CI LIST FOR ESTAB ERROR", reason);
+        //console.error("GET CI LIST FOR ESTAB ERROR", reason);
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
-        console.error(reason);
+        //console.error(reason);
       })
   }
 
@@ -421,15 +431,16 @@ export class InspectionPage {
   }
 
   delRowByNgModel(indexValue){
-    console.log("Index of the si_issues row is: ", indexValue);
-    console.log("si_issues is for index: ", this.si_issues[indexValue]);
+    //console.log("Index of the si_issues row is: ", indexValue);
+    //console.log("si_issues is for index: ", this.si_issues[indexValue]);
     this.si_issues.splice(indexValue, 1);
   }
 
   warningChanged(value) {
-    console.log("Changed to value: ", value);
+    //console.log("Changed to value: ", value);
     this.isEnabled = value;
   }
+
 
   wasValued(name, value) {
     if (name.startsWith('acc_prescriptions_') && value != '') {
@@ -441,18 +452,18 @@ export class InspectionPage {
     this.restProvider.getInspectionSpecificIssues(this.loggedUname, this.loggedPass, id)
       .then(data => {
         this.loader.dismiss();
-        console.log("CI ISSUE DATA", data);
+        //console.log("CI ISSUE DATA", data);
         if ('message' in data) {
-          console.log("CI: ", id + " NEMA ISSUES.");
+          //console.log("CI: ", id + " NEMA ISSUES.");
           this.si_issues.push({'last_update': new Date().toJSON().split('T')[0], 'id_specific_inspection': id});
         }
         else {
-          console.log("Data returned for SI Issues: ", data);
+          //console.log("Data returned for SI Issues: ", data);
           this.si_issues = [];
           this.si_issues = data;
           /*
           for (let k in data){
-            console.log("IDECKO: ", data[k].id);
+            //console.log("IDECKO: ", data[k].id);
             this.si_issues.push({'id': data[k].id,'issue_description':data[k].issue_description});
           }
           */
@@ -461,16 +472,16 @@ export class InspectionPage {
       })
       .catch(reason => {
         this.loader.dismiss();
-        console.log("GET CI ISSUES ERROR", reason);
+        //console.error("GET CI ISSUES ERROR", reason);
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
-        console.error(reason);
+        //console.error(reason);
       })
   }
 
   insertCoordinatedInspection() {
     this.insertCIdata['inspection_type'] = this.selected_ci_type;
     this.insertCIdata['inspection_date'] = this.inspection_date;
-    console.log("DATA TO BE INSERTERD TO CI TABLE: ", this.insertCIdata);
+    //console.log("DATA TO BE INSERTERD TO CI TABLE: ", this.insertCIdata);
     this.loaderCreate();
     this.restProvider.insertCiForEstablishment(this.loggedUname, this.loggedPass, this.insertCIdata)
       .then(data => {
@@ -481,7 +492,7 @@ export class InspectionPage {
       .catch(reason => {
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
-        console.error(reason);
+        //console.error(reason);
       })
   }
 
@@ -493,7 +504,7 @@ export class InspectionPage {
       "inspection_coordinator": this.si_inspector,
       "inspector_id_person_role": this.si_inspector_role
     };
-    console.log(updateCIdata);
+    //console.log(updateCIdata);
     this.loaderCreate();
     this.restProvider.updateCiForEstablishment(this.loggedUname, this.loggedPass, updateCIdata)
       .then(data => {
@@ -504,14 +515,14 @@ export class InspectionPage {
       .catch(reason => {
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
-        console.error(reason);
+        //console.error(reason);
       })
   }
 
   updateSpecificInspectionIssue(id) {
-    console.log("Insert / Update Issues for: ", id);
-    console.log("Insert data: ", this.si_issues);
-    console.log("POST DATA: ", this.si_issues);
+    //console.log("Insert / Update Issues for: ", id);
+    //console.log("Insert data: ", this.si_issues);
+    //console.log("POST DATA: ", this.si_issues);
     this.loaderCreate();
     this.restProvider.updateCiIssues(this.loggedUname, this.loggedPass, this.si_issues)
       .then(data => {
@@ -521,7 +532,7 @@ export class InspectionPage {
       })
       .catch(reason => {
         this.ciHashedId = id;
-        console.error(reason);
+        //console.error(reason);
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
       })
@@ -531,9 +542,9 @@ export class InspectionPage {
   updateSpecificInspectionScore(id) {
     this.loaderCreate();
     let criteriaScoreData = [];
-    console.log("Insert / Update Criteria Score for: ", id);
+    //console.log("Insert / Update Criteria Score for: ", id);
     //console.log("Insert / Update Data: ", this.si_criteria_score);
-    console.log("Insert / Update Data: ", this.si_criteria);
+    //console.log("Insert / Update Data: ", this.si_criteria);
     for (let group of this.si_criteria) {
       if ("criteria" in group) {
         for (let criterior of group.criteria) {
@@ -558,7 +569,7 @@ export class InspectionPage {
         this.presentToast('inserted: ' + data['inserted'] + ' updated: ' + data['updated'] + ' for insection: ');
       })
       .catch(reason => {
-        console.error(reason);
+        //console.error(reason);
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
       })
@@ -570,26 +581,26 @@ export class InspectionPage {
   }
 
   insertGroupScore(a, b) {
-    console.log("Changing the value for: ", a, b);
-    console.log(this.si_criteria[a]['value']);
+    //console.log("Changing the value for: ", a, b);
+    //console.log(this.si_criteria[a]['value']);
     let currentScore = 0;
     let selectedScore = parseInt(b.match(/\(([^)]+)\)/)[1]);
-    console.info("CURRENT SCORE IS: ", selectedScore);
-    console.log("SELECTED SCORE NUMBER: ", selectedScore);
+    //console.info("CURRENT SCORE IS: ", selectedScore);
+    //console.log("SELECTED SCORE NUMBER: ", selectedScore);
     if ((this.si_criteria[a]['value']).includes("(")) {
-      console.log("IF ARE WE HERE???");
+      //console.log("IF ARE WE HERE???");
       currentScore = parseInt((this.si_criteria[a]['value']).match(/\(([^)]+)\)/)[1]);
       this.si_criteria[a]['value'] = (this.si_criteria[a]['value'].replace((this.si_criteria[a]['value']).match(/\(([^)]+)\)/)[1], currentScore + selectedScore));
     }
     else {
-      console.log("ELSE ARE WE HERE???");
+      //console.log("ELSE ARE WE HERE???");
       this.si_criteria[a]['value'] = (this.si_criteria[a]['value'] + "(" + currentScore + selectedScore + ")");
     }
   }
 
   deleteCoordinatedInspection(id) {
     this.loaderCreate();
-    console.log("Function deleteCoordinatedInspection was called with parameter id=", id);
+    //console.log("Function deleteCoordinatedInspection was called with parameter id=", id);
     this.deleteCIData.id = id;
     this.restProvider.deleteCiById(this.loggedUname, this.loggedPass, this.deleteCIData)
       .then(data => {
@@ -598,7 +609,7 @@ export class InspectionPage {
         this.presentToast('deleted: ');
       })
       .catch(reason => {
-        console.log("deleteCoordinatedInspection", reason);
+        //console.error("deleteCoordinatedInspection", reason);
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
       })
@@ -606,7 +617,7 @@ export class InspectionPage {
 
   deleteSpecificInspection(id) {
     this.loaderCreate();
-    console.log("Function deleteSpecificInspection was called with parameter id=", id);
+    //console.log("Function deleteSpecificInspection was called with parameter id=", id);
     this.deleteSIData.id = id;
     this.restProvider.deleteSiById(this.loggedUname, this.loggedPass, this.deleteSIData)
       .then(data => {
@@ -615,24 +626,24 @@ export class InspectionPage {
         this.presentToast('deleted: ');
       })
       .catch(reason => {
-        console.log("deleteSpecificInspection", reason);
+        //console.error("deleteSpecificInspection", reason);
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
       })
   }
 
   getSiForCi(id) {
-    console.log(id);
+    //console.log(id);
     this.loaderCreate();
     this.ciHashedId = id;
     this.restProvider.getSpecificForCoordinated(this.loggedUname, this.loggedPass, id,this.selectedLanguage)
       .then(data => {
-        console.info("Data returned for CIID: " + id + " are ", data);
+        //console.info("Data returned for CIID: " + id + " are ", data);
         this.specific = data;
         this.loader.dismiss();
       })
       .catch(reason => {
-        console.log("GET SI LIST FOR CI ERROR", reason);
+        //console.error("GET SI LIST FOR CI ERROR", reason);
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
       })
@@ -659,7 +670,7 @@ export class InspectionPage {
     const fileTransfer: TransferObject = this.transfer.create();
     const url = 'http://www.example.com/file.pdf';
     fileTransfer.download(url, this.file.dataDirectory + 'file.pdf').then((entry) => {
-      console.log('download complete: ' + entry.toURL());
+      //console.log('download complete: ' + entry.toURL());
     }, (error) => {
       // handle error
     });
@@ -678,11 +689,11 @@ export class InspectionPage {
     this.loaderCreate();
     this.restProvider.downloadReportForCi(this.loggedUname, this.loggedPass, id)
       .then(data=>{
-        console.info("Downloading report for siid: ", id);
+        //console.info("Downloading report for siid: ", id);
         this.loader.dismiss();
       })
       .catch(reason => {
-        console.log("ERROR IN UPLOADING REPORT FOR CI", reason);
+        //console.error("ERROR IN UPLOADING REPORT FOR CI", reason);
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
       })
@@ -691,16 +702,16 @@ export class InspectionPage {
   uploadReport($event,id,inspectionType) : void {
     this.loaderCreate();
     this.file = $event.target.files[0];
-    console.log("REPORT TO BE UPLADED FOR SI "+id+": ", this.file);
+    //console.log("REPORT TO BE UPLADED FOR SI "+id+": ", this.file);
     this.restProvider.uploadReport(this.loggedUname, this.loggedPass,  $event.target.files[0],id,inspectionType)
       .then(data=>{
-        console.log("Report has been sucesfully uploaded for CI: ", data);
+        //console.log("Report has been sucesfully uploaded for CI: ", data);
         this.ciHashedId = data['updated'];
         this.loader.dismiss();
         this.presentToast('uploaded: ');
       })
       .catch(reason => {
-        console.log("ERROR IN UPLOADING REPORT FOR CI", reason);
+        //console.log("ERROR IN UPLOADING REPORT FOR CI", reason);
         this.loader.dismiss();
         this.presentErrorMessage(reason.status + ": " + reason.statusText);
       })

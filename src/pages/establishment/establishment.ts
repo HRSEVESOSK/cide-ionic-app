@@ -35,7 +35,7 @@ export class EstablishmentPage {
         this.loader.dismiss();
       })
       .catch(reason => {
-        console.log("GET ESTABLISHMENT LIST FAILED", reason);
+        //console.log("GET ESTABLISHMENT LIST FAILED", reason);
         this.loader.dismiss();
         this.presentAlert(reason);
         this.navCtrl.push('HomePage')
@@ -55,20 +55,24 @@ export class EstablishmentPage {
     this.loader = this.loadingCtrl.create({
       content: '',
       spinner: 'dots',
-      cssClass: 'transparent'
+      cssClass: 'customLoader'
     });
     this.loader.present();
   }
 
-
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EstablishmentPage');
+    //console.log('ionViewDidLoad EstablishmentPage');
     this.getEstablishments();
   }
+  /*
+  ionViewWillEnter(){
+    this.getEstablishments();
+  }
+  */
 
   openCIModal(id,name){
     var data: { title: any; id: any; type: any } = {"title":name,"id":id, "type": "getCi"};
-    console.log("CI FOR ESTAB DATA", data);
+    //console.log("CI FOR ESTAB DATA", data);
     let modalPage = this.modalCtrl.create('InspectionPage', data, {cssClass: "modal-fullscreen"});
     modalPage.present();
   }
@@ -76,7 +80,7 @@ export class EstablishmentPage {
   /*
   createCIModal(id,name){
     var data: { title: any; id: any; type: any } = {"title":name,"id":id, "type": "addCi"};
-    console.log("CREATE CI DATA: ", data);
+    //console.log("CREATE CI DATA: ", data);
     let modalPage = this.modalCtrl.create('InspectionPage', data, {cssClass:"modal-fullscreen"});
     modalPage.present();
   }
@@ -86,12 +90,12 @@ export class EstablishmentPage {
     this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'CI',this.selectedLanguage)
       .then(data => {
         let modalData: { title: any; id: any; type: any, ci_types: any } = {"title": name, "id": id, "type": "addCi", ci_types : data};
-        console.log("CREATE CI DATA: ", data);
+        //console.log("CREATE CI DATA: ", data);
         let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
         modalPage.present();
       })
       .catch(reason => {
-        console.log("GET SI TYPES LIST ERROR", reason);
+        //console.log("GET SI TYPES LIST ERROR", reason);
       })
   }
 

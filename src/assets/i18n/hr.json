@@ -20,7 +20,7 @@
   "19":"Vrsta",
   "20":"Datum",
   "21":"Inspektor",
-  "22":"Zapisnik",
+  "22":"Koord. zapisnik",
   "23":"Alati",
   "24":"Izmijenjeno",
   "25":"Kriteriji i ocjena",
@@ -78,5 +78,7 @@
   "77":"Kliknite za preuzimanje izvješća o inspekcijskih nadzora",
   "78":"Kliknite za brisanje inspekcijskih nadzora",
   "79":"Kliknite za brisanje retka",
-  "80":"Kliknite za dodavanje retka"
+  "80":"Kliknite za dodavanje retka",
+  "81":"Zapisnik",
+  "82":"područje postrojenja"
 }

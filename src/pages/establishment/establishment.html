@@ -13,7 +13,7 @@
 
 
 <ion-content>
-  <div *ngIf="establishments != null">
+  <div *ngIf="establishments;else no_data_templ">
   <ion-searchbar [(ngModel)]="terms" placeholder='{{"55"|translate}}'></ion-searchbar>
 <!--
   <button ion-button type="button" (click)="sort()">Sort</button>
@@ -32,7 +32,7 @@
     </ion-row>
       <ion-row  *ngFor="let e of establishments | search : terms "> <!-- | sort: {property: column, order: order} -->
         <!--
-        <ion-col>{{e.id}}</ion-col>
+        <ion-col>{{e.id}} *ngIf="establishments != null"</ion-col>
         -->
         <ion-col>{{e.oib}}</ion-col>
         <ion-col>{{e.establishment_operator}}</ion-col>
@@ -52,18 +52,17 @@
       </ion-row>
   </ion-grid>
   </div>
-  <div *ngIf="!establishments">
-    <ion-title text-center="" padding-top="20">{{"59"|translate}} {{loggedRole}}</ion-title>
-  </div>
 </ion-content>
+
+<ng-template #no_data_templ>
+  <p text-center="" padding-top="20">{{"59"|translate}} {{loggedRole}}</p>
+</ng-template>
 
 <!--
 <ion-content *ngIf="!establishments">
-  <ion-title text-center="" padding-top="20">{{"59"|translate}} {{loggedRole}}</ion-title>
+  <p text-center="" padding-top="20">{{"59"|translate}} {{loggedRole}}</p>
 </ion-content>
 -->
-
-
 <ion-footer>
   <p text-center="">{{"3"|translate}}: {{loggedUname}}</p>
   <p text-center="">{{"6"|translate}}: {{loggedRole}}</p>
