@@ -9,7 +9,7 @@
   "8":"Datum objave",
   "9":"Područja postrojenja",
   "10":"Ime",
-  "11":"Općina",
+  "11":"Mjesto/Grad",
   "12":"Adresa",
   "13":"Alati",
   "14":"koordinirani inspekcijski nadzor",
@@ -99,5 +99,7 @@
   "98":"Stara lozinka",
   "99":"Nova lozinka",
   "100":"Potvrdi novu lozinku",
-  "101":"Reset korosnicka lozinka"
+  "101":"Reset korisnicka lozinka",
+  "102":"e-pošta",
+  "103":"Pošalji e-poštu za poništavanje"
 }

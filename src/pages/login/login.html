@@ -25,26 +25,30 @@
 
 <ion-content>
   <form #loginForm="ngForm" (ngSubmit)="login()" autocomplete="off">
+    <ion-grid>
     <ion-row>
       <ion-col>
         <ion-list inset>
           <ion-item>
-            <ion-input placeholder='{{"3"|translate}}' name="username" id="loginField"
-                       type="text" required [(ngModel)]="username" #email></ion-input>
+            <ion-input placeholder='{{"3"|translate}}' name="username" id="loginField" type="text" required [(ngModel)]="username" #email></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input placeholder='{{"4"|translate}}' name="password" id="passwordField"
-                       type="password" required [(ngModel)]="password"></ion-input>
+            <ion-input placeholder='{{"4"|translate}}' name="password" id="passwordField" type="password" required [(ngModel)]="password"></ion-input>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
         <div *ngIf="error" class="alert alert-danger">{{error}}</div>
-        <button ion-button class="submit-btn" full type="submit"
-                [disabled]="!loginForm.form.valid">{{"50"|translate}}</button>
+      <ion-col col="2">
+        <button ion-button class="submit-btn" full type="submit" [disabled]="!loginForm.form.valid">{{"50"|translate}}</button>
+      </ion-col>
+      <ion-col col="2">
+        <button ion-button full (click)="openResetPasswordPage()">{{"101"|translate}}</button>
       </ion-col>
     </ion-row>
+    </ion-grid>
   </form>
 </ion-content>
+
+

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, ToastController} from 'ionic-angular';
 import {AuthenticateProvider} from "../../providers/authenticate/authenticate";
 import { TranslateService } from '@ngx-translate/core';
+import {ResetPasswordPage} from "../reset-password/reset-password";
 //import {HomePage} from "../home/home";
 
 /**
@@ -67,5 +68,9 @@ export class LoginPage {
     this.translateService.use(this.lang);
     localStorage.setItem('app.userInfo.lang',this.lang);
     //console.log("Changing language to", this.lang)
+  }
+
+  openResetPasswordPage(){
+    this.navCtrl.push('ResetPasswordPage')
   }
 }

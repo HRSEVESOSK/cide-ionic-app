@@ -99,5 +99,7 @@
   "98":"Old password",
   "99":"New password",
   "100":"Confirm new password",
-  "101":"Reset user password"
+  "101":"Reset user password",
+  "102":"Email",
+  "103":"Send reset email"
 }
