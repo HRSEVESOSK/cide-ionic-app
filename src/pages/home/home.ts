@@ -17,6 +17,7 @@ export class HomePage extends RequireAuthenticationPage{
   */
   loggedUser: any;
   loggedRoles: any;
+  loggedRole: string = localStorage.getItem('app.userInfo.role');
   constructor(public navCtrl: NavController,
               splashScreen: SplashScreen,
               statusBar: StatusBar,
@@ -47,4 +48,13 @@ export class HomePage extends RequireAuthenticationPage{
   openEstabPage(){
     this.navCtrl.push('EstablishmentPage')
   }
+
+  openUsersPage(){
+    this.navCtrl.push('UserPage')
+  }
+
+  testAlert(text){
+    alert(text);
+  }
 }
+

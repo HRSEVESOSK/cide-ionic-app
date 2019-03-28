@@ -8,9 +8,9 @@ export class RestProvider {
   constructor(public http: HttpClient) {
     //this.apiUrl = 'http://localhost:5001/api';
     //this.apiUrl = 'http://192.168.1.226/cide-api/api';
-    //this.apiUrl = '/cide-api';
+    this.apiUrl = '/cide-api';
     //this.apiUrl = 'https://apps.klimeto.com/cide/api';
-    this.apiUrl = 'https://pproo.azo.hr/cide-api/api';
+    //this.apiUrl = 'https://pproo.azo.hr/cide-api/api';
 
   }
  getEstablishment(u, p) {
@@ -207,6 +207,29 @@ export class RestProvider {
         resolve(data)
       }, error1 => {
         //console.log("ERROR IN INSERTING UPLOADING REPORT FOR " + inspectionType, error1);
+        reject(error1)
+      })
+    })
+  }
+
+  getUser(u, p) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.apiUrl + '/user', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        //console.log(error1);
+        reject(error1);
+
+      })
+    })
+  }
+
+  updateUser(u,p,data){
+    return new Promise((resolve, reject) => {
+      this.http.post(this.apiUrl + '/user/update', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p)).set('charset','UTF-8')}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        //console.log("ERROR IN UPDATING CI", error1);
         reject(error1)
       })
     })

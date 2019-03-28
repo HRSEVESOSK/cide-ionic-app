@@ -1,0 +1,200 @@
+<ion-header>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType == null" title='{{"65"|translate}}' ion-button large (click)="navCtrl.push('HomePage')">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+      <button *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType != null" title='{{"65"|translate}}' ion-button large (click)="closeModal()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType == null">{{"83"|translate}}</ion-title>
+    <ion-title *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType === 'regUser'">{{"94"|translate}}</ion-title>
+    <ion-title *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType === 'editUser'">{{"95"|translate}}</ion-title>
+    <ion-title *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType === 'resetUser'">{{"95"|translate}}</ion-title>
+    <ion-buttons end>
+      <button title='{{"88"|translate}}' *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType == null" ion-button (click)="regUserModal()">
+        <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
+      </button>
+      <button title='{{"88"|translate}}' *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType === 'editUser'" ion-button type="submit" form="editUser">
+        <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
+      </button>
+      <button title='{{"71"|translate}}' *ngIf="modalType === 'regUser' || modalType ==='editUser' || modalType ==='resetUser'" (click)="closeModal()" ion-button >
+        <ion-icon name="close-circle"  style="font-size: 50px"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <div *ngIf="users;else no_data_templ">
+    <!--
+    <ion-searchbar [(ngModel)]="terms" placeholder='{{"55"|translate}}'></ion-searchbar>
+    -->
+    <!--
+      <button ion-button type="button" (click)="sort()">Sort</button>
+    -->
+    <ion-grid text-center>
+      <ion-row style="background-color: antiquewhite">
+        <!--
+        <ion-col>ID</ion-col>
+        -->
+        <ion-col>ID</ion-col>
+        <ion-col>{{"84"|translate}}</ion-col>
+        <ion-col>{{"85"|translate}}</ion-col>
+        <ion-col>Email</ion-col>
+        <ion-col>{{"86"|translate}}</ion-col>
+        <ion-col>{{"87"|translate}}</ion-col>
+        <ion-col>{{"13"|translate}}</ion-col>
+      </ion-row>
+      <ion-row  *ngFor="let e of users"> <!-- | sort: {property: column, order: order} -->
+        <!--
+        <ion-col>{{e.id}} *ngIf="establishments != null"</ion-col>
+        -->
+        <ion-col>{{e.id}}</ion-col>
+        <ion-col>{{e.person_name}}</ion-col>
+        <ion-col>{{e.person_surnname}}</ion-col>
+        <ion-col>{{e.person_email}}</ion-col>
+        <ion-col>{{e.person_username}}</ion-col>
+        <ion-col>{{e.person_role}}</ion-col>
+        <ion-col>
+          <ion-buttons>
+            <button title='{{"91"|translate}}' ion-button (click)="editUserModal(e)">
+              <ion-icon name="create"></ion-icon>
+            </button>
+            <button title='{{"97"|translate}}' ion-button (click)="resetUserModal(e)" color="secondary">
+              <ion-icon name="key"></ion-icon>
+            </button>
+            <button title='{{"90"|translate}}' ion-button (click)="showConfirmAlert(e.id,e.username)" color="danger">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+
+<ng-template #no_data_templ>
+  <p text-center="" padding-top="20">XXXXXX</p>
+</ng-template>
+
+<!--
+<ion-content *ngIf="!establishments">
+  <p text-center="" padding-top="20">{{"59"|translate}} {{loggedRole}}</p>
+</ion-content>
+-->
+
+<!--
+    MODAL WINDOW DISPLAYING FORM TO REGISTER NEW USER
+-->
+<ion-content padding *ngIf="modalType === 'regUser'">
+  <form (ngSubmit)="registerUser()" #regUserForm="ngForm">
+    <ion-row>
+      <ion-col>
+        <ion-list inset>
+          <ion-item>
+            <ion-input type="text" placeholder='{{"3"|translate}}' name="name" [(ngModel)]="regUserData.uname" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="text" placeholder='{{"86"|translate}}' name="role" [(ngModel)]="regUserData.role" required></ion-input>
+          </ion-item>
+          <!--
+          <ion-item>
+            <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="registerCredentials.email" required></ion-input>
+          </ion-item>
+          -->
+          <ion-item>
+            <ion-input type="password" placeholder='{{"4"|translate}}' name="password" [(ngModel)]="regUserData.pass" required minlength="8"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" placeholder='{{"93"|translate}} {{"4"|translate}}' name="confirmation_password" [(ngModel)]="regUserData.confirm_pass" required></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="signup-col">
+        <button ion-button class="submit-btn" full type="submit" [disabled]="!regUserForm.form.valid">{{"96"|translate}}</button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
+
+<!--
+    MODAL WINDOW DISPLAYING FORM TO RESET PASSWORD OF EXISTING USER
+-->
+<ion-content padding *ngIf="modalType === 'resetUser'">
+  <form (ngSubmit)="resetUserPassword()" #resetUserForm="ngForm">
+    <ion-row>
+      <ion-col>
+        <ion-list inset>
+          <ion-item>
+            <ion-input type="text" placeholder='{{"3"|translate}}' name="name" [(ngModel)]="resetUserData.uname" value="{{resetUserData.person_username}}" required disabled></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" placeholder='{{"98"|translate}}' name="oldPass" [(ngModel)]="resetUserData.oldPass" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" placeholder='{{"99"|translate}}' name="newPass" [(ngModel)]="resetUserData.newPass" required minlength="8"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="password" placeholder='{{"100"|translate}}' name="confirmNewPass" [(ngModel)]="resetUserData.confirmNewPass" required></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="signup-col">
+        <button ion-button class="submit-btn" full type="submit" [disabled]="!resetUserForm.form.valid">{{"97"|translate}}</button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
+
+
+<!--
+    MODAL WINDOW DISPLAYING FORM TO EDIT METADATA TO A REGISTERED USER
+-->
+
+<ion-content padding *ngIf="modalType === 'editUser'">
+  <form (ngSubmit)="updateUserMetadata()" id="editUser" #editUserForm="ngForm">
+    <ion-grid text-center>
+      <ion-row style="background-color: antiquewhite" >
+        <ion-col>ID</ion-col>
+        <ion-col>{{"84"|translate}}</ion-col>
+        <ion-col>{{"85"|translate}}</ion-col>
+        <ion-col>Email</ion-col>
+        <ion-col>{{"86"|translate}}</ion-col>
+        <ion-col>{{"87"|translate}}</ion-col>
+      </ion-row>
+      <ion-row justify-content-center align-items-center>
+        <ion-col>
+          <ion-input type="text"  name="id" [(ngModel)]="editUserData.id" value="{{editUserData.id}}" disabled></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input type="text" name="name" [(ngModel)]="editUserData.person_name"  value="{{editUserData.person_name}}"></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input type="text"  name="surname" [(ngModel)]="editUserData.person_surnname" value="{{editUserData.person_surnname}}" ></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input type="email" name="email" [(ngModel)]="editUserData.person_email"  value="{{editUserData.person_email}}" ></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input type="text"  name="username" [(ngModel)]="editUserData.person_username" value="{{editUserData.person_username}}" disabled></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input type="text"  name="role" [(ngModel)]="editUserData.person_role" value="{{editUserData.person_role}}" disabled></ion-input>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+
+
+<ion-footer>
+  <p text-center="">{{"3"|translate}}: {{loggedUname}}</p>
+  <p text-center="">{{"6"|translate}}: {{loggedRole}}</p>
+</ion-footer>

@@ -7,6 +7,9 @@
     </ion-buttons>
     <ion-title>{{"51"|translate}}</ion-title>
     <ion-buttons end>
+      <button *ngIf="loggedRole == 'ROLE_CIDE_ADMIN'" title='{{"83"|translate}}' ion-button (click)="openUsersPage()">
+        <ion-icon name="ios-person" style="font-size: 50px;"></ion-icon>
+      </button>
       <button title='{{"66"|translate}}' ion-button (click)="openEstabPage()">
         <ion-icon name="search" style="font-size: 50px"></ion-icon>
       </button>
