@@ -7,7 +7,7 @@
   "proxies": [
 {
 "path": "/cide-auth",
-"proxyUrl": "http://pproo.azo.hr/bifisic/services/httpbasicauth/auth"
+"proxyUrl": "https://192.168.1.226/bifisic/services/httpbasicauth/auth"
 },{
       "path": "/cide-api",
       "proxyUrl": "http://localhost:5001/api"

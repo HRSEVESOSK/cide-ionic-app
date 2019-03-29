@@ -58,7 +58,10 @@
             <h2>{{"47"|translate}}</h2>
           </ion-item>
           <ion-card-content>
-            <a href="https://github.com/HRSEVESOSK/cide-ionic-app/wiki/02-User-manual" target="_blank">
+            <a *ngIf="selectedLanguage == 'en'" href="https://github.com/HRSEVESOSK/cide-ionic-app/wiki/02-User-manual" target="_blank">
+              <button title='{{"60"|translate}}' ion-button><ion-icon name="help-buoy" style="font-size: 50px"></ion-icon></button>
+            </a>
+            <a *ngIf="selectedLanguage == 'hr'" href="https://github.com/HRSEVESOSK/cide-ionic-app/blob/master/user_manual/CIDE_Priru%C4%8Dnik_za_korisnike.pdf" target="_blank">
               <button title='{{"60"|translate}}' ion-button><ion-icon name="help-buoy" style="font-size: 50px"></ion-icon></button>
             </a>
             <a href="https://github.com/HRSEVESOSK/cide-ionic-app/" target="_blank">
@@ -77,6 +80,6 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <p text-center="">{{"48"|translate}}: 0.2.2</p>
-  <p text-center="">{{"49"|translate}}: 24.02.2019</p>
+  <p text-center="">{{"48"|translate}}: 0.3.1</p>
+  <p text-center="">{{"49"|translate}}: 29.03.2019</p>
 </ion-footer>

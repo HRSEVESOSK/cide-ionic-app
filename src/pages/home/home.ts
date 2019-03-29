@@ -18,6 +18,7 @@ export class HomePage extends RequireAuthenticationPage{
   loggedUser: any;
   loggedRoles: any;
   loggedRole: string = localStorage.getItem('app.userInfo.role');
+  selectedLanguage: string = localStorage.getItem('app.userInfo.lang');
   constructor(public navCtrl: NavController,
               splashScreen: SplashScreen,
               statusBar: StatusBar,
