@@ -357,36 +357,6 @@ export class InspectionPage {
     }
   }
 
-  // CIDE HTTP REST API CALLS
-  /*
-  getSpecificInspectionType(inspType) {
-    let inspectionType = '';
-    if (inspType == 'addSi'){
-      inspectionType = 'SI'
-    }
-    else if (inspType == 'addCi'){
-      inspectionType = 'CI'
-    }
-    else{
-      inspectionType = 'any'
-    }
-
-    this.loaderCreate();
-    this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass,inspectionType)
-      .then(data => {
-        //console.log("SI TYPES LIST DATA", data);
-        this.ciTypes = data;
-        this.loader.dismiss();
-      })
-      .catch(reason => {
-        //console.log("GET SI TYPES LIST ERROR", reason);
-        this.loader.dismiss();
-        this.presentErrorMessage(reason.status + ": " + reason.statusText);
-        //console.error(reason);
-      })
-  }
-  */
-
   getSpecificInspectionTypeScore() {
     //this.loaderCreate();
     this.restProvider.getSICriteriorScoreList(this.loggedUname, this.loggedPass,this.selectedLanguage)

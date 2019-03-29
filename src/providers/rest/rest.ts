@@ -8,9 +8,9 @@ export class RestProvider {
   constructor(public http: HttpClient) {
     //this.apiUrl = 'http://localhost:5001/api';
     //this.apiUrl = 'http://192.168.1.226/cide-api/api';
-    this.apiUrl = '/cide-api';
+    //this.apiUrl = '/cide-api';
     //this.apiUrl = 'https://apps.klimeto.com/cide/api';
-    //this.apiUrl = 'https://pproo.azo.hr/cide-api/api';
+    this.apiUrl = 'https://pproo.azo.hr/cide-api/api';
 
   }
  getEstablishment(u, p) {
@@ -234,28 +234,15 @@ export class RestProvider {
       })
     })
   }
-  /*
-  postFile(token:string, file:Blob){
 
-    let url = WebService.API_POST_FILE + "?token="+token;
-    let httpOptions = {
-      headers: new HttpHeaders({
-        'enctype': 'multipart/form-data; boundary=----WebKitFormBoundaryuL67FWkv1CA'
+  sendResetEmail(data){
+    return new Promise((resolve, reject) => {
+      this.http.get(this.apiUrl + '/public/reset-password' + '?uname='+data.uname +'&email='+data.email ).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        //console.log("ERROR IN UPDATING CI", error1);
+        reject(error1)
       })
-    };
-
-    let formData = new FormData();
-    formData.append('file', file, 'test.jpg');
-
-    //console.log("post photo to URL at "+url);
-    return this.http
-      .post<SimpleResponse>(
-        url,
-        formData,
-        httpOptions
-      );
+    })
   }
-  */
-
-
 }
