@@ -9,6 +9,9 @@ import {
   ViewController
 } from 'ionic-angular';
 import {RestProvider} from "../../providers/rest/rest";
+import {FormControl, FormGroup, Validators,ValidatorFn,AbstractControl} from "@angular/forms";
+import {AuthenticateProvider} from "../../providers/authenticate/authenticate";
+import {error} from "@angular/compiler/src/util";
 
 /**
  * Generated class for the UserPage page.
@@ -36,11 +39,14 @@ export class UserPage {
   editUserData: any;
   //resetUserData: any;
   modalType: string = null;
+  user: FormGroup;
+  userReset: FormGroup;
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
               public navParams: NavParams,
               public restProvider: RestProvider,
+              public authProvider: AuthenticateProvider,
               public loadingCtrl: LoadingController,
               public modalCtrl: ModalController,
               private toastCtrl: ToastController,
@@ -56,8 +62,47 @@ export class UserPage {
       console.log("RESET USER DATA", this.navParams.get('resetUserData'));
       this.resetUserData.uname = (this.navParams.get('resetUserData')).person_username;
       console.log("RESET USER DATA: ", this.editUserData);
-    }
+      this.userReset = new FormGroup({
+        uname: new FormControl('',[Validators.required]),
+        oldPass: new FormControl('',[Validators.required,this.passCheck()]),
+        newPass: new FormControl('', [Validators.required]),
+        confNewPass: new FormControl('', [Validators.required,this.equalto('newPass')])
 
+      })
+    }
+    if (this.modalType === 'regUser') {
+      console.log("REGISTER USER DATA", this.navParams.get('regUserData'));
+      this.user = new FormGroup({
+        uname: new FormControl('',[Validators.required]),
+        role:new FormControl('',[Validators.required]),
+        password: new FormControl('', [Validators.required]),
+        re_password: new FormControl('', [Validators.required,this.equalto('password')])
+      });
+    }
+  }
+
+  private passCheck(): ValidatorFn{
+    return (control: AbstractControl):{[key: string]: any} => {
+      let input = control.value;
+      let isValid=this.loggedPass == input;
+      if(!isValid)
+        return { 'passCheck': {isValid} };
+      else
+        return null;
+    };
+  }
+
+  private equalto(field_name): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} => {
+
+      let input = control.value;
+
+      let isValid=control.root.value[field_name]==input;
+      if(!isValid)
+        return { 'equalTo': {isValid} };
+      else
+        return null;
+    };
   }
 
   presentAlert(reason) {
@@ -75,13 +120,12 @@ export class UserPage {
   }
 
   getUsers(){
-    this.restProvider.getUser(this.loggedUname,this.loggedPass)
+    this.restProvider.getUser(this.loggedUname,this.loggedPass, this.loggedRole)
       .then(data => {
         this.users = data;
         this.loader.dismiss();
       })
       .catch(reason => {
-        //console.log("GET ESTABLISHMENT LIST FAILED", reason);
         this.loader.dismiss();
         this.presentAlert(reason);
         this.navCtrl.push('HomePage')
@@ -98,11 +142,70 @@ export class UserPage {
   registerUser(){
     console.log("*** Function registerUser was called");
     console.log("Registration data are: ", this.regUserData);
+    this.authProvider.addUser(this.regUserData.uname,this.regUserData.confirm_pass)
+      .then(data=>{
+        console.log("Register user response: ", data);
+        this.ciHashedId = this.regUserData.uname;
+        this.presentToast('Registration succesfull for: ');
+        this.wait(2500);
+        this.authProvider.addUserRole(this.regUserData.uname,this.regUserData.role)
+          .then(data=>{
+            console.log("Added role response: ", data);
+            this.loader.dismiss();
+            this.ciHashedId = this.regUserData.role;
+            this.presentToast('Role assignment sucessfull for: ');
+          })
+          .catch(reason => {
+            console.log(reason);
+            this.loader.dismiss();
+            this.presentAlert(reason);
+          })
+      })
+      .catch(reason => {
+        if (reason.status == 302 && reason.statusText === 'Found'){
+          console.log("Username already registered in authentication service. Adding role.", reason.status, reason.statusText);
+          this.ciHashedId = '';
+          this.presentToast('Username already registered. Adding role...');
+          this.wait(2500);
+          this.authProvider.addUserRole(this.regUserData.uname,this.regUserData.role)
+            .then(data=>{
+              console.log("Added role response: ", data);
+              this.loader.dismiss();
+              this.ciHashedId = this.regUserData.role;
+              this.presentToast('Role assignment sucessfull for: ');
+            })
+            .catch(reason => {
+              console.log(reason);
+              this.loader.dismiss();
+              this.presentAlert(reason);
+            })
+        }
+        else{
+          console.log(reason);
+          this.loader.dismiss();
+          this.presentAlert(reason);
+          //this.navCtrl.push('UserPage')
+        }
+      })
   }
 
   resetUserPassword(){
     console.log("*** Function resetUserPassword was called");
     console.log("Reset data are: ", this.resetUserData);
+    this.authProvider.changeUserPassword(this.resetUserData.uname,this.resetUserData.confirmNewPass)
+      .then(data=>{
+        console.log("Password reset data: ", data);
+        this.ciHashedId = this.resetUserData.uname;
+        //this.loggedPass == this.resetUserData.confirmNewPass;
+        localStorage.setItem('app.userInfo.pass', this.resetUserData.confirmNewPass);
+        this.loggedPass = localStorage.getItem('app.userInfo.pass');
+        this.presentToast('Password succesfully updated for: ');
+        })
+      .catch(reason=>{
+        console.log(reason);
+        this.loader.dismiss();
+        this.presentAlert(reason);
+      })
   }
 
   editUserModal(data){
@@ -204,6 +307,14 @@ export class UserPage {
       });
     }
     toast.present();
+  }
+
+  wait(ms){
+    let start = new Date().getTime();
+    let end = start;
+    while(end < start + ms) {
+      end = new Date().getTime();
+    }
   }
 
 }

@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-title>{{"51"|translate}}</ion-title>
     <ion-buttons end>
-      <button *ngIf="loggedRole == 'ROLE_CIDE_ADMIN'" title='{{"83"|translate}}' ion-button (click)="openUsersPage()">
+      <button title='{{"83"|translate}}' ion-button (click)="openUsersPage()"> <!-- *ngIf="loggedRole == 'ROLE_CIDE_ADMIN'" -->
         <ion-icon name="ios-person" style="font-size: 50px;"></ion-icon>
       </button>
       <button title='{{"66"|translate}}' ion-button (click)="openEstabPage()">
@@ -80,6 +80,6 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <p text-center="">{{"48"|translate}}: 0.3.1</p>
-  <p text-center="">{{"49"|translate}}: 29.03.2019</p>
+  <p text-center="">{{"48"|translate}}: 0.4.1</p>
+  <p text-center="">{{"49"|translate}}: 07.04.2019</p>
 </ion-footer>

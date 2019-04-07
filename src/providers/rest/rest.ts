@@ -9,7 +9,6 @@ export class RestProvider {
     //this.apiUrl = 'http://localhost:5001/api';
     //this.apiUrl = 'http://192.168.1.226/cide-api/api';
     //this.apiUrl = '/cide-api';
-    //this.apiUrl = 'https://apps.klimeto.com/cide/api';
     this.apiUrl = 'https://pproo.azo.hr/cide-api/api';
 
   }
@@ -212,9 +211,16 @@ export class RestProvider {
     })
   }
 
-  getUser(u, p) {
+  getUser(u, p, role) {
+    let reqUrl = '';
+    if (role == 'ROLE_CIDE_ADMIN'){
+      reqUrl = this.apiUrl + '/user'
+    }
+    else{
+      reqUrl = this.apiUrl + '/user?uname=' + u;
+    }
     return new Promise((resolve, reject) => {
-      this.http.get(this.apiUrl + '/user', {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(reqUrl, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log(error1);

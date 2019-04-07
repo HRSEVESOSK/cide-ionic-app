@@ -1,22 +1,22 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
     <ion-buttons left>
-      <button *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType == null" title='{{"65"|translate}}' ion-button large (click)="navCtrl.push('HomePage')">
+      <button *ngIf="modalType == null" title='{{"65"|translate}}' ion-button large (click)="navCtrl.push('HomePage')">
         <ion-icon name="arrow-back"></ion-icon>
       </button>
-      <button *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType != null" title='{{"65"|translate}}' ion-button large (click)="closeModal()">
+      <button *ngIf="modalType != null" title='{{"65"|translate}}' ion-button large (click)="closeModal()"> <!-- loggedRole == 'ROLE_CIDE_ADMIN' && -->
         <ion-icon name="arrow-back"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType == null">{{"83"|translate}}</ion-title>
+    <ion-title *ngIf="modalType == null">{{"83"|translate}}</ion-title>
     <ion-title *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType === 'regUser'">{{"94"|translate}}</ion-title>
-    <ion-title *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType === 'editUser'">{{"95"|translate}}</ion-title>
-    <ion-title *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType === 'resetUser'">{{"95"|translate}}</ion-title>
+    <ion-title *ngIf="modalType === 'editUser'">{{"95"|translate}}</ion-title>
+    <ion-title *ngIf="modalType === 'resetUser'">{{"95"|translate}}</ion-title>
     <ion-buttons end>
       <button title='{{"88"|translate}}' *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType == null" ion-button (click)="regUserModal()">
         <ion-icon name="add-circle" style="font-size: 50px"></ion-icon>
       </button>
-      <button title='{{"88"|translate}}' *ngIf="loggedRole == 'ROLE_CIDE_ADMIN' && modalType === 'editUser'" ion-button type="submit" form="editUser">
+      <button title='{{"88"|translate}}' *ngIf="modalType === 'editUser'" ion-button type="submit" form="editUser"> <!-- loggedRole == 'ROLE_CIDE_ADMIN' &&  -->
         <ion-icon name="checkmark-circle" style="font-size: 50px"></ion-icon>
       </button>
       <button title='{{"71"|translate}}' *ngIf="modalType === 'regUser' || modalType ==='editUser' || modalType ==='resetUser'" (click)="closeModal()" ion-button >
@@ -56,8 +56,8 @@
         <ion-col>{{e.person_name}}</ion-col>
         <ion-col>{{e.person_surnname}}</ion-col>
         <ion-col>{{e.person_email}}</ion-col>
-        <ion-col>{{e.person_username}}</ion-col>
         <ion-col>{{e.person_role}}</ion-col>
+        <ion-col>{{e.person_username}}</ion-col>
         <ion-col>
           <ion-buttons>
             <button title='{{"91"|translate}}' ion-button (click)="editUserModal(e)">
@@ -66,9 +66,11 @@
             <button title='{{"97"|translate}}' ion-button (click)="resetUserModal(e)" color="secondary">
               <ion-icon name="key"></ion-icon>
             </button>
+            <!--
             <button title='{{"90"|translate}}' ion-button (click)="showConfirmAlert(e.id,e.username)" color="danger">
               <ion-icon name="trash"></ion-icon>
             </button>
+            -->
           </ion-buttons>
         </ion-col>
       </ion-row>
@@ -90,15 +92,37 @@
     MODAL WINDOW DISPLAYING FORM TO REGISTER NEW USER
 -->
 <ion-content padding *ngIf="modalType === 'regUser'">
-  <form (ngSubmit)="registerUser()" #regUserForm="ngForm">
+  <form (ngSubmit)="registerUser()" #regUserForm="ngForm" [formGroup]="user">
     <ion-row>
       <ion-col>
         <ion-list inset>
           <ion-item>
-            <ion-input type="text" placeholder='{{"3"|translate}}' name="name" [(ngModel)]="regUserData.uname" required></ion-input>
+            <ion-input type="text" placeholder='{{"3"|translate}}' formControlName="uname" [(ngModel)]="regUserData.uname" required></ion-input>
           </ion-item>
+          <!--
           <ion-item>
-            <ion-input type="text" placeholder='{{"86"|translate}}' name="role" [(ngModel)]="regUserData.role" required></ion-input>
+            <ion-input type="text" placeholder='{{"86"|translate}}' formControlName="role" [(ngModel)]="regUserData.role" required value="ROLE_CIDE_ADMIN"></ion-input>
+          </ion-item>
+          -->
+          <ion-item>
+            <ion-select interface="popover" placeholder='{{"86"|translate}}' formControlName="role" [(ngModel)]="regUserData.role" required>
+              <ion-option value="ROLE_CIDE_ADMIN">Admin</ion-option>
+              <ion-option value="ROLE_CIDE_COORDINATOR">Coordinator</ion-option>
+              <ion-option value="ROLE_CIDE_ENV">Environmental</ion-option>
+              <ion-option value="ROLE_CIDE_VOD">Water</ion-option>
+              <ion-option value="ROLE_CIDE_EL">Electric</ion-option>
+              <ion-option value="ROLE_CIDE_PRI">Nature</ion-option>
+              <ion-option value="ROLE_CIDE_ZP">Fire</ion-option>
+              <ion-option value="ROLE_CIDE_ZNR">Work</ion-option>
+              <ion-option value="ROLE_CIDE_SAN">Sanitary</ion-option>
+              <ion-option value="ROLE_CIDE_VET">Veterinary</ion-option>
+              <ion-option value="ROLE_CIDE_POLJ">Agriculture</ion-option>
+              <ion-option value="ROLE_CIDE_RUD">Mine</ion-option>
+              <ion-option value="ROLE_CIDE_IGOK">Toxic</ion-option>
+              <ion-option value="ROLE_CIDE_IED">Emissions</ion-option>
+              <ion-option value="ROLE_CIDE_EONTO">Waste</ion-option>
+              <ion-option value="ROLE_CIDE_ICZ">Protection</ion-option>
+            </ion-select>
           </ion-item>
           <!--
           <ion-item>
@@ -106,17 +130,35 @@
           </ion-item>
           -->
           <ion-item>
-            <ion-input type="password" placeholder='{{"4"|translate}}' name="password" [(ngModel)]="regUserData.pass" required minlength="8"></ion-input>
+            <ion-input type="password" placeholder='{{"4"|translate}}' formControlName="password" [(ngModel)]="regUserData.pass" required minlength="8"></ion-input>
+          </ion-item>
+          <ion-item no-lines *ngIf="( user.get('password').hasError('required') ) && user.get('password').touched">
+            <div class="error" *ngIf="user.get('password').hasError('required') && user.get('password').touched">
+              {{"104"|translate}}
+            </div>
+          </ion-item>
+          <ion-item no-lines *ngIf="( user.get('password').hasError('minlength') ) && user.get('password').touched">
+            <div class="error" *ngIf="user.get('password').hasError('minlength') && user.get('password').touched">
+              {{"105"|translate}}
+            </div>
           </ion-item>
           <ion-item>
-            <ion-input type="password" placeholder='{{"93"|translate}} {{"4"|translate}}' name="confirmation_password" [(ngModel)]="regUserData.confirm_pass" required></ion-input>
+            <ion-input type="password" placeholder='{{"93"|translate}} {{"4"|translate}}' formControlName="re_password" [(ngModel)]="regUserData.confirm_pass" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <div class="error" *ngIf="user.get('re_password').hasError('required') && user.get('re_password').touched">
+              {{"106"|translate}}
+            </div>
+            <div class="error" *ngIf="user.get('re_password').hasError('equalTo') && user.get('re_password').touched">
+              {{"107"|translate}}
+            </div>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col class="signup-col">
-        <button ion-button class="submit-btn" full type="submit" [disabled]="!regUserForm.form.valid">{{"96"|translate}}</button>
+        <button ion-button class="submit-btn" full type="submit" [disabled]="!regUserForm.form.valid && user.invalid">{{"96"|translate}}</button>
       </ion-col>
     </ion-row>
   </form>
@@ -126,28 +168,56 @@
     MODAL WINDOW DISPLAYING FORM TO RESET PASSWORD OF EXISTING USER
 -->
 <ion-content padding *ngIf="modalType === 'resetUser'">
-  <form (ngSubmit)="resetUserPassword()" #resetUserForm="ngForm">
+  <form (ngSubmit)="resetUserPassword()" #resetUserForm="ngForm" [formGroup]="userReset">
     <ion-row>
       <ion-col>
         <ion-list inset>
           <ion-item>
-            <ion-input type="text" placeholder='{{"3"|translate}}' name="name" [(ngModel)]="resetUserData.uname" value="{{resetUserData.person_username}}" required disabled></ion-input>
+            <ion-input type="text" placeholder='{{"3"|translate}}' formControlName="uname" [(ngModel)]="resetUserData.uname" value="{{resetUserData.uname}}" required disabled></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input type="password" placeholder='{{"98"|translate}}' name="oldPass" [(ngModel)]="resetUserData.oldPass" required></ion-input>
+            <ion-input type="password" placeholder='{{"98"|translate}}' formControlName="oldPass" [(ngModel)]="resetUserData.oldPass" required></ion-input>
+          </ion-item>
+          <ion-item *ngIf="userReset.get('oldPass').hasError('required') && userReset.get('oldPass').touched">
+            <div class="error" *ngIf="userReset.get('oldPass').hasError('required') && userReset.get('oldPass').touched">
+              {{"108"|translate}}
+            </div>
+          </ion-item>
+          <ion-item *ngIf="userReset.get('oldPass').hasError('passCheck') && userReset.get('oldPass').touched">
+            <div class="error" *ngIf="userReset.get('oldPass').hasError('passCheck') && userReset.get('oldPass').touched">
+              {{"109"|translate}}
+            </div>
           </ion-item>
           <ion-item>
-            <ion-input type="password" placeholder='{{"99"|translate}}' name="newPass" [(ngModel)]="resetUserData.newPass" required minlength="8"></ion-input>
+            <ion-input type="password" placeholder='{{"99"|translate}}' formControlName="newPass" [(ngModel)]="resetUserData.newPass" required minlength="8"></ion-input>
+          </ion-item>
+          <ion-item no-lines *ngIf="( userReset.get('newPass').hasError('required') ) && userReset.get('newPass').touched">
+            <div class="error" *ngIf="userReset.get('newPass').hasError('required') && userReset.get('newPass').touched">
+              {{"104"|translate}}
+            </div>
+          </ion-item>
+          <ion-item no-lines *ngIf="( userReset.get('newPass').hasError('minlength') ) && userReset.get('newPass').touched">
+            <div class="error" *ngIf="userReset.get('newPass').hasError('minlength') && userReset.get('newPass').touched">
+              {{"105"|translate}}
+            </div>
           </ion-item>
           <ion-item>
-            <ion-input type="password" placeholder='{{"100"|translate}}' name="confirmNewPass" [(ngModel)]="resetUserData.confirmNewPass" required></ion-input>
+            <ion-input type="password" placeholder='{{"100"|translate}}' formControlName="confNewPass" [(ngModel)]="resetUserData.confirmNewPass" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <div class="error" *ngIf="userReset.get('confNewPass').hasError('required') && userReset.get('confNewPass').touched">
+              {{"106"|translate}}
+            </div>
+            <div class="error" *ngIf="userReset.get('confNewPass').hasError('equalTo') && userReset.get('confNewPass').touched">
+              {{"107"|translate}}
+            </div>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col class="signup-col">
-        <button ion-button class="submit-btn" full type="submit" [disabled]="!resetUserForm.form.valid">{{"97"|translate}}</button>
+        <button ion-button class="submit-btn" full type="submit" [disabled]="!resetUserForm.form.valid && userReset.invalid">{{"97"|translate}}</button>
       </ion-col>
     </ion-row>
   </form>
@@ -166,8 +236,8 @@
         <ion-col>{{"84"|translate}}</ion-col>
         <ion-col>{{"85"|translate}}</ion-col>
         <ion-col>Email</ion-col>
-        <ion-col>{{"86"|translate}}</ion-col>
         <ion-col>{{"87"|translate}}</ion-col>
+        <ion-col>{{"86"|translate}}</ion-col>
       </ion-row>
       <ion-row justify-content-center align-items-center>
         <ion-col>

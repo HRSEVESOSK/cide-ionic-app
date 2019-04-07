@@ -101,5 +101,11 @@
   "100":"Confirm new password",
   "101":"Reset user password",
   "102":"Email",
-  "103":"Send reset email"
+  "103":"Send reset email",
+  "104":"Password is required",
+  "105":"Password must have minimum length of 8 characters",
+  "106":"Confirm password is required",
+  "107":"Password Mismatch",
+  "108":"Current password is required",
+  "109":"Inserted password is invalid"
 }

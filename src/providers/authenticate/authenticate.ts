@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs/Observable";
+import {P} from "@angular/core/src/render3";
+import {error} from "@angular/compiler/src/util";
 
 /*
   Generated class for the AuthenticateProvider provider.
@@ -10,12 +12,15 @@ import {Observable} from "rxjs/Observable";
 */
 @Injectable()
 export class AuthenticateProvider {
-  //authUrl = '/cide-auth';
+  baseUrl: any;
   //authUrl = 'http://192.168.1.226/bifisic/services/httpbasicauth/auth';
-  authUrl = 'https://pproo.azo.hr/bifisic/services/httpbasicauth/auth';
+  //authUrl = 'https://pproo.azo.hr/bifisic/services/httpbasicauth/auth';
   constructor(public http: HttpClient) {
     //console.log('Hello AuthenticateProvider Provider');
+    //this.baseUrl = '/cide-auth';
+    this.baseUrl = 'https://pproo.azo.hr/bifisic/services/httpbasicauth'
   }
+
   /**
    * Store user on local storage.
    *
@@ -27,12 +32,13 @@ export class AuthenticateProvider {
       localStorage.setItem('app.userInfo.role', user.roles);
       localStorage.setItem('app.userInfo.name', user.name);
       localStorage.setItem('app.userInfo.pass', pass);
-      localStorage.setItem('app.userInfo.lang',lang);
+      localStorage.setItem('app.userInfo.lang', lang);
     }
-    else{
+    else {
       //console.error("Authentication service is not available");
     }
   }
+
   /**
    * Get user from local storage.
    *
@@ -42,12 +48,13 @@ export class AuthenticateProvider {
     let user: any;
     if (localStorage.getItem('app.userInfo')) {
       user = {
-        id : localStorage.getItem('app.userInfo.role'),
-        name : localStorage.getItem('app.userInfo.name')
+        id: localStorage.getItem('app.userInfo.role'),
+        name: localStorage.getItem('app.userInfo.name')
       }
     }
     return user;
   }
+
   /**
    * Remove user from local storage.
    */
@@ -64,16 +71,16 @@ export class AuthenticateProvider {
    * @param password Password.
    */
 
-  public authenticateUsingCredentials(user: string,password: string,language:string){
-    if (user === null || password === null){
+  public authenticateUsingCredentials(user: string, password: string, language: string) {
+    if (user === null || password === null) {
       return Observable.create('User and password are required')
     }
-    else{
+    else {
       return new Promise((resolve, reject) => {
-        this.http.get(this.authUrl + '?user=' + user + '&password=' + password).subscribe(data=> {
-          this.setAuthenticatedUser(data,password,language);
+        this.http.get(this.baseUrl + '/auth?user=' + user + '&password=' + password).subscribe(data => {
+          this.setAuthenticatedUser(data, password, language);
           resolve(data)
-        },error1 => {
+        }, error1 => {
           //console.log(error1);
           reject(error1)
         })
@@ -81,4 +88,97 @@ export class AuthenticateProvider {
     }
   }
 
+  public addXXXUser(uname: string, password: string) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.baseUrl + '/adduser?user=' + uname + '&password=' + password).subscribe(data => {
+        console.log("User sucessfully added to BIFISIC auth service with data:  ", data);
+        resolve(data)
+      }, error1 => {
+        console.log(error1);
+        reject(error1)
+      })
+    })
+  }
+
+  public addUser(uname: string, password: string) {
+    return new Promise((resolve, reject) =>{
+      this.http.get(this.baseUrl + '/adduser?user=' + uname + '&password=' + password, {observe: 'response'}).subscribe(res => {
+        console.log(res);
+        console.log("addUser response: ", res);
+        resolve(res);
+      }, error1 => {
+        console.log("Nastal error: ", error1);
+        reject(error1)
+      })
+    })
+  }
+
+  public addUserRole(uname: string, role: string) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.baseUrl + '/addrole?user=' + uname + '&role=' + role).subscribe(data => {
+        console.log("User sucessfully added to BIFISIC auth service with data:  ", data);
+        resolve(data)
+      }, error => {
+        console.log(error);
+        reject(error)
+      })
+    })
+  }
+
+  private deleteUserRole(uname: string, role: string) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.baseUrl + '/deleterole?user=' + uname + '&role=' + role).subscribe(data => {
+        console.log("User sucessfully added to BIFISIC auth service with data:  ", data);
+        resolve(data)
+      }, error => {
+        console.log(error);
+        reject(error)
+      })
+    })
+  }
+
+
+  private deleteUser(uname: string) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.baseUrl + '/deleteuser?user=' + uname).subscribe(data => {
+        console.log("User sucessfully added to BIFISIC auth service with data:  ", data);
+        resolve(data)
+      }, error => {
+        console.log(error);
+        reject(error)
+      })
+    })
+  }
+
+  private listRolesUser(uname: string, role: string) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.baseUrl + '/listroles?user=' + uname).subscribe(data => {
+        console.log("User sucessfully added to BIFISIC auth service with data:  ", data);
+        resolve(data)
+      }, error => {
+        console.log(error);
+        reject(error)
+      })
+    })
+  }
+
+
+  public changeUserPassword(uname: string, password: string) {
+    return new Promise((resolve, reject) => {
+      this.http.get(this.baseUrl + '/edituser?user=' + uname + '&password=' + password).subscribe(data => {
+        console.log("User sucessfully edited in BIFISIC auth service with data:  ", data);
+        resolve(data)
+      }, error => {
+        console.log(error);
+        reject(error)
+      })
+    })
+  }
+
+
+
+
+
 }
+
+

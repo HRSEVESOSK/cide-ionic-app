@@ -101,5 +101,11 @@
   "100":"Potvrdi novu lozinku",
   "101":"Poništi korisničku lozinku",
   "102":"e-pošta",
-  "103":"Pošalji e-poštu za poništavanje"
+  "103":"Pošalji e-poštu za poništavanje",
+  "104":"Potrebna je lozinka",
+  "105":"Lozinka mora imati minimalnu duljinu od 8 znakova",
+  "106":"Potvrdi lozinku je potrebno",
+  "107":"Lozinka ne podudaraju",
+  "108":"Trenutna lozinka je obavezna",
+  "109":"Umetnuta zaporka je nevažeća"
 }
