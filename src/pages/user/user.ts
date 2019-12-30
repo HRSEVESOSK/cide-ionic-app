@@ -54,14 +54,14 @@ export class UserPage {
     this.loaderCreate();
     this.modalType = this.navParams.get('type');
     if (this.modalType === 'editUser') {
-      console.log("USER DATA", this.navParams.get('userData'));
+      //console.log("USER DATA", this.navParams.get('userData'));
       this.editUserData = this.navParams.get('userData');
-      console.log("EDIT USER DATA: ", this.editUserData);
+      //console.log("EDIT USER DATA: ", this.editUserData);
     }
     if (this.modalType === 'resetUser') {
-      console.log("RESET USER DATA", this.navParams.get('resetUserData'));
+      //console.log("RESET USER DATA", this.navParams.get('resetUserData'));
       this.resetUserData.uname = (this.navParams.get('resetUserData')).person_username;
-      console.log("RESET USER DATA: ", this.editUserData);
+      //console.log("RESET USER DATA: ", this.editUserData);
       this.userReset = new FormGroup({
         uname: new FormControl('',[Validators.required]),
         oldPass: new FormControl('',[Validators.required,this.passCheck()]),
@@ -71,7 +71,7 @@ export class UserPage {
       })
     }
     if (this.modalType === 'regUser') {
-      console.log("REGISTER USER DATA", this.navParams.get('regUserData'));
+      //console.log("REGISTER USER DATA", this.navParams.get('regUserData'));
       this.user = new FormGroup({
         uname: new FormControl('',[Validators.required]),
         role:new FormControl('',[Validators.required]),
@@ -115,7 +115,6 @@ export class UserPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UserPage');
     this.getUsers();
   }
 
@@ -140,48 +139,48 @@ export class UserPage {
   }
 
   registerUser(){
-    console.log("*** Function registerUser was called");
-    console.log("Registration data are: ", this.regUserData);
+    //console.log("*** Function registerUser was called");
+    //console.log("Registration data are: ", this.regUserData);
     this.authProvider.addUser(this.regUserData.uname,this.regUserData.confirm_pass)
       .then(data=>{
-        console.log("Register user response: ", data);
+        //console.log("Register user response: ", data);
         this.ciHashedId = this.regUserData.uname;
         this.presentToast('Registration succesfull for: ');
         this.wait(2500);
         this.authProvider.addUserRole(this.regUserData.uname,this.regUserData.role)
           .then(data=>{
-            console.log("Added role response: ", data);
+            //console.log("Added role response: ", data);
             this.loader.dismiss();
             this.ciHashedId = this.regUserData.role;
             this.presentToast('Role assignment sucessfull for: ');
           })
           .catch(reason => {
-            console.log(reason);
+            //console.log(reason);
             this.loader.dismiss();
             this.presentAlert(reason);
           })
       })
       .catch(reason => {
         if (reason.status == 302 && reason.statusText === 'Found'){
-          console.log("Username already registered in authentication service. Adding role.", reason.status, reason.statusText);
+          //console.log("Username already registered in authentication service. Adding role.", reason.status, reason.statusText);
           this.ciHashedId = '';
           this.presentToast('Username already registered. Adding role...');
           this.wait(2500);
           this.authProvider.addUserRole(this.regUserData.uname,this.regUserData.role)
             .then(data=>{
-              console.log("Added role response: ", data);
+              //console.log("Added role response: ", data);
               this.loader.dismiss();
               this.ciHashedId = this.regUserData.role;
               this.presentToast('Role assignment sucessfull for: ');
             })
             .catch(reason => {
-              console.log(reason);
+              //console.log(reason);
               this.loader.dismiss();
               this.presentAlert(reason);
             })
         }
         else{
-          console.log(reason);
+          //console.log(reason);
           this.loader.dismiss();
           this.presentAlert(reason);
           //this.navCtrl.push('UserPage')
@@ -190,19 +189,17 @@ export class UserPage {
   }
 
   resetUserPassword(){
-    console.log("*** Function resetUserPassword was called");
-    console.log("Reset data are: ", this.resetUserData);
+    //console.log("*** Function resetUserPassword was called");
     this.authProvider.changeUserPassword(this.resetUserData.uname,this.resetUserData.confirmNewPass)
       .then(data=>{
-        console.log("Password reset data: ", data);
         this.ciHashedId = this.resetUserData.uname;
         //this.loggedPass == this.resetUserData.confirmNewPass;
-        localStorage.setItem('app.userInfo.pass', this.resetUserData.confirmNewPass);
-        this.loggedPass = localStorage.getItem('app.userInfo.pass');
+        //localStorage.setItem('app.userInfo.pass', this.resetUserData.confirmNewPass);
+        //this.loggedPass = localStorage.getItem('app.userInfo.pass');
         this.presentToast('Password succesfully updated for: ');
         })
       .catch(reason=>{
-        console.log(reason);
+        //console.log(reason);
         this.loader.dismiss();
         this.presentAlert(reason);
       })
@@ -227,8 +224,7 @@ export class UserPage {
   }
 
   updateUserMetadata(){
-    console.log("*** Function updateUserMetadata user was called");
-    console.log("Metadata to update are: ", this.editUserData);
+    //console.log("*** Function updateUserMetadata user was called");
     this.loaderCreate();
     this.restProvider.updateUser(this.loggedUname,this.loggedPass,this.editUserData)
       .then(data => {

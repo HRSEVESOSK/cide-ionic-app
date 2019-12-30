@@ -1,9 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import {P} from "@angular/core/src/render3";
-import {error} from "@angular/compiler/src/util";
-
 /*
   Generated class for the AuthenticateProvider provider.
 
@@ -17,8 +14,8 @@ export class AuthenticateProvider {
   //authUrl = 'https://pproo.azo.hr/bifisic/services/httpbasicauth/auth';
   constructor(public http: HttpClient) {
     //console.log('Hello AuthenticateProvider Provider');
-    //this.baseUrl = '/cide-auth';
-    this.baseUrl = 'https://pproo.azo.hr/bifisic/services/httpbasicauth'
+    this.baseUrl = '/cide-auth';
+    //this.baseUrl = 'https://pproo.azo.hr/bifisic/services/httpbasicauth'
   }
 
   /**
@@ -59,9 +56,15 @@ export class AuthenticateProvider {
    * Remove user from local storage.
    */
   public clearAuthenticatedUser(): void {
+    /*
     localStorage.removeItem('app.userInfo');
     localStorage.removeItem('app.userInfo.role');
     localStorage.removeItem('app.userInfo.name');
+    localStorage.removeItem('app.userInfo.pass');
+    localStorage.removeItem('app.userInfo.lang');
+    */
+    //localStorage.clear();
+    window.localStorage.clear();
   }
 
   /**
@@ -91,10 +94,8 @@ export class AuthenticateProvider {
   public addXXXUser(uname: string, password: string) {
     return new Promise((resolve, reject) => {
       this.http.get(this.baseUrl + '/adduser?user=' + uname + '&password=' + password).subscribe(data => {
-        console.log("User sucessfully added to BIFISIC auth service with data:  ", data);
         resolve(data)
       }, error1 => {
-        console.log(error1);
         reject(error1)
       })
     })
@@ -103,11 +104,8 @@ export class AuthenticateProvider {
   public addUser(uname: string, password: string) {
     return new Promise((resolve, reject) =>{
       this.http.get(this.baseUrl + '/adduser?user=' + uname + '&password=' + password, {observe: 'response'}).subscribe(res => {
-        console.log(res);
-        console.log("addUser response: ", res);
         resolve(res);
       }, error1 => {
-        console.log("Nastal error: ", error1);
         reject(error1)
       })
     })

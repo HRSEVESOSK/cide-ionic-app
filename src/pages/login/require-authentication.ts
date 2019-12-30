@@ -19,6 +19,7 @@ export class RequireAuthenticationPage implements OnInit {
   public logout(): any {
     this.authenticateProvider.clearAuthenticatedUser();
     this.navCtrl.setRoot('LoginPage');
+    console.log("LocalStorage: ", localStorage );
   }
 
   /**

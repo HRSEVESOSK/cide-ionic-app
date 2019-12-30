@@ -8,8 +8,8 @@ export class RestProvider {
   constructor(public http: HttpClient) {
     //this.apiUrl = 'http://localhost:5001/api';
     //this.apiUrl = 'http://192.168.1.226/cide-api/api';
-    //this.apiUrl = '/cide-api';
-    this.apiUrl = 'https://pproo.azo.hr/cide-api/api';
+    this.apiUrl = '/cide-api';
+    //this.apiUrl = 'https://pproo.azo.hr/cide-api/api';
 
   }
  getEstablishment(u, p) {
