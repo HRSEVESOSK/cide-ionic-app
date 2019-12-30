@@ -12,6 +12,7 @@ import {RestProvider} from "../../providers/rest/rest";
 import {FormControl, FormGroup, Validators,ValidatorFn,AbstractControl} from "@angular/forms";
 import {AuthenticateProvider} from "../../providers/authenticate/authenticate";
 import {error} from "@angular/compiler/src/util";
+import {RequireAuthenticationPage} from "../login/require-authentication";
 
 /**
  * Generated class for the UserPage page.
@@ -25,7 +26,7 @@ import {error} from "@angular/compiler/src/util";
   selector: 'page-user',
   templateUrl: 'user.html',
 })
-export class UserPage {
+export class UserPage  extends RequireAuthenticationPage{
   users:any;
   loader: any;
   loggedUname : string = localStorage.getItem('app.userInfo.name');
@@ -51,6 +52,7 @@ export class UserPage {
               public modalCtrl: ModalController,
               private toastCtrl: ToastController,
               public alertCtrl: AlertController) {
+    super(navCtrl, navParams, authProvider);
     this.loaderCreate();
     this.modalType = this.navParams.get('type');
     if (this.modalType === 'editUser') {
@@ -193,10 +195,11 @@ export class UserPage {
     this.authProvider.changeUserPassword(this.resetUserData.uname,this.resetUserData.confirmNewPass)
       .then(data=>{
         this.ciHashedId = this.resetUserData.uname;
-        //this.loggedPass == this.resetUserData.confirmNewPass;
-        //localStorage.setItem('app.userInfo.pass', this.resetUserData.confirmNewPass);
+        this.loggedPass = this.resetUserData.confirmNewPass;
+        localStorage.setItem('app.userInfo.pass', this.resetUserData.confirmNewPass);
         //this.loggedPass = localStorage.getItem('app.userInfo.pass');
-        this.presentToast('Password succesfully updated for: ');
+        this.presentToast('Password will be updated in couple of minutes for username : ');
+        //this.logout();
         })
       .catch(reason=>{
         //console.log(reason);
@@ -293,16 +296,17 @@ export class UserPage {
       duration: 2000,
       position: 'center'
     });
-
-    if (this.ciHashedId != 0) {
-      toast.onDidDismiss(() => {
-        //console.log('Dismissed toast');
-        this.closeModal();
-        this.navCtrl.push('UserPage');
-        //this.navCtrl.popAll();
-      });
-    }
     toast.present();
+    toast.onDidDismiss(() => {
+      this.closeModal();
+      if (this.ciHashedId != undefined) {
+        this.navCtrl.push('UserPage');
+      }
+      else{
+        this.navCtrl.popAll();
+        this.navCtrl.push('LoginPage');
+      }//
+    });
   }
 
   wait(ms){
@@ -311,6 +315,13 @@ export class UserPage {
     while(end < start + ms) {
       end = new Date().getTime();
     }
+  }
+
+  /**
+   * Logout user.
+   */
+  public logout(): any {
+    this.authProvider.clearAuthenticatedUser();
   }
 
 }

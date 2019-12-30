@@ -56,14 +56,14 @@ export class AuthenticateProvider {
    * Remove user from local storage.
    */
   public clearAuthenticatedUser(): void {
-    /*
+
     localStorage.removeItem('app.userInfo');
     localStorage.removeItem('app.userInfo.role');
     localStorage.removeItem('app.userInfo.name');
     localStorage.removeItem('app.userInfo.pass');
     localStorage.removeItem('app.userInfo.lang');
-    */
-    //localStorage.clear();
+
+    localStorage.clear();
     window.localStorage.clear();
   }
 

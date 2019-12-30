@@ -17,8 +17,8 @@ import {ResetPasswordPage} from "../reset-password/reset-password";
   templateUrl: 'login.html',
 })
 export class LoginPage {
-  private username: string;
-  private password: string;
+  public username: string;
+  public password: string;
   public lang: string;
   rolesArray: any;
   error: string;
