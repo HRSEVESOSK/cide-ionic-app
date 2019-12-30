@@ -14,5 +14,6 @@
       "proxyUrl": "https://pproo.azo.hr/cide/api/api",
       "rejectUnauthorized":false
     }
-]
+],
+  "serviceWorker":false
 }
