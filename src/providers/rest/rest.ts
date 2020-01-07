@@ -182,19 +182,15 @@ export class RestProvider {
       })
     }
 
-    uploadReport(u, p, file:Blob, id,inspectionType) {
+    upload_document(u, p, file:Blob, id,insp_type,doc_type) {
       let uploadURLpath = '';
-      if (inspectionType == 'CI') {
-        uploadURLpath = '/inspection/upload'
-      }
-      if (inspectionType == 'SI') {
-        uploadURLpath = '/inspection/specific/upload'
-      }
       //console.log("URL PATH IS: ", uploadURLpath);
       let formData = new FormData();
       //formData.append('file', file, 'Report_' + id  + '_' + new Date().toJSON().split('T')[0]+ '.pdf');
       formData.append('file', file);
       formData.append('id',id);
+      formData.append('type',insp_type);
+      formData.append('document',doc_type);
       let httpOptions = {
         headers: new HttpHeaders({
           'enctype': 'multipart/form-data; boundary=----WebKitFormBoundaryuL67FWkv1CA',
@@ -202,10 +198,21 @@ export class RestProvider {
       };
     return new Promise((resolve, reject) => {
       //console.log(file);
-      this.http.post(this.apiUrl + uploadURLpath, formData, httpOptions).subscribe(data => {
+      this.http.post(this.apiUrl + '/document/upload', formData, httpOptions).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log("ERROR IN INSERTING UPLOADING REPORT FOR " + inspectionType, error1);
+        reject(error1)
+      })
+    })
+  }
+
+  delete_document(u,p,id,doc_type, insp_type){
+    return new Promise((resolve,reject) =>{
+      this.http.delete(this.apiUrl + '/document/delete?document='+doc_type+'&type='+insp_type+'&hash='+id,{headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+        resolve(data)
+      }, error1 => {
+        //console.log("ERROR IN DOWNLOADING THE REPORT", error1);
         reject(error1)
       })
     })

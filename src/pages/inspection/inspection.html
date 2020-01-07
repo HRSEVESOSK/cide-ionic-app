@@ -61,10 +61,11 @@
       <ion-col>{{e.inspection_type}}</ion-col>
       <ion-col>{{e.inspection_coordinator}}</ion-col>
       <ion-col *ngIf="e.inspection_report == null && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')" >
-        <input type="file" (change)="uploadReport($event,e.id,'CI')"/>
+        <input type="file" (change)="uploadReport($event,e.id,'coordinated')"/>
       </ion-col>
       <ion-col *ngIf="e.inspection_report != null && (loggedRole == 'ROLE_CIDE_COORDINATOR' || loggedRole == 'ROLE_CIDE_ADMIN')">
         <button ion-button (click)="openCiReportDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
+        <button title='{{"110"|translate}}' ion-button (click)="deleteCiReport(e.id)" color="danger"><ion-icon name="trash" ></ion-icon></button>
       </ion-col>
       <ion-col>
         <ion-buttons>
@@ -104,7 +105,7 @@
       <ion-col>{{e.spec_inspection_organisation}}</ion-col>
       <ion-col *ngIf="e.spec_inspection_report == null">
 
-        <input type="file" (change)="uploadReport($event,e.id,'SI')"/>
+        <input type="file" (change)="uploadReport($event,e.id,'specific')"/>
 
         <!--
         <button ion-button (click)="uploadSiReportModal(e.id)">
@@ -114,6 +115,7 @@
       </ion-col>
       <ion-col *ngIf="e.spec_inspection_report != null">
         <button title='{{"77"|translate}}' ion-button (click)="openSiReportDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
+        <button title='{{"110"|translate}}' ion-button (click)="deleteSiReport(e.id)" color="danger"><ion-icon name="trash" ></ion-icon></button>
       </ion-col>
       <ion-col>
         <ion-buttons>

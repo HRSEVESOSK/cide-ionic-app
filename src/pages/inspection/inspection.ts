@@ -648,12 +648,56 @@ export class InspectionPage {
  */
 
   openSiReportDownloadNewTab(id){
-    window.open(this.restProvider.apiUrl + "/inspection/specific/download/" + id, '_system','location=yes')
+    window.open(this.restProvider.apiUrl + "/document/download?document=final_report&type=specific&hash=" + id, '_system','location=yes')
+  }
+
+  openSiSmsFormDownloadNewTab(id){
+    window.open(this.restProvider.apiUrl + "/document/download?document=sms_form&type=specific&hash=" + id, '_system','location=yes')
+  }
+
+  openSiMinutesDownloadNewTab(id){
+    window.open(this.restProvider.apiUrl + "/document/download?document=minutes&type=specific&hash=" + id, '_system','location=yes')
+  }
+
+  downloadSiReport(id){
+
+  }
+
+  deleteSiReport(id){
+    this.loaderCreate();
+    this.restProvider.delete_document(this.loggedUname, this.loggedPass,id,'final_report','specific')
+      .then(data=>{
+        this.ciHashedId = data['updated'];
+        this.loader.dismiss();
+        this.presentToast('deleted final report for: ');
+        })
+      .catch(reason => {
+        //console.log("ERROR IN UPLOADING REPORT FOR CI", reason);
+        this.loader.dismiss();
+        this.presentErrorMessage(reason.status + ": " + reason.statusText);
+      })
+  }
+
+  deleteCiReport(id){
+    this.loaderCreate();
+    this.restProvider.delete_document(this.loggedUname, this.loggedPass,id,'final_report','coordinated')
+      .then(data=>{
+        this.ciHashedId = data['updated'];
+        this.loader.dismiss();
+        this.presentToast('deleted final report for: ');
+      })
+      .catch(reason => {
+        //console.log("ERROR IN UPLOADING REPORT FOR CI", reason);
+        this.loader.dismiss();
+        this.presentErrorMessage(reason.status + ": " + reason.statusText);
+      })
   }
 
   openCiReportDownloadNewTab(id){
-    window.open(this.restProvider.apiUrl + "/inspection/download/" + id, '_system','location=yes')
+    window.open(this.restProvider.apiUrl + "/document/download?document=final_report&type=coordinated&hash=" + id, '_system','location=yes')
   }
+
+
 
   downloadCiReport(id) {
     this.loaderCreate();
@@ -673,7 +717,43 @@ export class InspectionPage {
     this.loaderCreate();
     this.file = $event.target.files[0];
     //console.log("REPORT TO BE UPLADED FOR SI "+id+": ", this.file);
-    this.restProvider.uploadReport(this.loggedUname, this.loggedPass,  $event.target.files[0],id,inspectionType)
+    this.restProvider.upload_document(this.loggedUname, this.loggedPass,  $event.target.files[0],id,inspectionType,'final_report')
+      .then(data=>{
+        //console.log("Report has been sucesfully uploaded for CI: ", data);
+        this.ciHashedId = data['updated'];
+        this.loader.dismiss();
+        this.presentToast('uploaded: ');
+      })
+      .catch(reason => {
+        //console.log("ERROR IN UPLOADING REPORT FOR CI", reason);
+        this.loader.dismiss();
+        this.presentErrorMessage(reason.status + ": " + reason.statusText);
+      })
+  }
+
+  uploadSMSForm($event,id,inspectionType) : void {
+    this.loaderCreate();
+    this.file = $event.target.files[0];
+    //console.log("REPORT TO BE UPLADED FOR SI "+id+": ", this.file);
+    this.restProvider.upload_document(this.loggedUname, this.loggedPass,  $event.target.files[0],id,inspectionType,'sms_form')
+      .then(data=>{
+        //console.log("Report has been sucesfully uploaded for CI: ", data);
+        this.ciHashedId = data['updated'];
+        this.loader.dismiss();
+        this.presentToast('uploaded: ');
+      })
+      .catch(reason => {
+        //console.log("ERROR IN UPLOADING REPORT FOR CI", reason);
+        this.loader.dismiss();
+        this.presentErrorMessage(reason.status + ": " + reason.statusText);
+      })
+  }
+
+  uploadMinutes($event,id,inspectionType) : void {
+    this.loaderCreate();
+    this.file = $event.target.files[0];
+    //console.log("REPORT TO BE UPLADED FOR SI "+id+": ", this.file);
+    this.restProvider.upload_document(this.loggedUname, this.loggedPass,  $event.target.files[0],id,inspectionType,'minutes')
       .then(data=>{
         //console.log("Report has been sucesfully uploaded for CI: ", data);
         this.ciHashedId = data['updated'];

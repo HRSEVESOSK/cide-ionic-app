@@ -107,5 +107,7 @@
   "106":"Confirm password is required",
   "107":"Password Mismatch",
   "108":"Current password is required",
-  "109":"Inserted password is invalid"
+  "109":"Inserted password is invalid",
+  "110":"Click to delete final report",
+  "111": "Developed by"
 }
