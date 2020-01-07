@@ -90,33 +90,45 @@
 <ion-content padding *ngIf="modalType === 'getSi'">
   <ion-grid text-center>
     <ion-row style="background-color: antiquewhite">
-      <ion-col>ID</ion-col>
+      <!--<ion-col>ID</ion-col>-->
       <ion-col>{{"19"|translate}}</ion-col>
       <ion-col>{{"15"|translate}}</ion-col>
-      <ion-col>{{"54"|translate}}</ion-col>
+      <!--<ion-col>{{"54"|translate}}</ion-col>-->
       <ion-col>{{"81"|translate}}</ion-col>
+      <ion-col>{{"112"|translate}}</ion-col>
+      <ion-col>{{"113"|translate}}</ion-col>
       <ion-col>{{"23"|translate}}</ion-col>
       <ion-col>{{"24"|translate}}</ion-col>
     </ion-row>
     <ion-row *ngFor="let e of specific" justify-content-center align-items-center>
-      <ion-col>{{e.id}}</ion-col>
+      <!--<ion-col>{{e.id}}</ion-col>-->
       <ion-col>{{e.spec_inspection_type}}</ion-col>
       <ion-col>{{e.spec_inspection_date | date:'dd/MM/yyyy'}}</ion-col>
-      <ion-col>{{e.spec_inspection_organisation}}</ion-col>
+      <!--<ion-col>{{e.spec_inspection_organisation}}</ion-col>-->
       <ion-col *ngIf="e.spec_inspection_report == null">
-
         <input type="file" (change)="uploadReport($event,e.id,'specific')"/>
-
-        <!--
-        <button ion-button (click)="uploadSiReportModal(e.id)">
-          <ion-icon name="upload"></ion-icon>
-        </button>
-        -->
       </ion-col>
       <ion-col *ngIf="e.spec_inspection_report != null">
         <button title='{{"77"|translate}}' ion-button (click)="openSiReportDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
         <button title='{{"110"|translate}}' ion-button (click)="deleteSiReport(e.id)" color="danger"><ion-icon name="trash" ></ion-icon></button>
       </ion-col>
+
+      <ion-col *ngIf="e.spec_inspection_sms_form == null">
+        <input type="file" (change)="uploadSMSForm($event,e.id,'specific')"/>
+      </ion-col>
+      <ion-col *ngIf="e.spec_inspection_sms_form != null">
+        <button title='{{"114"|translate}}' ion-button (click)="openSiSmsFormDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
+        <button title='{{"115"|translate}}' ion-button (click)="deleteSiSMSForm(e.id)" color="danger"><ion-icon name="trash" ></ion-icon></button>
+      </ion-col>
+
+      <ion-col *ngIf="e.spec_inspection_minutes== null">
+        <input type="file" (change)="uploadMinutes($event,e.id,'specific')"/>
+      </ion-col>
+      <ion-col *ngIf="e.spec_inspection_minutes != null">
+        <button title='{{"116"|translate}}' ion-button (click)="openSiMinutesDownloadNewTab(e.id)"><ion-icon name="download"></ion-icon></button>
+        <button title='{{"117"|translate}}' ion-button (click)="deleteSiMinutes(e.id)" color="danger"><ion-icon name="trash" ></ion-icon></button>
+      </ion-col>
+
       <ion-col>
         <ion-buttons>
           <button title='{{"75"|translate}}' *ngIf="e.si_count > 0" ion-button (click)="openSIModal(e.id)">

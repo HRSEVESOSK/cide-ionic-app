@@ -678,6 +678,36 @@ export class InspectionPage {
       })
   }
 
+  deleteSiSMSForm(id){
+    this.loaderCreate();
+    this.restProvider.delete_document(this.loggedUname, this.loggedPass,id,'sms_form','specific')
+      .then(data=>{
+        this.ciHashedId = data['updated'];
+        this.loader.dismiss();
+        this.presentToast('deleted SMS form for: ');
+      })
+      .catch(reason => {
+        //console.log("ERROR IN UPLOADING REPORT FOR CI", reason);
+        this.loader.dismiss();
+        this.presentErrorMessage(reason.status + ": " + reason.statusText);
+      })
+  }
+
+  deleteSiMinutes(id){
+    this.loaderCreate();
+    this.restProvider.delete_document(this.loggedUname, this.loggedPass,id,'minutes','specific')
+      .then(data=>{
+        this.ciHashedId = data['updated'];
+        this.loader.dismiss();
+        this.presentToast('deleted minutes for: ');
+      })
+      .catch(reason => {
+        //console.log("ERROR IN UPLOADING REPORT FOR CI", reason);
+        this.loader.dismiss();
+        this.presentErrorMessage(reason.status + ": " + reason.statusText);
+      })
+  }
+
   deleteCiReport(id){
     this.loaderCreate();
     this.restProvider.delete_document(this.loggedUname, this.loggedPass,id,'final_report','coordinated')

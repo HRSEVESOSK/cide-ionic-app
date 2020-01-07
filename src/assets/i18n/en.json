@@ -109,5 +109,11 @@
   "108":"Current password is required",
   "109":"Inserted password is invalid",
   "110":"Click to delete final report",
-  "111": "Developed by"
+  "111": "Developed by",
+  "112": "SMS form",
+  "113": "Minutes",
+  "114": "Click to download SMS form",
+  "115":"Click to delete SMS form",
+  "116": "Click to download minutes",
+  "117": "Click to delete minutes"
 }
