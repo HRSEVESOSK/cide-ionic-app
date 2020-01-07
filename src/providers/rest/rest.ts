@@ -25,7 +25,7 @@ export class RestProvider {
   }
   getSpecificForCoordinated(u, p, ciId,lang) {
     return new Promise((resolve, reject) => {
-      this.http.get(this.apiUrl + '/inspection/specific/' + ciId + "?lang="+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/specific/' + ciId + "?lang="+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log(error1);
@@ -37,7 +37,7 @@ export class RestProvider {
 
   getCiForEstablishment(u, p, estabId) {
     return new Promise(resolve => {
-      this.http.get(this.apiUrl + '/inspection/' + estabId, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/coordinated/' + estabId, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log(error1)
