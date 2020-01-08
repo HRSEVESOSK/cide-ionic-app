@@ -170,6 +170,7 @@ export class InspectionPage {
   }
 
   createSIModal(id) {
+    this.loaderCreate();
     /*this.getSpecificInspectionType('addSi');
     let modalData: { cid: any, type: string, si_types: any, title: any } = {"cid": id, "type": "addSi", si_types: this.ciTypes, "title": id};
     let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
@@ -181,9 +182,11 @@ export class InspectionPage {
           {"cid": id, "type": "addSi", si_types: data, "title": id};
         //console.log("DATA SENT TO SI INSERT: ", modalData);
         let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
+        this.loader.dismiss();
         modalPage.present();
       })
       .catch(reason => {
+        this.loader.dismiss();
         //console.error("GET SI TYPES LIST ERROR", reason);
       })
   }
@@ -326,14 +329,17 @@ export class InspectionPage {
   }
 
   createCIModal(id, name) {
+    this.loaderCreate();
     this.restProvider.getInspectionSpecificType(this.loggedUname, this.loggedPass, 'CI',this.selectedLanguage)
       .then(data => {
         let modalData: { title: any; id: any; type: any, ci_types: any } = {"title": name, "id": id, "type": "addCi", ci_types : data};
         //console.log("CREATE CI DATA: ", data);
         let modalPage = this.modalCtrl.create('InspectionPage', modalData, {cssClass: "modal-fullscreen"});
+        this.loader.dismiss();
         modalPage.present();
       })
       .catch(reason => {
+        this.loader.dismiss();
         //console.error("GET SI TYPES LIST ERROR", reason);
       })
   }
