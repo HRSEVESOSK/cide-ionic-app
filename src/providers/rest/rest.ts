@@ -70,7 +70,7 @@ export class RestProvider {
 
   getInspectionSpecificType(u, p,type,lang) {
     return new Promise((resolve,reject) => {
-      this.http.get(this.apiUrl + '/inspection/specific/type?type='+type+'&lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/specific/type?type='+type+'&lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log("error in getInspectionSpecificType: ", error1);
