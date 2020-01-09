@@ -400,7 +400,7 @@ export class InspectionPage {
   }
 
   addrow(id) {
-    this.si_issues.push({last_update: new Date().toJSON().split('T')[0], 'id_specific_inspection': id});
+    this.si_issues.push({last_update: new Date().toJSON().split('T')[0], 'id_specific_inspection': id,deadline_warning: new Date().toJSON().split('T')[0]});
   }
 
   delrow(id) {
