@@ -48,7 +48,7 @@ export class RestProvider {
 
   getScoreForSI(u,p,siId){
     return new Promise((resolve,reject) => {
-      this.http.get(this.apiUrl + '/inspection/specific/score/' + siId,{headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data=>{
+      this.http.get(this.apiUrl + '/score/' + siId,{headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data=>{
         resolve(data)
       }, error1 => {
         //console.error('Error in getting score values from API for SI', siId);
@@ -59,7 +59,7 @@ export class RestProvider {
 
   getInspectionSpecificIssues(u,p, siId){
     return new Promise((resolve,reject) => {
-      this.http.get(this.apiUrl + '/inspection/specific/issue/' + siId, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/issue/' + siId, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log("error in getInspectionSpecificIssues: ", error1);
@@ -81,7 +81,7 @@ export class RestProvider {
 
   getInspectionSpecificCriterior(u, p,lang) {
     return new Promise((resolve,reject) => {
-      this.http.get(this.apiUrl + '/inspection/specific/criterior?lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/criterior?lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log("ERROR IN GETTING SI TYPES FROM API", error1);
@@ -93,7 +93,7 @@ export class RestProvider {
 
   getSICriteriorScoreList(u, p,lang) {
     return new Promise((resolve,reject) => {
-      this.http.get(this.apiUrl + '/inspection/specific/criterior/score?lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.get(this.apiUrl + '/criterior/score?lang='+lang, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log("ERROR IN GETTING SI TYPES FROM API", error1);
@@ -107,7 +107,7 @@ export class RestProvider {
   insertCiForEstablishment(u, p, data) {
     return new Promise((resolve, reject) => {
       //console.log(data);
-      this.http.post(this.apiUrl + '/inspection/insert', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.post(this.apiUrl + '/coordinated', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log("ERROR IN INSERTING CI", error1);
@@ -118,7 +118,7 @@ export class RestProvider {
 
   updateCiForEstablishment(u, p, data) {
     return new Promise((resolve, reject) => {
-      this.http.post(this.apiUrl + '/inspection/update', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.put(this.apiUrl + '/coordinated', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log("ERROR IN UPDATING CI", error1);
@@ -151,7 +151,7 @@ export class RestProvider {
 
   deleteCiById(u,p,data){
     return new Promise((resolve, reject) => {
-      this.http.post(this.apiUrl + '/inspection/delete', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.delete(this.apiUrl + '/coordinated/'+ data.id, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log("ERROR IN DELETING CI", error1);
@@ -171,16 +171,6 @@ export class RestProvider {
     })
   }
 
-    downloadReportForCi(u,p,id){
-      return new Promise((resolve,reject) =>{
-        this.http.get(this.apiUrl + '/inspection/specific/download/' + id,{headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(reportFile => {
-          resolve(reportFile)
-        }, error1 => {
-          //console.log("ERROR IN DOWNLOADING THE REPORT", error1);
-          reject(error1)
-        })
-      })
-    }
 
     upload_document(u, p, file:Blob, id,insp_type,doc_type) {
       let uploadURLpath = '';
