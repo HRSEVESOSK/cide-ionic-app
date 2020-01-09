@@ -226,8 +226,15 @@
           <!--<ion-input type="date" name="si_date" [(ngModel)]="si_inspection_date"></ion-input>-->
           <input  class="datum" type="date" name="si_date" [(ngModel)]="si_inspection_date"/>
         </ion-col>
+        <!--
         <ion-col>
           <ion-input type="text" name="si_inspector" [(ngModel)]="si_inspector" onclick=""></ion-input>
+        </ion-col>
+        -->
+        <ion-col>
+          <ion-select class="selector" interface="popover" [(ngModel)]="selected_si_inspector" name="selected_si_inspector">
+            <ion-option *ngFor="let i of si_inspectors" value="{{i.id}}">{{i.username}}</ion-option>
+          </ion-select>
         </ion-col>
       </ion-row>
     </ion-grid>

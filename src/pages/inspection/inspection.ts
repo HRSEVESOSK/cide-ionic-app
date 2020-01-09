@@ -40,9 +40,11 @@ export class InspectionPage {
   ciList = {};
   selected_si_type: any;
   selected_ci_type: any;
+  selected_si_inspector: any = [];
   si_inspector: any;
   si_id: any;
   si_inspector_role: any;
+  si_inspectors: any = [];
   si_inspection_date: any;
   si_criteria: any;
   si_issues: any = [];
@@ -345,20 +347,21 @@ export class InspectionPage {
   }
 
   getOrganisationForSIType(list) {
-    //console.log("SELECTED SI TYPE IS: ", this.selected_si_type);
-    //console.log(list);
+    this.si_inspectors = [];
+    this.selected_si_inspector = [];
     for (let x of list) {
       if (x.code === this.selected_si_type) {
         if ('inspectors' in x) {
-          this.si_inspector = x['inspectors'][0]['fullname'];
-          this.si_inspector_role = x['inspectors'][0]['id'];
-          //console.log(this.si_inspector);
-          break;
+          for (let y of x.inspectors){
+            this.si_inspectors.push({'username':y['username'], 'id':y['id']})
+          }
         }
         else {
           this.si_inspector = 'No organization for selected SI type';
         }
-        //console.log(x['inspectors']);
+        console.log("Available inspectors for " +this.selected_si_type+"are: ", this.si_inspectors);
+        this.selected_si_inspector.push({'username': this.si_inspectors[0]['username'], 'id':this.si_inspectors[0]['id']});
+        console.log("First inspector: ", this.selected_si_inspector)
       }
     }
   }
@@ -473,14 +476,14 @@ export class InspectionPage {
   }
 
   updateCoordinatedInspection(id) {
+    console.log("Selected inspector data", this.selected_si_inspector);
     this.ciHashedId = id;
     let updateCIdata = {
       "id": this.ciHashedId,
       "inspection_date": this.si_inspection_date,
-      "inspection_coordinator": this.si_inspector,
-      "inspector_id_person_role": this.si_inspector_role
+      "inspector_id_person_role": this.selected_si_inspector
     };
-    //console.log(updateCIdata);
+    console.log(updateCIdata);
     this.loaderCreate();
     this.restProvider.updateCiForEstablishment(this.loggedUname, this.loggedPass, updateCIdata)
       .then(data => {
@@ -733,21 +736,6 @@ export class InspectionPage {
     window.open(this.restProvider.apiUrl + "/document/download?document=final_report&type=coordinated&hash=" + id, '_system','location=yes')
   }
 
-
-
-  downloadCiReport(id) {
-    this.loaderCreate();
-    this.restProvider.downloadReportForCi(this.loggedUname, this.loggedPass, id)
-      .then(data=>{
-        //console.info("Downloading report for siid: ", id);
-        this.loader.dismiss();
-      })
-      .catch(reason => {
-        //console.error("ERROR IN UPLOADING REPORT FOR CI", reason);
-        this.loader.dismiss();
-        this.presentErrorMessage(reason.status + ": " + reason.statusText);
-      })
-  }
 
   uploadReport($event,id,inspectionType) : void {
     this.loaderCreate();
