@@ -129,7 +129,7 @@ export class RestProvider {
 
   updateCiCriteriaScore(u, p, data) {
     return new Promise((resolve, reject) => {
-      this.http.post(this.apiUrl + '/inspection/specific/criterior/insert', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.post(this.apiUrl + '/score', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log("ERROR IN UPDATING CI", error1);
@@ -140,7 +140,7 @@ export class RestProvider {
 
   updateCiIssues(u, p, data) {
     return new Promise((resolve, reject) => {
-      this.http.post(this.apiUrl + '/inspection/specific/issue/insert', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.post(this.apiUrl + '/issue', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log("ERROR IN UPDATING CI", error1);
@@ -162,7 +162,7 @@ export class RestProvider {
 
   deleteSiById(u,p,data){
     return new Promise((resolve, reject) => {
-      this.http.post(this.apiUrl + '/inspection/specific/delete', data, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
+      this.http.delete(this.apiUrl + '/specific/' + data.id, {headers: new HttpHeaders().set('Authorization', 'Basic ' + btoa(u + ':' + p))}).subscribe(data => {
         resolve(data)
       }, error1 => {
         //console.log("ERROR IN DELETING CI", error1);
