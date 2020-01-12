@@ -10,12 +10,9 @@ import {Observable} from "rxjs/Observable";
 @Injectable()
 export class AuthenticateProvider {
   baseUrl: any;
-  //authUrl = 'http://192.168.1.226/bifisic/services/httpbasicauth/auth';
-  //authUrl = 'https://pproo.azo.hr/bifisic/services/httpbasicauth/auth';
   constructor(public http: HttpClient) {
-    //console.log('Hello AuthenticateProvider Provider');
     this.baseUrl = '/cide-auth';
-    //this.baseUrl = 'https://pproo.azo.hr/bifisic/services/httpbasicauth/auth'
+    //this.baseUrl = 'https://pproo.azo.hr/bifisic/services/httpbasicauth'
   }
 
   /**
@@ -80,7 +77,7 @@ export class AuthenticateProvider {
     }
     else {
       return new Promise((resolve, reject) => {
-        this.http.get(this.baseUrl + '?user=' + user + '&password=' + password).subscribe(data => {
+        this.http.get(this.baseUrl + '/auth?user=' + user + '&password=' + password).subscribe(data => {
           this.setAuthenticatedUser(data, password, language);
           resolve(data)
         }, error1 => {
@@ -172,11 +169,4 @@ export class AuthenticateProvider {
       })
     })
   }
-
-
-
-
-
 }
-
-

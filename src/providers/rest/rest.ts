@@ -10,6 +10,7 @@ export class RestProvider {
     //this.apiUrl = 'http://192.168.1.226/cide-api/api';
     this.apiUrl = '/cide-api';
     //this.apiUrl = 'https://pproo.azo.hr/cide-api/api';
+    //this.apiUrl = 'https://pproo.azo.hr/cide-api-staging/api';
 
   }
  getEstablishment(u, p) {
@@ -173,10 +174,7 @@ export class RestProvider {
 
 
     upload_document(u, p, file:Blob, id,insp_type,doc_type) {
-      let uploadURLpath = '';
-      //console.log("URL PATH IS: ", uploadURLpath);
       let formData = new FormData();
-      //formData.append('file', file, 'Report_' + id  + '_' + new Date().toJSON().split('T')[0]+ '.pdf');
       formData.append('file', file);
       formData.append('id',id);
       formData.append('type',insp_type);

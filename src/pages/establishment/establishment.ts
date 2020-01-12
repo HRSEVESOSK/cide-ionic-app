@@ -103,7 +103,4 @@ export class EstablishmentPage {
     this.descending = !this.descending;
     this.order = this.descending ? 1 : -1;
   }
-
-
-
 }
